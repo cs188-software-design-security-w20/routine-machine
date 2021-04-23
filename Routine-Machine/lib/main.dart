@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:routine_machine/RingProgressBar.dart';
 import 'package:routine_machine/RoutineWidget.dart';
 
+import './RingProgressBar.dart';
 import './CheckInList.dart';
 
 final sampleCheckIns = <DateTime>[
@@ -16,8 +18,17 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Routine Machine',
       home: Scaffold(
-        appBar: AppBar(title: Text('test')),
-        body: CheckInList(checkIns: sampleCheckIns),
+        body: Column(
+          children: [
+            CheckInList(checkIns: sampleCheckIns),
+            RingProgressBar(
+              currentCount: 17,
+              goalCount: 20,
+              habitType: 'monthly',
+              color: 0xFFC960FF,
+            ),
+          ],
+        ),
       ),
     );
   }
