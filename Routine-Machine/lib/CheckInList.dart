@@ -1,43 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-
+import './CheckInItem.dart';
 import './GreyContainer.dart';
-
-class CheckInItem extends StatelessWidget {
-  String checkInTime;
-  CheckInItem({checkInTime}) {
-    this.checkInTime = DateFormat().add_MEd().add_jm().format(checkInTime);
-  }
-  @override
-  Widget build(BuildContext context) {
-    return RichText(
-      text: TextSpan(
-        style: TextStyle(
-          fontSize: 18.0,
-          color: Colors.black,
-          height: 1.5,
-        ),
-        children: [
-          TextSpan(
-            text: '\u2022 ',
-            style: TextStyle(
-              color: Colors.blue,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          TextSpan(
-            text: 'Check-in on $checkInTime',
-          ),
-        ],
-      ),
-    );
-  }
-}
 
 class CheckInList extends StatelessWidget {
   final List<DateTime> checkIns;
+  final int color;
 
-  CheckInList({this.checkIns});
+  CheckInList({this.checkIns, this.color});
 
   @override
   Widget build(BuildContext context) {
@@ -45,8 +14,13 @@ class CheckInList extends StatelessWidget {
       child: ListView(
         padding: EdgeInsets.all(16),
         shrinkWrap: true,
-        children:
-            checkIns.map((time) => CheckInItem(checkInTime: time)).toList(),
+        children: checkIns.isEmpty
+            // if no check ins, show this default message text
+            ? [Text('No recent activity', style: TextStyle(fontSize: 18.0))]
+            : checkIns
+                .map(
+                    (time) => CheckInItem(checkInTime: time, color: this.color))
+                .toList(),
       ),
     );
   }

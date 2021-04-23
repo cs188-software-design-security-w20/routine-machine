@@ -5,6 +5,7 @@ import 'package:routine_machine/RoutineWidget.dart';
 import './RingProgressBar.dart';
 import './CheckInList.dart';
 
+// sample data to demo the check in list
 final sampleCheckIns = <DateTime>[
   new DateTime.now(),
   new DateTime.utc(2021, 4, 20),
@@ -20,7 +21,10 @@ class MyApp extends StatelessWidget {
       home: Scaffold(
         body: Column(
           children: [
-            CheckInList(checkIns: sampleCheckIns),
+            CheckInList(
+              checkIns: sampleCheckIns,
+              color: 0xFFC960FF,
+            ),
             RingProgressBar(
               currentCount: 17,
               goalCount: 20,
