@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:routine_machine/RingProgressBar.dart';
 import 'package:routine_machine/RoutineWidget.dart';
 
+import './constants/Palette.dart' as Palette;
+
 import './RingProgressBar.dart';
 import './CheckInList.dart';
 import './BottomNavBar.dart';
@@ -41,7 +43,7 @@ class MyApp extends StatelessWidget {
         ),
         bottomNavigationBar: BottomNavBar(),
         floatingActionButton: FloatingActionButton(
-          backgroundColor: Colors.purple,
+          backgroundColor: Palette.primary,
           child: Icon(Icons.add_rounded),
           onPressed: () => {},
         ),
