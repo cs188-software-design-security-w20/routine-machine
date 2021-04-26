@@ -5,6 +5,7 @@ import 'package:routine_machine/RoutineWidget.dart';
 import './RingProgressBar.dart';
 import './CheckInList.dart';
 import './BottomNavBar.dart';
+import './ProfileBarView.dart';
 
 // sample data to demo the check in list
 final sampleCheckIns = <DateTime>[
@@ -20,19 +21,23 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Routine Machine',
       home: Scaffold(
-        body: Column(
-          children: [
-            CheckInList(
-              checkIns: sampleCheckIns,
-              color: 0xFFC960FF,
-            ),
-            RingProgressBar(
-              currentCount: 17,
-              goalCount: 20,
-              habitType: 'monthly',
-              color: 0xFFC960FF,
-            ),
-          ],
+        body: Container(
+          padding: EdgeInsets.all(16),
+          child: Column(
+            children: [
+              ProfileBarView(firstName: 'Jody', lastName: 'Lin'),
+              CheckInList(
+                checkIns: sampleCheckIns,
+                color: 0xFFC960FF,
+              ),
+              RingProgressBar(
+                currentCount: 17,
+                goalCount: 20,
+                habitType: 'monthly',
+                color: 0xFFC960FF,
+              ),
+            ],
+          ),
         ),
         bottomNavigationBar: BottomNavBar(),
         floatingActionButton: FloatingActionButton(
