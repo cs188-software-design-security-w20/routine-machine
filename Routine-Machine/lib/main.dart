@@ -4,6 +4,7 @@ import 'package:routine_machine/RoutineWidget.dart';
 
 import './RingProgressBar.dart';
 import './CheckInList.dart';
+import './BottomNavBar.dart';
 
 // sample data to demo the check in list
 final sampleCheckIns = <DateTime>[
@@ -33,6 +34,13 @@ class MyApp extends StatelessWidget {
             ),
           ],
         ),
+        bottomNavigationBar: BottomNavBar(),
+        floatingActionButton: FloatingActionButton(
+          backgroundColor: Colors.purple,
+          child: Icon(Icons.add_rounded),
+          onPressed: () => {},
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       ),
     );
   }
