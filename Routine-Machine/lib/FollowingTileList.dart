@@ -3,7 +3,7 @@ import 'package:routine_machine/FollowingTile.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class FollowingTileList extends StatelessWidget {
-  List followingList;
+  final List followingList;
 
   FollowingTileList({this.followingList});
 

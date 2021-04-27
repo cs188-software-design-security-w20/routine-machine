@@ -23,7 +23,7 @@ class FollowingTile extends StatelessWidget {
           IconButton(
             icon: Icon(Icons.arrow_forward_ios_rounded),
             color: Colors.grey,
-            onPressed: () => {},
+            onPressed: () => {}, // TODO: navigate to user page
           ),
         ],
       ),
