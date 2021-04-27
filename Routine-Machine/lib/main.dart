@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:routine_machine/Models/WidgetData.dart';
 import 'package:routine_machine/RingProgressBar.dart';
 import 'package:routine_machine/RoutineWidget.dart';
-
+import 'Views/pages/HomeView.dart';
 import './RingProgressBar.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(HomeView(MyApp()));
 
 class MyApp extends StatelessWidget {
   @override
