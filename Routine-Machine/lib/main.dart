@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:routine_machine/Models/WidgetData.dart';
 import 'package:routine_machine/RingProgressBar.dart';
 import 'package:routine_machine/RoutineWidget.dart';
-
 import './constants/Palette.dart' as Palette;
-
 import './RingProgressBar.dart';
 import './CheckInList.dart';
 import './BottomNavBar.dart';
