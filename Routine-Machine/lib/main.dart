@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:routine_machine/Models/WidgetData.dart';
 import 'package:routine_machine/RingProgressBar.dart';
 import 'package:routine_machine/RoutineWidget.dart';
-import 'Views/pages/HomeView.dart';
+import './constants/Palette.dart' as Palette;
 import './RingProgressBar.dart';
 import './CheckInList.dart';
+import './BottomNavBar.dart';
 import './ProfileBarView.dart';
 
 // sample data to demo the check in list
@@ -39,6 +40,13 @@ class MyApp extends StatelessWidget {
             ],
           ),
         ),
+        bottomNavigationBar: BottomNavBar(),
+        floatingActionButton: FloatingActionButton(
+          backgroundColor: Palette.primary,
+          child: Icon(Icons.add_rounded),
+          onPressed: () => {},
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       ),
     );
   }
