@@ -1,5 +1,7 @@
-import '../Models/UserProfile.dart';
 import 'package:firebase_auth/firebase_auth.dart' as Auth;
+import 'package:http/http.dart' as Http;
+import 'dart:convert' as Convert;
+import '../Models/UserProfile.dart';
 
 class APIWrapper {
   Auth.FirebaseUser user;
