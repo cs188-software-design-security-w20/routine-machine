@@ -9,21 +9,24 @@ class FollowingTileList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.separated(
-      itemCount: followingList.length,
-      shrinkWrap: true,
-      separatorBuilder: (BuildContext context, int index) => Divider(),
-      itemBuilder: (context, index) {
-        var user = followingList[index];
-        String lastRoutineCheckIn =
-            '${user.routineName} ${timeago.format(user.lastCheckIn)}';
-        return FollowingTile(
-          firstName: user.firstName,
-          lastName: user.lastName,
-          caption: lastRoutineCheckIn,
-          color: user.color,
-        );
-      },
-    );
+    return this.followingList.isEmpty
+        ? Text(
+            'Search for people to see their habits :)') // default message if not following anyone
+        : ListView.separated(
+            itemCount: followingList.length,
+            shrinkWrap: true,
+            separatorBuilder: (BuildContext context, int index) => Divider(),
+            itemBuilder: (context, index) {
+              var user = followingList[index];
+              String lastRoutineCheckIn =
+                  '${user.routineName} ${timeago.format(user.lastCheckIn)}';
+              return FollowingTile(
+                firstName: user.firstName,
+                lastName: user.lastName,
+                caption: lastRoutineCheckIn,
+                color: user.color,
+              );
+            },
+          );
   }
 }
