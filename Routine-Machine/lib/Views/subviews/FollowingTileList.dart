@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:routine_machine/FollowingTile.dart';
+import '../components/FollowingTile.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class FollowingTileList extends StatelessWidget {

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import './constants/Palette.dart' as Palette;
+import '../../constants/Palette.dart' as Palette;
 
 class ProfileBarView extends StatelessWidget {
   // note: assuming that firstName and lastName are not empty strings
