@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../constants/Palette.dart' as Palette;
 
 class GreyContainer extends StatelessWidget {
   final double width;
@@ -24,7 +25,7 @@ class GreyContainer extends StatelessWidget {
       padding: this.padding,
       child: this.child,
       decoration: BoxDecoration(
-        color: Color(0xE5E5E5E5),
+        color: Color(0xFFEBEBEB),
         borderRadius: BorderRadius.all(
           Radius.circular(16),
         ),
