@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../constants/Palette.dart' as Palette;
-import '../../BottomNavBar.dart';
+import '../components/BottomNavBar.dart';
 
 class HomePage extends StatelessWidget {
   @override

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../constants/Palette.dart' as Palette;
-import '../../BottomNavBar.dart';
+import '../components/BottomNavBar.dart';
 
 class FollowerPage extends StatelessWidget {
   @override

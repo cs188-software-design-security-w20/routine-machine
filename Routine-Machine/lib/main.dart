@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:routine_machine/Models/WidgetData.dart';
-import 'package:routine_machine/RingProgressBar.dart';
-import 'package:routine_machine/RoutineWidget.dart';
-import 'package:routine_machine/SampleFollowTileData.dart';
 
-import './constants/Palette.dart' as Palette;
-import './RingProgressBar.dart';
-import './CheckInList.dart';
-import './BottomNavBar.dart';
-import './ProfileBarView.dart';
-import 'FollowingTileList.dart';
+import 'Models/SampleFollowTileData.dart';
+import 'constants/Palette.dart' as Palette;
+
+import 'Views/components/RingProgressBar.dart';
+import 'Views/components/BottomNavBar.dart';
+import 'Views/components/ProfileBarView.dart';
+import 'Views/subviews/CheckInList.dart';
+import 'Views/subviews/FollowingTileList.dart';
 
 // sample data to demo the check in list
 final sampleCheckIns = <DateTime>[

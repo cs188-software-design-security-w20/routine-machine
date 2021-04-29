@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import './CheckInItem.dart';
-import './GreyContainer.dart';
+import '../components/CheckInItem.dart';
+import '../components/GreyContainer.dart';
 
 class CheckInList extends StatelessWidget {
   final List<DateTime> checkIns;
