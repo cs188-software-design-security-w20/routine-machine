@@ -23,21 +23,21 @@ final List<SampleFollowTileData> sampleFollowingList = [
     lastName: 'Jin',
     routineName: 'Workout',
     lastCheckIn: new DateTime.now(),
-    color: Colors.pink,
+    color: Palette.pink,
   ),
   SampleFollowTileData(
     firstName: 'Lee',
     lastName: 'Jieun',
     routineName: 'Practice singing',
     lastCheckIn: new DateTime.now().subtract(new Duration(minutes: 15)),
-    color: Colors.purple,
+    color: Palette.purple,
   ),
   SampleFollowTileData(
     firstName: 'Erika',
     lastName: 'Shen',
     routineName: 'Hike',
     lastCheckIn: new DateTime.now().subtract(new Duration(days: 1)),
-    color: Colors.green,
+    color: Palette.blue,
   ),
 ];
 void main() => runApp(MyApp());
