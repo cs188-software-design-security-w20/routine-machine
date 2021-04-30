@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:flutter/material.dart';
 import 'package:routine_machine/RoutineWidget.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -27,22 +25,23 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: "Routine Machine",
-        home: FutureBuilder(
-          future: _fbApp,
-          builder: (context, snapshot) {
-            if (snapshot.hasError) {
-              print('A Error: ${snapshot.error.toString()}');
-              return Text('Something went wrong :(');
-            } else if (snapshot.hasData) {
-              return MainDashboard(title: "Main Dashboard");
-            } else {
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-          },
-        ));
+      title: "Routine Machine",
+      home: FutureBuilder(
+        future: _fbApp,
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            print('A Error: ${snapshot.error.toString()}');
+            return Text('Something went wrong :(');
+          } else if (snapshot.hasData) {
+            return MainDashboard(title: "Main Dashboard");
+          } else {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        },
+      ),
+    );
   }
 }
 
@@ -60,13 +59,17 @@ class _MainDashboardState extends State<MainDashboard> {
     return Scaffold(
         appBar: AppBar(title: Text(widget.title), actions: <Widget>[
           Builder(builder: (BuildContext context) {
-            return FlatButton(
+            return TextButton(
               child: const Text('Sign Out'),
-              textColor: Theme.of(context).buttonColor,
+              // textColor: Theme.of(context).buttonColor,
+              style: ButtonStyle(
+                foregroundColor:
+                    MaterialStateProperty.resolveWith((states) => Colors.white),
+              ),
               onPressed: () async {
                 final User user = await _auth.currentUser;
                 if (user == null) {
-                  Scaffold.of(context).showSnackBar(SnackBar(
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                     content: Text('No one has signed in'),
                   ));
                   return;
@@ -74,7 +77,7 @@ class _MainDashboardState extends State<MainDashboard> {
 
                 await _auth.signOut();
                 final String uid = user.uid;
-                Scaffold.of(context).showSnackBar(SnackBar(
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                   content: Text(uid + ' has successfully signed out'),
                 ));
               },
@@ -134,7 +137,7 @@ class _RegisterEmailSectionState extends State<_RegisterEmailSection> {
             Container(
               padding: const EdgeInsets.symmetric(vertical: 16.0),
               alignment: Alignment.center,
-              child: RaisedButton(
+              child: ElevatedButton(
                 onPressed: () async {
                   if (_formKey.currentState.validate()) {
                     _register();
@@ -189,6 +192,25 @@ class _EmailPasswordForm extends StatefulWidget {
 }
 
 class _EmailPasswordFormState extends State<_EmailPasswordForm> {
+  void _signInWithEmailAndPassword() async {
+    final User user = (await _auth.signInWithEmailAndPassword(
+      email: _emailController.text,
+      password: _passwordController.text,
+    ))
+        .user;
+
+    if (user != null) {
+      setState(() {
+        _success = true;
+        _userEmail = user.email;
+      });
+    } else {
+      setState(() {
+        _success = false;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -231,7 +253,7 @@ class _EmailPasswordFormState extends State<_EmailPasswordForm> {
             Container(
               padding: const EdgeInsets.symmetric(vertical: 16.0),
               alignment: Alignment.center,
-              child: RaisedButton(
+              child: ElevatedButton(
                 onPressed: () async {
                   if (_formKey.currentState.validate()) {
                     _signInWithEmailAndPassword();
@@ -255,25 +277,6 @@ class _EmailPasswordFormState extends State<_EmailPasswordForm> {
           ],
         ),
       );
-    }
-
-    void _signInWithEmailAndPassword() async {
-      final User user = (await _auth.signInWithEmailAndPassword(
-        email: _emailController.text,
-        password: _passwordController.text,
-      ))
-          .user;
-
-      if (user != null) {
-        setState(() {
-          _success = true;
-          _userEmail = user.email;
-        });
-      } else {
-        setState(() {
-          _success = false;
-        });
-      }
     }
 
     @override
