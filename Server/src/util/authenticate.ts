@@ -11,7 +11,7 @@ export default async function authenticate(req: Request, res: Response, next: Ne
     res.status(401).json({ error: 'Authorization header missing' });
     return;
   }
-  const [_, token] = authHeader.split(' ');
+  const token = authHeader.split(' ')[1];
   try {
     const userData = await admin.auth().verifyIdToken(token);
     res.locals.userData = userData;
