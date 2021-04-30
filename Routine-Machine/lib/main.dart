@@ -48,6 +48,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(fontFamily: "SF Pro Rounded"),
       title: 'Routine Machine',
+      theme: ThemeData(fontFamily: 'SF Pro Text'),
       home: Scaffold(
         body: Container(
           padding: EdgeInsets.all(16),
