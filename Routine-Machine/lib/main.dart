@@ -8,6 +8,7 @@ import 'Views/components/BottomNavBar.dart';
 import 'Views/components/ProfileBarView.dart';
 import 'Views/subviews/CheckInList.dart';
 import 'Views/subviews/FollowingTileList.dart';
+import 'Views/components/SmallWidgetView.dart';
 
 // sample data to demo the check in list
 final sampleCheckIns = <DateTime>[
@@ -45,6 +46,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData(fontFamily: "SF Pro Rounded"),
       title: 'Routine Machine',
       home: Scaffold(
         body: Container(
@@ -56,13 +58,16 @@ class MyApp extends StatelessWidget {
                 checkIns: sampleCheckIns,
                 color: 0xFFC960FF,
               ),
-              RingProgressBar(
-                currentCount: 17,
-                goalCount: 20,
-                habitType: 'monthly',
-                color: 0xFFC960FF,
+              Row(
+                children: [
+                  Spacer(),
+                  SmallWidgetView(),
+                  Spacer(),
+                  SmallWidgetView(),
+                  Spacer(),
+                ],
               ),
-              FollowingTileList(followingList: sampleFollowingList),
+              // FollowingTileList(followingList: sampleFollowingList),
             ],
           ),
         ),
