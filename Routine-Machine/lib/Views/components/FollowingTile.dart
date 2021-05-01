@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:routine_machine/Views/pages/FriendProfilePage.dart';
 import './FollowTileInfo.dart';
 
 class FollowingTile extends StatelessWidget {
@@ -23,7 +24,18 @@ class FollowingTile extends StatelessWidget {
           IconButton(
             icon: Icon(Icons.arrow_forward_ios_rounded),
             color: Colors.grey,
-            onPressed: () => {}, // TODO: navigate to user page
+            onPressed: () async {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => FriendProfilePage(
+                    firstName: this.firstName,
+                    lastName: this.lastName,
+                    // TODO: pass other data
+                  ),
+                ),
+              );
+            },
           ),
         ],
       ),
