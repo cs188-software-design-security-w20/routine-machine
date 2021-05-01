@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import '../../Models/WidgetData.dart';
 
-class HomeView extends StatelessWidget {
+class Dashboard extends StatelessWidget {
   final WidgetData data;
-  HomeView(this.data);
+  Dashboard(this.data);
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
