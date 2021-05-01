@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:routine_machine/Models/WidgetData.dart';
-import 'package:routine_machine/RingProgressBar.dart';
-import 'package:routine_machine/RoutineWidget.dart';
-import 'package:routine_machine/SampleFollowTileData.dart';
+import 'package:routine_machine/Views/pages/HomePage.dart';
 
-import './constants/Palette.dart' as Palette;
-import './RingProgressBar.dart';
-import './CheckInList.dart';
-import './BottomNavBar.dart';
-import './ProfileBarView.dart';
-import 'FollowingTileList.dart';
+import 'Models/SampleFollowTileData.dart';
+import 'constants/Palette.dart' as Palette;
+
+import 'Views/components/RingProgressBar.dart';
+import 'Views/components/BottomNavBar.dart';
+import 'Views/components/ProfileBarView.dart';
+import 'Views/subviews/CheckInList.dart';
+import 'Views/subviews/FollowingTileList.dart';
+import 'Views/components/SmallWidgetView.dart';
 
 // sample data to demo the check in list
 final sampleCheckIns = <DateTime>[
@@ -24,30 +24,43 @@ final List<SampleFollowTileData> sampleFollowingList = [
     lastName: 'Jin',
     routineName: 'Workout',
     lastCheckIn: new DateTime.now(),
-    color: Colors.pink,
+    color: Palette.pink,
   ),
   SampleFollowTileData(
     firstName: 'Lee',
     lastName: 'Jieun',
     routineName: 'Practice singing',
     lastCheckIn: new DateTime.now().subtract(new Duration(minutes: 15)),
-    color: Colors.purple,
+    color: Palette.purple,
   ),
   SampleFollowTileData(
     firstName: 'Erika',
     lastName: 'Shen',
     routineName: 'Hike',
     lastCheckIn: new DateTime.now().subtract(new Duration(days: 1)),
-    color: Colors.green,
+    color: Palette.blue,
   ),
 ];
-void main() => runApp(MyApp());
+void main() => runApp(RoutineMachine());
+
+class RoutineMachine extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      theme: ThemeData(fontFamily: "SF Pro Rounded"),
+      title: "Routine Machine",
+      home: HomePage(),
+    );
+  }
+}
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData(fontFamily: "SF Pro Rounded"),
       title: 'Routine Machine',
+      theme: ThemeData(fontFamily: 'SF Pro Text'),
       home: Scaffold(
         body: Container(
           padding: EdgeInsets.all(16),
@@ -58,13 +71,16 @@ class MyApp extends StatelessWidget {
                 checkIns: sampleCheckIns,
                 color: 0xFFC960FF,
               ),
-              RingProgressBar(
-                currentCount: 17,
-                goalCount: 20,
-                habitType: 'monthly',
-                color: 0xFFC960FF,
+              Row(
+                children: [
+                  Spacer(),
+                  SmallWidgetView(),
+                  Spacer(),
+                  SmallWidgetView(),
+                  Spacer(),
+                ],
               ),
-              FollowingTileList(followingList: sampleFollowingList),
+              // FollowingTileList(followingList: sampleFollowingList),
             ],
           ),
         ),

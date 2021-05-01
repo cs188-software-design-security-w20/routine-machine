@@ -24,6 +24,8 @@ dependencies:
   flutter:
     sdk: flutter
   intl: 0.16.1
+  percent_indicator: "^2.1.7+2"
+  flutter_sfsymbols: ^1.0.0
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -38,6 +40,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+ 
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -49,8 +52,18 @@ flutter:
     - assets/images/
   
   fonts:
+    # - family: SF Pro Text
+    #   fonts:
+    #   - asset: assets/fonts/SFProText-Regular.ttf
+    #   - asset: assets/fonts/SFProText-Bold.ttf
+    #     weight: 800
+    - family: sficonsets
+      fonts:
+        - asset: packages/flutter_sfsymbols/fonts/sficonsets.ttf
     - family: SF Pro Text
       fonts:
-      - asset: assets/fonts/SFProText-Regular.ttf
-      - asset: assets/fonts/SFProText-Bold.ttf
+      - asset: assets/fonts/SF-Pro-Rounded-Regular.ttf
+      - asset: assets/fonts/SF-Pro-Rounded-Semibold.ttf
+        weight: 600
+      - asset: assets/fonts/SF-Pro-Rounded-Bold.ttf
         weight: 800
