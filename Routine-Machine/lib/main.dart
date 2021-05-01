@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:routine_machine/Views/pages/HomePage.dart';
 
 import 'Models/SampleFollowTileData.dart';
 import 'constants/Palette.dart' as Palette;
@@ -40,7 +41,18 @@ final List<SampleFollowTileData> sampleFollowingList = [
     color: Colors.green,
   ),
 ];
-void main() => runApp(MyApp());
+void main() => runApp(RoutineMachine());
+
+class RoutineMachine extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      theme: ThemeData(fontFamily: "SF Pro Rounded"),
+      title: "Routine Machine",
+      home: HomePage(),
+    );
+  }
+}
 
 class MyApp extends StatelessWidget {
   @override
