@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:routine_machine/Views/components/RingProgressBar.dart';
+import 'RingProgressBar.dart';
 
 class SmallWidgetView extends StatelessWidget {
   @override

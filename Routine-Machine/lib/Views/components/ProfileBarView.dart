@@ -26,6 +26,7 @@ class ProfileBarView extends StatelessWidget {
                 TextSpan(
                   text: '${this.firstName} ${this.lastName[0]}',
                   style: TextStyle(
+                    fontFamily: 'SF Pro Text',
                     color: Colors.black,
                     fontWeight: FontWeight.bold,
                   ),
@@ -40,11 +41,11 @@ class ProfileBarView extends StatelessWidget {
             },
             child: CircleAvatar(
               backgroundColor: Palette.primary,
-              radius: 26,
+              radius: 24,
               child: Text(
                 this.firstName[0].toUpperCase(),
                 style: TextStyle(
-                  fontSize: 32.0,
+                  fontSize: 27.0,
                   color: Colors.white,
                   fontWeight: FontWeight.w500,
                 ),

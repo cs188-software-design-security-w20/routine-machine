@@ -4,7 +4,7 @@ import '../../constants/Palette.dart' as Palette;
 import '../components/BottomNavBar.dart';
 import 'LoginPage.dart';
 import 'package:flutter/cupertino.dart';
-import '../subviews/Dashboard.dart';
+import '../subviews/HomeView.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -22,10 +22,7 @@ class _HomePageState extends State<HomePage> {
     Container(
       color: Colors.white,
       child: Center(
-        child: Text(
-          "Home View",
-          style: TextStyle(fontSize: 36),
-        ),
+        child: HomeView(),
       ),
     ),
     Container(
