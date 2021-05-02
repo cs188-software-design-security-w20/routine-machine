@@ -5,6 +5,8 @@ import '../../constants/Palette.dart' as Palette;
 import '../../constants/Constants.dart' as Constants;
 import '../../Models/SampleFollowTileData.dart';
 import '../subviews/FollowingTileList.dart';
+import '../subviews/FollowerRequestTileList.dart';
+import '../../Models/SampleFollowerRequestData.dart';
 
 final List<SampleFollowTileData> sampleFollowingList = [
   SampleFollowTileData(
@@ -69,6 +71,27 @@ final List<SampleFollowTileData> sampleFollowingList = [
     routineName: 'Hike',
     lastCheckIn: new DateTime.now().subtract(new Duration(days: 1)),
     color: Palette.blue,
+  ),
+];
+
+final List<SampleFollowerRequestData> sampleFollowerRequestList = [
+  SampleFollowerRequestData(
+    firstName: 'Carina',
+    lastName: 'Xiong',
+    userName: 'carina_x',
+    color: Palette.blue,
+  ),
+  SampleFollowerRequestData(
+    firstName: 'Jack',
+    lastName: 'Zhao',
+    userName: 'jjack_zz',
+    color: Palette.pink,
+  ),
+  SampleFollowerRequestData(
+    firstName: 'Jody',
+    lastName: 'Lin',
+    userName: 'jowody',
+    color: Palette.yellow,
   ),
 ];
 
@@ -162,9 +185,8 @@ class _FollowPageState extends State<FollowPage> {
                 ? FollowingTileList(
                     followingList: sampleFollowingList,
                   )
-                : Center(
-                    // TODO: replace with followers list
-                    child: Text('followers page'),
+                : FollowerRequestTileList(
+                    followerRequestList: sampleFollowerRequestList,
                   ),
           ),
         ],

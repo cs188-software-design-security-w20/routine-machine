@@ -27,3 +27,7 @@ const letterLightGrey = Color(0xFF959595);
 
 //background
 const containerGrey = Color(0xFBFBFB);
+
+// colors for follow requests
+const darkGreen = Color(0xFF00B432);
+const red = Color(0xFFFF0000);
