@@ -25,6 +25,11 @@ var kTitle1Style = TextStyle(
   fontFamily: Platform.isIOS ? 'SF Pro Text' : null,
   decoration: TextDecoration.none,
 );
+var kUnselectedTitleStyle = TextStyle(
+  fontSize: 24,
+  color: Colors.grey,
+  fontWeight: FontWeight.bold,
+);
 var kCardTitleStyle = TextStyle(
   fontFamily: Platform.isIOS ? 'SF Pro Text' : null,
   fontWeight: FontWeight.bold,

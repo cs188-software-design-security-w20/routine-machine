@@ -3,6 +3,7 @@ import 'package:flutter_sfsymbols/flutter_sfsymbols.dart';
 import '../../constants/Palette.dart' as Palette;
 import '../components/BottomNavBar.dart';
 import 'LoginPage.dart';
+import 'FollowPage.dart';
 import 'package:flutter/cupertino.dart';
 import '../subviews/HomeView.dart';
 
@@ -21,18 +22,15 @@ class _HomePageState extends State<HomePage> {
   final List<Widget> _children = [
     Container(
       color: Colors.white,
+      padding: EdgeInsets.all(16),
       child: Center(
         child: HomeView(),
       ),
     ),
+    FollowPage(),
     Container(
       color: Colors.white,
-      child: Center(
-        child: Text("Another View"),
-      ),
-    ),
-    Container(
-      color: Colors.white,
+      padding: EdgeInsets.all(16),
       child: Center(
         child: Text("3rd View"),
       ),
