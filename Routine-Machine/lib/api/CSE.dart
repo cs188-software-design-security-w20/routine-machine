@@ -2,71 +2,146 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:steel_crypt/steel_crypt.dart' as Steel;
 import 'package:crypton/crypton.dart' as Crypton;
 
+class AESKey {
+  String key;
+  String iv;
+  AESKey({this.key, this.iv});
+}
+
+class EncryptedDEK {
+  String encrypted;
+  String iv;
+  EncryptedDEK({this.encrypted, this.iv});
+}
+
+class MissingKeyException implements Exception {
+  final String msg;
+  const MissingKeyException(this.msg);
+  @override
+  String toString() => 'MissingKeyException: $msg';
+}
+
+/// Utility class for management of keys and encryption/decryption of data
 class CSE {
-  var storage = const FlutterSecureStorage();
+  var _storage = const FlutterSecureStorage();
   static const privateKeyStorageKey = 'routine-machine-private-key';
   static const publicKeyStorageKey = 'routine-machine-public-key';
   static const dekStorageKey = 'routine-machine-dek';
+  static const ivStorageKey = 'routine-machine-iv';
   static final CSE _instance = CSE._create();
   factory CSE() => _instance;
   CSE._create();
 
-  Future<String> generateDEK() async {
-    final dek = Steel.CryptKey().genFortuna(len: 32);
-    return dek;
+  /// Inject a key-value storage system using the FlutterSecureStorage interface
+  injectStorageProvider({FlutterSecureStorage provider}) {
+    _storage = provider;
   }
 
-  Future<Crypton.RSAKeypair> generateNewKeyPair() async {
-    return Crypton.RSAKeypair.fromRandom(keySize: 4096);
+  /// Changes the DEK and IV of the client for AES-CBC-256
+  /// If the key does not exist, this is used to initialize the key
+  Future<void> refreshOwnerDEK() async {
+    final aesKey = await _generateDEK();
+    await _storage.write(key: dekStorageKey, value: aesKey.key);
+    await _storage.write(key: ivStorageKey, value: aesKey.iv);
   }
 
-  Future<String> getOwnerDEK() async {
-    final containsKey = await storage.containsKey(key: dekStorageKey);
-    if (!containsKey) await generateNewKeyPair();
-    final dek = await storage.read(key: dekStorageKey);
-    return dek;
+  /// Changes the PK Pair of the client for RSA-4096
+  /// If the key does not exist, this is used to initialize the key
+  Future<void> refreshOwnerPKPair() async {
+    final keyPair = await _generateKeyPair();
+    final publicKeyStr = keyPair.publicKey.toString();
+    final privateKeyStr = keyPair.privateKey.toString();
+    await _storage.write(key: publicKeyStorageKey, value: publicKeyStr);
+    await _storage.write(key: privateKeyStorageKey, value: privateKeyStr);
   }
 
-  Future<String> getOwnerPrivateKey() async {
-    final containsKey = await storage.containsKey(key: privateKeyStorageKey);
-    if (!containsKey) await generateNewKeyPair();
-    final privateKey = await storage.read(key: privateKeyStorageKey);
-    return privateKey;
+  /// Get the DEK corresponding to the client
+  Future<AESKey> getDEK() async {
+    final dek = await _storage.read(key: dekStorageKey);
+    final iv = await _storage.read(key: ivStorageKey);
+    if (dek == null || iv == null)
+      throw MissingKeyException('DEK not initialized');
+    return AESKey(key: dek, iv: iv);
   }
 
-  Future<String> getOwnerPublicKey() async {
-    final containsKey = await storage.containsKey(key: publicKeyStorageKey);
-    if (!containsKey) await generateNewKeyPair();
-    final publicKey = await storage.read(key: publicKeyStorageKey);
-    return publicKey;
+  /// Get the Private Key corresponding to the client
+  Future<Crypton.RSAPrivateKey> getPrivateKey() async {
+    final privateKeyStr = await _storage.read(key: privateKeyStorageKey);
+    if (privateKeyStr == null)
+      throw MissingKeyException('Private Key not initialized');
+    return Crypton.RSAPrivateKey.fromString(privateKeyStr);
   }
 
-  Future<void> setOwnerDEK() async {
-    final dek = await generateDEK();
-    await storage.write(key: dekStorageKey, value: dek);
+  /// Get the Public Key corresponding to the client
+  Future<Crypton.RSAPublicKey> getPublicKey() async {
+    final publicKeyStr = await _storage.read(key: publicKeyStorageKey);
+    if (publicKeyStr == null)
+      throw MissingKeyException('Public Key not initialized');
+    return Crypton.RSAPublicKey.fromString(publicKeyStr);
   }
 
-  Future<void> setOwnerPKPair({String publicKey, String privateKey}) async {
-    throw UnimplementedError();
+  /// Whether the DEK is initialized for the client
+  Future<bool> hasDEK() async {
+    final hasDEKKey = await _storage.containsKey(key: dekStorageKey);
+    final hasIVKey = await _storage.containsKey(key: ivStorageKey);
+    return hasDEKKey && hasIVKey;
   }
 
-  Future<String> getEncryptedDEK({String publicKey}) async {
-    throw UnimplementedError();
+  /// Whether the PK Pair is initialized for the client
+  Future<bool> hasKeyPair() async {
+    final hasPrivateKey = await _storage.containsKey(key: privateKeyStorageKey);
+    final hasPublicKey = await _storage.containsKey(key: publicKeyStorageKey);
+    return hasPrivateKey && hasPublicKey;
   }
 
+  /// Encrypt outgoing data using the client's DEK
   Future<String> encryptText({String text}) async {
-    throw UnimplementedError();
+    final ownerAESKey = await getDEK();
+    final key = ownerAESKey.key;
+    final iv = ownerAESKey.iv;
+    final aes = Steel.AesCrypt(key: key, padding: Steel.PaddingAES.pkcs7);
+    final encrypted = aes.cbc.encrypt(inp: text, iv: iv);
+    return encrypted;
   }
 
-  Future<String> decryptText({String dek}) async {
-    throw UnimplementedError();
+  /// Decrypt incoming data using own key or a follower's key
+  Future<String> decryptText({String text, AESKey usingKey}) async {
+    final aesKey = await (() {
+      if (usingKey != null) return Future(() => usingKey);
+      return getDEK();
+    })();
+    final key = aesKey.key;
+    final iv = aesKey.iv;
+    final aes = Steel.AesCrypt(key: key, padding: Steel.PaddingAES.pkcs7);
+    final decrypted = aes.cbc.decrypt(enc: text, iv: iv);
+    return decrypted;
   }
 
-  Future<String> encryptOwnerDEK({String usingPublicKey}) async {
-    throw UnimplementedError();
+  /// Used to encrypt the owner's DEK using a follower's public key
+  /// before distribution to that follower
+  Future<EncryptedDEK> encryptOwnerDEK({String usingPublicKey}) async {
+    final publicKey = Crypton.RSAPublicKey.fromString(usingPublicKey);
+    final ownerDEK = await getDEK();
+    final encryptedKey = publicKey.encrypt(ownerDEK.key);
+    return EncryptedDEK(encrypted: encryptedKey, iv: ownerDEK.iv);
   }
 
-  Future<String> decryptOtherDEK({String encryptedDEK}) async {
-    throw UnimplementedError();
+  /// Used to decrypt a followee's DEK that has been encrypted
+  /// using the owner's public key and distributed to the owner
+  Future<AESKey> decryptOtherDEK({EncryptedDEK encryptedDEK}) async {
+    final privateKey = await getPrivateKey();
+    final decryptedDEK = privateKey.decrypt(encryptedDEK.encrypted);
+    return AESKey(key: decryptedDEK, iv: encryptedDEK.iv);
+  }
+
+  Future<AESKey> _generateDEK() async {
+    final cryptKey = Steel.CryptKey();
+    final dek = cryptKey.genFortuna(len: 32);
+    final iv = cryptKey.genDart(len: 16);
+    return AESKey(key: dek, iv: iv);
+  }
+
+  Future<Crypton.RSAKeypair> _generateKeyPair() async {
+    return Crypton.RSAKeypair.fromRandom(keySize: 4096);
   }
 }
