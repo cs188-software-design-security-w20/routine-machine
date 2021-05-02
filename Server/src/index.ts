@@ -8,6 +8,9 @@ import PendingFollow from './models/PendingFollow.model';
 import type { UserSchema } from './models/User.model';
 import type { FollowSchema } from './models/Follow.model';
 
+import followerQuery from './query/FollowerQuery';
+import pendingFollowQuery from './query/PendingFollowQuery';
+
 const serverPort = process.env.SERVER_PORT;
 
 async function queryExample(sequelize: any) {
@@ -76,12 +79,50 @@ async function queryExample(sequelize: any) {
   }
 }
 
+async function followerTest(sequelize: any) {
+  await sequelize.sync();
+  await followerQuery.setDEK('2d30b673-f314-46c5-97dd-a38f98bdd903', 'e1191e83-0c63-4ce5-8895-243e5a6150bd', 'ddd');
+  const follower_results = await followerQuery.getFollowerList('2d30b673-f314-46c5-97dd-a38f98bdd903');
+  const followers = follower_results?.followers.map((f) => ({ first_name: f.first_name, last_name: f.last_name }));
+  const follower_pks = follower_results?.followers.map((f) => ({ follower_id: f.id, public_key: f.public_key }));
+
+  console.log(followers);
+  console.log(follower_pks);
+
+  const following_results = await followerQuery.getFollowingList('e1191e83-0c63-4ce5-8895-243e5a6150bd');
+  const followees = following_results?.followees.map((f) => ({ first_name: f.first_name, last_name: f.last_name }));
+  console.log(followees);
+
+  const dek_result = await followerQuery.getDEK('2d30b673-f314-46c5-97dd-a38f98bdd903', 'e1191e83-0c63-4ce5-8895-243e5a6150bd');
+  const dek = dek_result?.dek;
+  console.log(dek);
+}
+
+async function pendingFollowTest(sequelize: any) {
+  await sequelize.sync();
+
+  await pendingFollowQuery.removePendingFollow('e1191e83-0c63-4ce5-8895-243e5a6150bd', 'aa11c953-6568-48a8-9a2b-a5f77dcb569f');
+
+  const pf_results = await pendingFollowQuery.getPendingRequestList('e1191e83-0c63-4ce5-8895-243e5a6150bd');
+  const pending_follows = pf_results?.pending_follows.map((f) => ({ id: f.id, first_name: f.first_name, last_name: f.last_name }));
+  console.log(pending_follows);
+
+  const spf_results = await pendingFollowQuery.getSentPendingRequestList('aa11c953-6568-48a8-9a2b-a5f77dcb569f');
+  const sent_pending_follows = spf_results?.sent_pending_follows.map((f) => ({ id: f.id, first_name: f.first_name, last_name: f.last_name }));
+  console.log(sent_pending_follows);
+}
+
 async function main() {
   try {
     const sequelize = initDB();
     await sequelize.sync();
     // Uncomment this to try the query example
     // await queryExample(sequelize);
+
+    // await followerTest(sequelize);
+
+    await pendingFollowTest(sequelize);
+
     app.listen(() => {
       console.log(`Started server on port ${serverPort}`);
     });
