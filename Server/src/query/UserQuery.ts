@@ -12,9 +12,9 @@ class UserQuery {
     where: { id }
   })
 
-  getUserDEK = (id: string) => FollowerQuery.getDEK(id, id);
+  getDEK = (id: string) => FollowerQuery.getDEK(id, id);
 
-  setUserDEK = (id: string, dek: string) => FollowerQuery.setDEK(id, id, dek);
+  setDEK = (id: string, dek: string) => FollowerQuery.setDEK(id, id, dek);
 
   createUser = (id: string, first_name: string, last_name: string, public_key: string) => User.create({
     id,

@@ -79,7 +79,7 @@ async function queryExample(sequelize: any) {
   }
 }
 
-async function followerTest(sequelize: any) {
+async function followExample(sequelize: any) {
   await sequelize.sync();
   await followerQuery.setDEK('2d30b673-f314-46c5-97dd-a38f98bdd903', 'e1191e83-0c63-4ce5-8895-243e5a6150bd', 'ddd');
   const follower_results = await followerQuery.getFollowerList('2d30b673-f314-46c5-97dd-a38f98bdd903');
@@ -98,7 +98,7 @@ async function followerTest(sequelize: any) {
   console.log(dek);
 }
 
-async function pendingFollowTest(sequelize: any) {
+async function pendingFollowExample(sequelize: any) {
   await sequelize.sync();
 
   await pendingFollowQuery.removePendingFollow('e1191e83-0c63-4ce5-8895-243e5a6150bd', 'aa11c953-6568-48a8-9a2b-a5f77dcb569f');
@@ -119,9 +119,11 @@ async function main() {
     // Uncomment this to try the query example
     // await queryExample(sequelize);
 
-    // await followerTest(sequelize);
+    // Uncomment this to try the follow query example
+    // await followExampleTest(sequelize);
 
-    await pendingFollowTest(sequelize);
+    // Uncomment this to try the pending Follow Query example
+    // await pendingFollowTest(sequelize);
 
     app.listen(() => {
       console.log(`Started server on port ${serverPort}`);
