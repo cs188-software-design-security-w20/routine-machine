@@ -5,7 +5,7 @@ import '../components/BottomNavBar.dart';
 import 'LoginPage.dart';
 import 'FollowPage.dart';
 import 'package:flutter/cupertino.dart';
-import '../subviews/Dashboard.dart';
+import '../subviews/HomeView.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -24,10 +24,7 @@ class _HomePageState extends State<HomePage> {
       color: Colors.white,
       padding: EdgeInsets.all(16),
       child: Center(
-        child: Text(
-          "Home View",
-          style: TextStyle(fontSize: 36),
-        ),
+        child: HomeView(),
       ),
     ),
     FollowPage(),

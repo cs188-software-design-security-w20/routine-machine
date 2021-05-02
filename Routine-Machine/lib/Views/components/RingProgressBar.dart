@@ -48,11 +48,6 @@ class RingProgressBar extends StatelessWidget {
               backgroundColor: Color(ringColor).withOpacity(0.3),
               progressColor: Color(ringColor),
             ),
-            // child: CircularProgressIndicator(
-            //   valueColor: AlwaysStoppedAnimation<Color>(Color(ringColor)),
-            //   value: percentComplete,
-            //   strokeWidth: 10,
-            // ),
           ),
           Center(
             child: percentComplete == 1
