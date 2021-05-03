@@ -6,9 +6,10 @@
   "scripts": {
     "test": "jest",
     "build": "tsc",
-    "dev": "ts-node-dev src/index.ts"
+    "dev": "ts-node-dev src/index.ts",
+    "start": "ts-node src/index.ts"
   },
-  "author": "",
+  "author": "", 
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.19.0",
