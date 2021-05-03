@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:jody" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="48865d91-17f4-4f0c-a77b-e25eedeed19d" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/Routine-Machine/build/flutter_assets/NOTICES" beforeDir="false" afterPath="$PROJECT_DIR$/Routine-Machine/build/flutter_assets/NOTICES" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Routine-Machine/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/Routine-Machine/lib/main.dart" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="1rYN0a9cUt1n0724WmBDi1BlCoi" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="project.structure.last.edited" value="Project" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.side.proportion" value="0.0" />
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="48865d91-17f4-4f0c-a77b-e25eedeed19d" name="Default Changelist" comment="" />
+      <created>1619148840901</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1619148840901</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="139" y="78" width="1200" height="537" key="AVDManager" timestamp="1619911851143">
+      <screen x="0" y="25" width="1440" height="779" />
+    </state>
+    <state x="332" y="87" width="1200" height="543" key="AVDManager/0.25.1440.779/-1920.-58.1920.1055@0.25.1440.779" timestamp="1619149893235" />
+    <state x="139" y="78" width="1200" height="537" key="AVDManager/0.25.1440.779@0.25.1440.779" timestamp="1619911851143" />
+    <state x="139" y="79" width="1200" height="543" key="AVDManager/0.25.1440.783/-1920.-58.1920.1055@0.25.1440.783" timestamp="1619150208515" />
+    <state x="208" y="25" width="1024" height="779" key="SettingsEditor" timestamp="1619911413963">
+      <screen x="0" y="25" width="1440" height="774" />
+    </state>
+    <state x="208" y="25" key="SettingsEditor/0.25.1440.774@0.25.1440.774" timestamp="1619911413963" />
+    <state x="208" y="25" width="1024" height="779" key="SettingsEditor/0.25.1440.779/-1920.-58.1920.1055@0.25.1440.779" timestamp="1619149546119" />
+    <state x="208" y="25" key="SettingsEditor/0.25.1440.783/-1920.-58.1920.1055@0.25.1440.783" timestamp="1619150202092" />
+    <state x="381" y="177" key="run.anything.popup" timestamp="1619911418340">
+      <screen x="0" y="25" width="1440" height="774" />
+    </state>
+    <state x="381" y="177" key="run.anything.popup/0.25.1440.774@0.25.1440.774" timestamp="1619911418340" />
+  </component>
+</project>

@@ -1,37 +1,93 @@
-import { Router } from 'express';
+'use strict';
 
-const followRouter = Router();
+const express = require('express');
 
-followRouter.post('/requests', (res, req) => {
+const service = require('../service/followService.js');
 
+const router = express.Router();
+
+router.post('/request', async (req: any, res: any) => {
+    try {
+        await service.sendFollowRequest(req.params.id);
+        res.status(200).json({ message: 'OK' });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ message: 'Server error' });
+    }
 });
 
-followRouter.post('/approve', (res, req) => {
-
+router.post('/approve', async (req: any, res: any) => {
+    try {
+        await service.approveFollowRequest(req.params.id);
+        res.status(200).json({ message: 'OK' });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ message: 'Server error' });
+    }
 });
 
-followRouter.delete('/remove_follower', (res, req) => {
-
+router.delete('/remove_follower', async (req: any, res: any) => {
+    try {
+        await service.removeFollower(req.params.id);
+        res.status(200).json({ message: 'OK' });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ message: 'Server error' });
+    }
 });
 
-followRouter.delete('/unfollow', (res, req) => {
-
+router.delete('/unfollow', async (req: any, res: any) => {
+    try {
+        await service.unfollow(req.params.id);
+        res.status(200).json({ message: 'OK' });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ message: 'Server error' });
+    }
 });
 
-followRouter.get('/following/requests', (res, req) => {
-
+router.get('/following/requests', async (req: any, res: any) => {
+    try {
+        const user_id = req.get('user_id');
+        const followingRequests = await service.getFollowingRequests(user_id);
+        res.status(200).json({ followingRequests });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ message: 'Server error' });
+    }
 });
 
-followRouter.get('/following', (res, req) => {
-
+router.get('/following', async (req: any, res: any) => {
+    try {
+        const user_id = req.get('user_id');
+        const following = await service.getFollowing(user_id);
+        res.status(200).json({ following });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ message: 'Server error' });
+    }
 });
 
-followRouter.get('/followers/requests', (res, req) => {
-
+router.get('/followers/requests', async (req: any, res: any) => {
+    try {
+        const user_id = req.get('user_id');
+        const followerRequests = await service.getFollowerRequests(user_id);
+        res.status(200).json({ followerRequests });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ message: 'Server error' });
+    }
 });
 
-followRouter.get('/followers', (res, req) => {
-
+router.get('/followers', async (req: any, res: any) => {
+    try {
+        const user_id = req.get('user_id');
+        const followers = await service.getFollowers(user_id);
+        res.status(200).json({ followers });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ message: 'Server error' });
+    }
 });
 
-export default followRouter;
+export default router;
