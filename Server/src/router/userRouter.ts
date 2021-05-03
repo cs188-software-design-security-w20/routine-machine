@@ -4,9 +4,9 @@ const express = require('express');
 
 const service = require('../service/userService.js');
 
-const router = express.Router();
+const userRouter = express.Router();
 
-router.get('/profile', async (req: any, res: any) => {
+userRouter.get('/profile', async (req: any, res: any) => {
     try {
         const user_name = req.get('user_name');
         const profile = await service.getUserProfile(user_name);
@@ -17,7 +17,7 @@ router.get('/profile', async (req: any, res: any) => {
     }
 });
 
-router.get('/publickey', async (req: any, res: any) => {
+userRouter.get('/publickey', async (req: any, res: any) => {
     try {
         const user_id = req.get('user_id');
         const publicKey = await service.getPublicKey(user_id);
@@ -28,7 +28,7 @@ router.get('/publickey', async (req: any, res: any) => {
     }
 });
 
-router.post('/publickey', async (req: any, res: any) => {
+userRouter.post('/publickey', async (req: any, res: any) => {
     try {
         const user_id = req.get('user_id');
         await service.updatePublicKey(user_id,req.params.id);
@@ -39,7 +39,7 @@ router.post('/publickey', async (req: any, res: any) => {
     }
 });
 
-router.get('/dek', async (req: any, res: any) => {
+userRouter.get('/dek', async (req: any, res: any) => {
     try {
         const user_id = req.get('user_id');
         const dek = await service.getDEK(user_id);
@@ -50,7 +50,7 @@ router.get('/dek', async (req: any, res: any) => {
     }
 });
 
-router.post('/dek', async (req: any, res: any) => {
+userRouter.post('/dek', async (req: any, res: any) => {
     try {
         const user_id = req.get('user_id');
         await service.updateDEK(user_id, req.params.id);
@@ -61,4 +61,4 @@ router.post('/dek', async (req: any, res: any) => {
     }
 });
 
-export default router;
+export default userRouter;

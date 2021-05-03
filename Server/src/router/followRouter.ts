@@ -4,9 +4,9 @@ const express = require('express');
 
 const service = require('../service/followService.js');
 
-const router = express.Router();
+const followRouter = express.Router();
 
-router.post('/request', async (req: any, res: any) => {
+followRouter.post('/request', async (req: any, res: any) => {
     try {
         await service.sendFollowRequest(req.params.id);
         res.status(200).json({ message: 'OK' });
@@ -16,7 +16,7 @@ router.post('/request', async (req: any, res: any) => {
     }
 });
 
-router.post('/approve', async (req: any, res: any) => {
+followRouter.post('/approve', async (req: any, res: any) => {
     try {
         await service.approveFollowRequest(req.params.id);
         res.status(200).json({ message: 'OK' });
@@ -26,7 +26,7 @@ router.post('/approve', async (req: any, res: any) => {
     }
 });
 
-router.delete('/remove_follower', async (req: any, res: any) => {
+followRouter.delete('/remove_follower', async (req: any, res: any) => {
     try {
         await service.removeFollower(req.params.id);
         res.status(200).json({ message: 'OK' });
@@ -36,7 +36,7 @@ router.delete('/remove_follower', async (req: any, res: any) => {
     }
 });
 
-router.delete('/unfollow', async (req: any, res: any) => {
+followRouter.delete('/unfollow', async (req: any, res: any) => {
     try {
         await service.unfollow(req.params.id);
         res.status(200).json({ message: 'OK' });
@@ -46,7 +46,7 @@ router.delete('/unfollow', async (req: any, res: any) => {
     }
 });
 
-router.get('/following/requests', async (req: any, res: any) => {
+followRouter.get('/following/requests', async (req: any, res: any) => {
     try {
         const user_id = req.get('user_id');
         const followingRequests = await service.getFollowingRequests(user_id);
@@ -57,7 +57,7 @@ router.get('/following/requests', async (req: any, res: any) => {
     }
 });
 
-router.get('/following', async (req: any, res: any) => {
+followRouter.get('/following', async (req: any, res: any) => {
     try {
         const user_id = req.get('user_id');
         const following = await service.getFollowing(user_id);
@@ -68,7 +68,7 @@ router.get('/following', async (req: any, res: any) => {
     }
 });
 
-router.get('/followers/requests', async (req: any, res: any) => {
+followRouter.get('/followers/requests', async (req: any, res: any) => {
     try {
         const user_id = req.get('user_id');
         const followerRequests = await service.getFollowerRequests(user_id);
@@ -79,7 +79,7 @@ router.get('/followers/requests', async (req: any, res: any) => {
     }
 });
 
-router.get('/followers', async (req: any, res: any) => {
+followRouter.get('/followers', async (req: any, res: any) => {
     try {
         const user_id = req.get('user_id');
         const followers = await service.getFollowers(user_id);
@@ -90,4 +90,4 @@ router.get('/followers', async (req: any, res: any) => {
     }
 });
 
-export default router;
+export default followRouter;

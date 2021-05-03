@@ -4,9 +4,9 @@ const express = require('express');
 
 const service = require('../service/habitDataService.js');
 
-const router = express.Router();
+const habitDataRouter = express.Router();
 
-router.get('/', async (req: any, res: any) => {
+habitDataRouter.get('/', async (req: any, res: any) => {
     try {
         const user_id = req.get('user_id');
         const habitData = await service.getUserProfile(user_id);
@@ -17,4 +17,4 @@ router.get('/', async (req: any, res: any) => {
     }
 });
 
-export default router;
+export default habitDataRouter;
