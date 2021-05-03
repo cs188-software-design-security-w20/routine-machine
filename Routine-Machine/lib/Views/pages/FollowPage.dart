@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'dart:io';
 
+import 'SearchResultPage.dart';
 import '../../constants/Palette.dart' as Palette;
 import '../../constants/Constants.dart' as Constants;
 import '../../Models/SampleFollowTileData.dart';
 import '../subviews/FollowingTileList.dart';
+import '../subviews/FollowerRequestTileList.dart';
+import '../../Models/SampleFollowerRequestData.dart';
 
 final List<SampleFollowTileData> sampleFollowingList = [
   SampleFollowTileData(
@@ -72,6 +75,27 @@ final List<SampleFollowTileData> sampleFollowingList = [
   ),
 ];
 
+final List<SampleFollowerRequestData> sampleFollowerRequestList = [
+  SampleFollowerRequestData(
+    firstName: 'Carina',
+    lastName: 'Xiong',
+    userName: 'carina_x',
+    color: Palette.blue,
+  ),
+  SampleFollowerRequestData(
+    firstName: 'Jack',
+    lastName: 'Zhao',
+    userName: 'jjack_zz',
+    color: Palette.pink,
+  ),
+  SampleFollowerRequestData(
+    firstName: 'Jody',
+    lastName: 'Lin',
+    userName: 'jowody',
+    color: Palette.yellow,
+  ),
+];
+
 class FollowPage extends StatefulWidget {
   @override
   _FollowPageState createState() => _FollowPageState();
@@ -104,6 +128,15 @@ class _FollowPageState extends State<FollowPage> {
         _page = 'following';
       });
     }
+  }
+
+  void _searchForUser(BuildContext context, String userName) async {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => SearchResultPage(searchText: userName),
+      ),
+    );
   }
 
   @override
@@ -149,9 +182,10 @@ class _FollowPageState extends State<FollowPage> {
                 labelText: 'Search for friends...',
                 suffixIcon: IconButton(
                   icon: Icon(Icons.search_rounded),
-                  onPressed: () {
+                  onPressed: () async {
                     // TODO: update so search for people
                     print('search for ${searchController.text}!');
+                    _searchForUser(context, searchController.text);
                   },
                 ),
               ),
@@ -162,9 +196,8 @@ class _FollowPageState extends State<FollowPage> {
                 ? FollowingTileList(
                     followingList: sampleFollowingList,
                   )
-                : Center(
-                    // TODO: replace with followers list
-                    child: Text('followers page'),
+                : FollowerRequestTileList(
+                    followerRequestList: sampleFollowerRequestList,
                   ),
           ),
         ],
