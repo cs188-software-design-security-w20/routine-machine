@@ -9,14 +9,16 @@
 
 import { Sequelize } from 'sequelize-typescript';
 import path from 'path';
-import dbConfig from '../config/db_config';
-import type { DBEnvironment } from '../config/db_config';
+
+import envConfig from './config/env-config';
+import dbConfig from './config/db-config';
+import type { DBEnvironment } from './config/db-config';
 
 function initDB(): Sequelize {
   const environment: DBEnvironment = (() => {
-    const env = process.env.NODE_ENV;
+    const env = envConfig.nodeEnv;
     if (env !== 'production' && env !== 'test' && env !== 'development') {
-      throw new Error(`Invalid NODE_ENV environment variable "${env}"`);
+      throw new Error(`Invalid NODE_ENV environment variable "${env}". Must be one of "production", "development", or "test"`);
     }
     return env;
   })();

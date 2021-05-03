@@ -1,8 +1,9 @@
 import * as admin from 'firebase-admin';
 import { NextFunction, Response, Request } from 'express';
+import env from '../config/env-config';
 
 admin.initializeApp({
-  projectId: process.env.PROJECT_ID,
+  projectId: env.firebaseProjectID,
 });
 
 export default async function authenticate(req: Request, res: Response, next: NextFunction) {

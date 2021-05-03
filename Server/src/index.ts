@@ -1,8 +1,8 @@
-import './util/loadEnv';
 import app from './app';
 import initDB from './database';
+import env from './config/env-config';
 
-const serverPort = process.env.SERVER_PORT;
+const { serverPort } = env;
 
 async function main() {
   try {
