@@ -4,7 +4,7 @@ module.exports = {
     node: true,
   },
   extends: [
-    'airbnb-typescript',
+    'airbnb-typescript/base',
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -18,5 +18,6 @@ module.exports = {
   ],
   rules: {
     'import/no-cycle': 'off',
+    'linebreak-style': 'off',
   },
 };

@@ -44,6 +44,12 @@ export default class User extends Model<UserSchema> {
   @BelongsToMany(() => User, () => PendingFollow, 'followee_id', 'follower_id')
   pending_follows: User[];
 
+  @BelongsToMany(() => User, () => Follow, 'follower_id', 'followee_id')
+  followees: User[];
+
+  @BelongsToMany(() => User, () => PendingFollow, 'follower_id', 'followee_id')
+  sent_pending_follows: User[];
+
   get full_name() {
     return `${this.first_name} ${this.last_name}`;
   }
