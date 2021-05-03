@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:io';
 
+import 'SearchResultPage.dart';
 import '../../constants/Palette.dart' as Palette;
 import '../../constants/Constants.dart' as Constants;
 import '../../Models/SampleFollowTileData.dart';
@@ -129,6 +130,15 @@ class _FollowPageState extends State<FollowPage> {
     }
   }
 
+  void _searchForUser(BuildContext context, String userName) async {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => SearchResultPage(searchText: userName),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -172,9 +182,10 @@ class _FollowPageState extends State<FollowPage> {
                 labelText: 'Search for friends...',
                 suffixIcon: IconButton(
                   icon: Icon(Icons.search_rounded),
-                  onPressed: () {
+                  onPressed: () async {
                     // TODO: update so search for people
                     print('search for ${searchController.text}!');
+                    _searchForUser(context, searchController.text);
                   },
                 ),
               ),
