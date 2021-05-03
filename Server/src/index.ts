@@ -2,7 +2,7 @@ import app from './app';
 import initDB from './database';
 import env from './config/env-config';
 
-const { serverPort = 8000 } = env;
+const { serverPort } = env;
 
 async function main() {
   try {

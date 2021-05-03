@@ -8,12 +8,15 @@ export interface EnvConfig {
     password: string;
     user: string;
     host: string;
-    port?: number;
+    port: number;
   };
-  serverPort?: number;
+  serverPort: number;
   nodeEnv: string;
   firebaseProjectID: string;
 }
+
+const defaultServerPort = 8000;
+const defaultDBPort = 5432;
 
 const {
   DB_NAME,
@@ -39,9 +42,9 @@ const env: EnvConfig = {
     password: DB_PASS,
     host: DB_HOST,
     user: DB_USER,
-    port: DB_PORT ? Number(DB_PORT) : undefined,
+    port: DB_PORT ? Number(DB_PORT) : defaultDBPort,
   },
-  serverPort: SERVER_PORT ? Number(SERVER_PORT) : undefined,
+  serverPort: SERVER_PORT ? Number(SERVER_PORT) : defaultServerPort,
   nodeEnv: NODE_ENV,
   firebaseProjectID: PROJECT_ID,
 };
