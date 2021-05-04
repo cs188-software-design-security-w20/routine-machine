@@ -4,7 +4,7 @@ import 'dart:convert' as Convert;
 import '../Models/UserProfile.dart';
 
 class APIWrapper {
-  Auth.FirebaseUser user;
+  Auth.User user;
   APIWrapper(this.user);
 
   Future<UserProfile> getUserProfile({String username}) async {
