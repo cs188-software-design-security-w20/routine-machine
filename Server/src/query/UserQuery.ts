@@ -1,5 +1,8 @@
 import User from '../models/User.model';
+import type { UserSchema } from '../models/User.model';
 import * as FollowerQuery from './FollowerQuery';
+
+export const createUser = (user: UserSchema) => User.create(user);
 
 export const getUserByName = (user_name: string) => User.findOne({
   where: { user_name },
@@ -13,20 +16,6 @@ export const getUserById = (id: string) => User.findOne({
 export const getDEK = (id: string) => FollowerQuery.getDEK(id, id);
 
 export const setDEK = (id: string, dek: string) => FollowerQuery.setDEK(id, id, dek);
-
-export const createUser = (
-  id: string,
-  user_name: string,
-  first_name: string,
-  last_name: string,
-  public_key: string,
-) => User.create({
-  id,
-  user_name,
-  first_name,
-  last_name,
-  public_key,
-});
 
 export const setPK = (id: string, public_key: string) => User.update({
   public_key,
