@@ -33,9 +33,8 @@ var kUnselectedTitleStyle = TextStyle(
 var kCardTitleStyle = TextStyle(
   fontFamily: Platform.isIOS ? 'SF Pro Text' : null,
   fontWeight: FontWeight.bold,
-  color: Colors.white,
+  color: Colors.black,
   fontSize: 22.0,
-  decoration: TextDecoration.none,
 );
 var kTitle2Style = TextStyle(
   fontSize: 20.0,
@@ -99,4 +98,18 @@ var kCaptionLabelStyle = TextStyle(
   color: kSecondaryLabelColor,
   fontFamily: Platform.isIOS ? 'SF Pro Text' : null,
   decoration: TextDecoration.none,
+);
+
+// Container decoration styles
+var kCardDecorationStyle = BoxDecoration(
+  color: Colors.white,
+  borderRadius: BorderRadius.circular(38.0),
+  boxShadow: [
+    BoxShadow(
+      color: Colors.grey.withOpacity(0.1),
+      spreadRadius: 5,
+      blurRadius: 10,
+      offset: Offset(0, 3), // changes position of shadow
+    ),
+  ],
 );
