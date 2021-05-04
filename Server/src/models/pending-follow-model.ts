@@ -2,7 +2,7 @@ import {
   AllowNull,
   Column, ForeignKey, Model, Table,
 } from 'sequelize-typescript';
-import User from './User.model';
+import User from './user-model';
 
 export interface PendingFollowSchema {
   followee_id: string;

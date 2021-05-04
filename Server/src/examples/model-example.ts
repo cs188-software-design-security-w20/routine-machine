@@ -1,9 +1,9 @@
 import type { Sequelize } from 'sequelize-typescript';
-import User from '../models/User.model';
-import Follow from '../models/Follow.model';
-import PendingFollow from '../models/PendingFollow.model';
-import type { UserSchema } from '../models/User.model';
-import type { FollowSchema } from '../models/Follow.model';
+import User from '../models/user-model';
+import Follow from '../models/follow-model';
+import PendingFollow from '../models/pending-follow-model';
+import type { UserSchema } from '../models/user-model';
+import type { FollowSchema } from '../models/follow-model';
 
 /**
  *  Example of how to use the User, Follow, and PendingFollow Model

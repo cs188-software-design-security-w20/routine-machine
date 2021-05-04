@@ -1,5 +1,5 @@
-import Follow from '../models/Follow.model';
-import User from '../models/User.model';
+import Follow from '../models/follow-model';
+import User from '../models/user-model';
 
 export const addFollower = (
   followee_id: string,
