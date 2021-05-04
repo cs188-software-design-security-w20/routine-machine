@@ -2,9 +2,9 @@ import Follow from '../models/follow-model';
 import User from '../models/user-model';
 import type { FollowSchema } from '../models/follow-model';
 
-export const addFollower = (follow: FollowSchema) => Follow.create(follow);
+export const addFollow = (follow: FollowSchema) => Follow.create(follow);
 
-export const removeFollower = (followee_id: string, follower_id: string) => Follow.destroy({
+export const removeFollow = (followee_id: string, follower_id: string) => Follow.destroy({
   where: { followee_id, follower_id },
 });
 
