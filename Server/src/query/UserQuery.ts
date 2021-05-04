@@ -1,8 +1,8 @@
 import User from '../models/User.model';
 import * as FollowerQuery from './FollowerQuery';
 
-export const getUserByName = (first_name: string, last_name: string) => User.findOne({
-  where: { first_name, last_name },
+export const getUserByName = (user_name: string) => User.findOne({
+  where: { user_name },
 });
 
 // Habit data, profile, public key can be retrieved through this
@@ -16,11 +16,13 @@ export const setDEK = (id: string, dek: string) => FollowerQuery.setDEK(id, id, 
 
 export const createUser = (
   id: string,
+  user_name: string,
   first_name: string,
   last_name: string,
   public_key: string,
 ) => User.create({
   id,
+  user_name,
   first_name,
   last_name,
   public_key,
