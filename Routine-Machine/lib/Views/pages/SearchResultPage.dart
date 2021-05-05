@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../constants/Constants.dart' as Constants;
 import '../../constants/Palette.dart' as Palette;
 import '../subviews/FollowRequestTileList.dart';
+import '../components/TopBackBar.dart';
 import '../../Models/SampleFollowerRequestData.dart';
 
 final List<SampleFollowerRequestData> sampleSearchResults = [
@@ -52,15 +53,7 @@ class _SearchResultPageState extends State<SearchResultPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          onPressed: () => Navigator.pop(context),
-          icon: Icon(Icons.arrow_back_ios_rounded),
-          color: Colors.grey,
-        ),
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        elevation: 0,
-      ),
+      appBar: TopBackBar(),
       body: Container(
         padding: EdgeInsets.symmetric(horizontal: 16),
         child: Column(

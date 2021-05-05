@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class CheckInItem extends StatelessWidget {
-  final int color;
+  final Color color;
   String checkInTime;
   CheckInItem({checkInTime, this.color}) {
     this.checkInTime = DateFormat('EE, MMMM d').add_jm().format(checkInTime);
@@ -20,7 +20,7 @@ class CheckInItem extends StatelessWidget {
           TextSpan(
             text: '\u2022 ',
             style: TextStyle(
-              color: Color(this.color),
+              color: color,
               fontWeight: FontWeight.bold,
             ),
           ),

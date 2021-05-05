@@ -26,7 +26,7 @@ class RingProgressBar extends StatelessWidget {
   final int currentCount;
   final int goalCount;
   double percentComplete;
-  int ringColor;
+  Color ringColor;
   // not sure how sizing is done in mobile dev so hard coding here
   double ringSize = 110;
 
@@ -45,8 +45,8 @@ class RingProgressBar extends StatelessWidget {
               lineWidth: 5.0,
               percent: percentComplete,
               circularStrokeCap: CircularStrokeCap.round,
-              backgroundColor: Color(ringColor).withOpacity(0.3),
-              progressColor: Color(ringColor),
+              backgroundColor: ringColor.withOpacity(0.3),
+              progressColor: ringColor,
             ),
           ),
           Center(
@@ -54,7 +54,7 @@ class RingProgressBar extends StatelessWidget {
                 ? Icon(
                     SFSymbols.checkmark_alt,
                     size: 45,
-                    color: Color(ringColor),
+                    color: ringColor,
                   )
                 : RichText(
                     textAlign: TextAlign.center,

@@ -4,7 +4,7 @@ import '../components/GreyContainer.dart';
 
 class CheckInList extends StatelessWidget {
   final List<DateTime> checkIns;
-  final int color;
+  final Color color;
 
   CheckInList({this.checkIns, this.color});
 
