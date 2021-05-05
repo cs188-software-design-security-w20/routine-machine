@@ -1,11 +1,12 @@
 import {
-  Table, Model, Column, PrimaryKey, DataType, BelongsToMany, AllowNull, IsUUID,
+  Table, Model, Column, PrimaryKey, DataType, BelongsToMany, AllowNull, IsUUID, Unique,
 } from 'sequelize-typescript';
-import Follow from './Follow.model';
-import PendingFollow from './PendingFollow.model';
+import Follow from './follow-model';
+import PendingFollow from './pending-follow-model';
 
 export interface UserSchema {
   id: string;
+  user_name: string;
   public_key: string;
   first_name: string;
   last_name: string;
@@ -20,6 +21,12 @@ export default class User extends Model<UserSchema> {
   @Column(DataType.UUID)
   id: string;
 
+  @Unique
+  @AllowNull(false)
+  @Column
+  user_name: string;
+
+  @Unique
   @AllowNull(false)
   @Column
   public_key: string;

@@ -1,18 +1,14 @@
-import PendingFollow from '../models/PendingFollow.model';
-import User from '../models/User.model';
+import PendingFollow from '../models/pending-follow-model';
+import type { PendingFollowSchema } from '../models/pending-follow-model';
+import User from '../models/user-model';
 
-export const addPendingFollow = (followee_id: string, follower_id: string) => PendingFollow.create({
-  followee_id,
-  follower_id,
-});
+export const addPendingFollow = (pf: PendingFollowSchema) => PendingFollow.create(pf);
 
 export const removePendingFollow = (
-  followee_id: string,
-  follower_id: string,
+  pf: PendingFollowSchema
 ) => PendingFollow.destroy({
   where: {
-    followee_id,
-    follower_id,
+    ...pf
   },
 });
 

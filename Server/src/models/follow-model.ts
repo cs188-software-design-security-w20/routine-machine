@@ -1,7 +1,7 @@
 import {
   Model, Table, Column, ForeignKey, Unique, AllowNull,
 } from 'sequelize-typescript';
-import User from './User.model';
+import User from './user-model';
 
 export interface FollowSchema {
   followee_id: string;
