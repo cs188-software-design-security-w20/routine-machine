@@ -15,7 +15,7 @@ export const getUserById = (id: string) => User.findOne({
 
 export const getDEK = (id: string) => FollowQuery.getDEK(id, id);
 
-export const setDEK = (id: string, dek: string) => FollowQuery.setDEK(id, id, dek);
+export const setDEK = (id: string, dek: string) => FollowQuery.addFollow({ followee_id: id, follower_id: id, dek });
 
 export const setPK = (id: string, public_key: string) => User.update({
   public_key,
