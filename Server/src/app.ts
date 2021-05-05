@@ -2,9 +2,9 @@ import express from 'express';
 import morgan from 'morgan';
 
 import authenticate from './util/authenticate';
-import userRouter from './router/userRouter';
-import followRouter from './router/followRouter';
-import habitDataRouter from './router/habitDataRouter';
+import userRouter from './router/user-router';
+import followRouter from './router/follow-router';
+import habitDataRouter from './router/habit-data-router';
 
 const app = express();
 app.use(morgan('short'));
