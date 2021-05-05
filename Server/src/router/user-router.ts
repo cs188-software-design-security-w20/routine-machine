@@ -3,6 +3,16 @@ import * as UserService from '../service/user-service';
 
 const userRouter = Router();
 
+userRouter.post('/', async (req, res) => {
+  try {
+    const { id, user_name, public_key, first_name, last_name } = req.body;
+    UserService.createUser({ id, user_name, public_key, first_name, last_name });
+    res.status(200);
+  } catch (error) {
+    res.status(409).send(error);
+  }
+})
+
 userRouter.get('/profile', async (req, res) => {
   try {
     const user_name = req.params['user_name'];
@@ -13,6 +23,17 @@ userRouter.get('/profile', async (req, res) => {
     res.status(404).send(error);
   }
 });
+
+userRouter.post('/profile', async (req, res) => {
+  try {
+    const { id, profile } = req.body;
+    await UserService.setProfile(id, profile);
+    // TODO handle error
+    res.status(200);
+  } catch (error) {
+    res.status(409).send(error);
+  }
+})
 
 userRouter.get('/public_key', async (req, res) => {
   try {
