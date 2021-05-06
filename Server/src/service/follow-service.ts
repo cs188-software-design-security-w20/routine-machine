@@ -9,11 +9,13 @@ import { FollowSchema } from '../models/follow-model';
 export const addPendingFollow = async (followee_id: string, follower_id: string) => {
   const pf: PendingFollowSchema = { followee_id, follower_id };
   const res = await PendingFollowQuery.addPendingFollow(pf);
+  return res;
 }
 
 export const removePendingFollow = async (followee_id: string, follower_id: string) => {
   const pf: PendingFollowSchema = { followee_id, follower_id };
   const res = await PendingFollowQuery.removePendingFollow(pf);
+  return res;
 }
 
 export const getPendingRequestList = async (followee_id: string) => {

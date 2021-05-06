@@ -6,6 +6,7 @@ import * as FollowQuery from '../query/follow-query';
 // also return success state
 export const setHabitData = async (id: string, habit_data: string) => {
   const res = await UserQuery.setHabitData(id, habit_data);
+  return res;
 }
 
 export const getFollowingHabitDataDEKPair = async (followee_id: string, follower_id: string) => {
