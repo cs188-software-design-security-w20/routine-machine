@@ -6,10 +6,12 @@ const habitDataRouter = Router();
 
 /**
  * @description This endpoint is to retrieve the caller's own habit data.
+ * @request_parm {id}
+ * @response_body {habit_data, dek}
  */
 habitDataRouter.get('/', async (req, res) => {
   try {
-    const id = req.params.id;
+    const { id } = req.params;
     const habitDataDEKPair = await HabitDataService.getUserHabitDataDEKPair(id);
     res.status(200).json(habitDataDEKPair);
   } catch (error) {
@@ -21,8 +23,6 @@ habitDataRouter.get('/', async (req, res) => {
  * @description This endpoint is to update / insert the caller's own habit data.
  * @request_body
  * {id: string, habit_data: string}
- * @response_body
- * {}
  */
 habitDataRouter.post('/', async (req, res) => {
   try {
@@ -35,21 +35,21 @@ habitDataRouter.post('/', async (req, res) => {
 });
 
 /**
- *
- * @description This endpoint is to retrieve the followee's habit data and associated dek for the follower
+ * @description This endpoint is to retrieve the followee's habit data and associated dek
  * @request_params
  * followee_id, follower_id
  * @response_body
- * { followee_id, follower_id, habit_data, dek }
+ * { followee_id, follower_id, habit_data, dek  }
  */
-habitDataRouter.get('/', async (req, res) => {
+habitDataRouter.get('/following/', async (req, res) => {
   try {
     const { followee_id, follower_id } = req.params;
-    const followingHabitDataDEKPair = await HabitDataService.getFollowingHabitDataDEKPair(followee_id, follower_id);
+    const followingHabitDataDEKPair = await HabitDataService
+      .getFollowingHabitDataDEKPair(followee_id, follower_id);
     res.status(200).json(followingHabitDataDEKPair);
   } catch (error) {
     res.status(500).send(error);
   }
-})
+});
 
 export default habitDataRouter;

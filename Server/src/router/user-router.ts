@@ -9,14 +9,18 @@ const userRouter = Router();
  */
 userRouter.post('/', async (req, res) => {
   try {
-    const { id, user_name, public_key, first_name, last_name, dek } = req.body;
-    await UserService.createUser({ id, user_name, public_key, first_name, last_name });
+    const {
+      id, user_name, public_key, first_name, last_name, dek,
+    } = req.body;
+    await UserService.createUser({
+      id, user_name, public_key, first_name, last_name,
+    });
     await UserService.setDEK(id, dek);
     res.status(200);
   } catch (error) {
     res.status(409).send(error);
   }
-})
+});
 
 /**
  * @descirption get a profile of a user by name
@@ -25,7 +29,7 @@ userRouter.post('/', async (req, res) => {
  */
 userRouter.get('/profile', async (req, res) => {
   try {
-    const user_name = req.params.user_name;
+    const { user_name } = req.params;
     const user = await UserService.getUserByName(user_name);
     // TODO handle a case when user does not exist
     res.status(200).json(user);
@@ -47,35 +51,18 @@ userRouter.post('/profile', async (req, res) => {
   } catch (error) {
     res.status(409).send(error);
   }
-})
+});
 
 /**
- * @descirption get the public key of the user - to use when the public key of the user is already set?
- * Have a discussion about this - the logic to handle new device logins
+ * @descirption get the public key of the user
  * @request_body {id, profile}
  */
 userRouter.get('/public_key', async (req, res) => {
   try {
-    const id = req.params.id;
+    const { id } = req.params;
     const pk = await UserService.getPK(id);
     // TODO handle a case when user does not exist
     res.status(200).json(pk);
-  } catch (error) {
-    res.status(500).send(error);
-  }
-});
-
-/**
- * @descirption get your own dek
- * @request_param {id}
- * @response_body {dek}
- */
-userRouter.get('/dek', async (req, res) => {
-  try {
-    const id = req.params['id'];
-    const dek = await UserService.getDEK(id);
-    // TODO handle a case when user does not exist
-    res.status(200).json(dek);
   } catch (error) {
     res.status(500).send(error);
   }
@@ -94,5 +81,21 @@ userRouter.post('/dek', async (req, res) => {
     res.status(409).send(error);
   }
 });
+
+// /**
+//  * @descirption get your own dek
+//  * @request_param {id}
+//  * @response_body {dek}
+//  */
+// userRouter.get('/dek', async (req, res) => {
+//   try {
+//     const { id } = req.params;
+//     const dek = await UserService.getDEK(id);
+//     // TODO handle a case when user does not exist
+//     res.status(200).json(dek);
+//   } catch (error) {
+//     res.status(500).send(error);
+//   }
+// });
 
 export default userRouter;

@@ -7,7 +7,7 @@ import * as FollowQuery from '../query/follow-query';
 export const setHabitData = async (id: string, habit_data: string) => {
   const res = await UserQuery.setHabitData(id, habit_data);
   return res;
-}
+};
 
 export const getFollowingHabitDataDEKPair = async (followee_id: string, follower_id: string) => {
   const res_habit_data = await UserQuery.getUserById(followee_id);
@@ -16,8 +16,15 @@ export const getFollowingHabitDataDEKPair = async (followee_id: string, follower
     followee_id,
     follower_id,
     habit_data: res_habit_data?.habit_data,
-    dek: res_dek?.dek
-  }
-}
+    dek: res_dek?.dek,
+  };
+};
 
-export const getUserHabitDataDEKPair = async (user_id: string) => getFollowingHabitDataDEKPair(user_id, user_id);
+export const getUserHabitDataDEKPair = async (user_id: string) => {
+  const habit_dek_pair = await getFollowingHabitDataDEKPair(user_id, user_id);
+  return {
+    id: habit_dek_pair.followee_id,
+    habit_data: habit_dek_pair.habit_data,
+    dek: habit_dek_pair.dek,
+  };
+};
