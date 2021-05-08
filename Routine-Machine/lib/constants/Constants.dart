@@ -10,6 +10,10 @@ const kSecondaryLabelColor = Color(0xFF797F8A);
 const kShadowColor = Color.fromRGBO(72, 76, 82, 0.16);
 const kCourseElementIconColor = Color(0xFF17294D);
 
+//login page tag
+const String appName = 'Routine Machine';
+const String logoTag = 'near.huscarl.loginsample.logo';
+const String titleTag = 'near.huscarl.loginsample.title';
 // Text Styles
 var kLargeTitleStyle = TextStyle(
   fontSize: 28.0,
