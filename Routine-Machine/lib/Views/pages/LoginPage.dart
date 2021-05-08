@@ -4,7 +4,7 @@ import 'package:flutter_login/flutter_login.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../constants/Constants.dart' as Constants;
 import '../components/custom_route.dart';
-import '../subviews/dashboard_screen.dart';
+import 'package:routine_machine/Views/pages/HomePage.dart';
 import '../../users.dart';
 
 class LoginPage extends StatelessWidget {
@@ -177,7 +177,7 @@ class LoginPage extends StatelessWidget {
       },
       onSubmitAnimationCompleted: () {
         Navigator.of(context).pushReplacement(FadePageRoute(
-          builder: (context) => DashboardScreen(),
+          builder: (context) => HomePage(),
         ));
       },
       onRecoverPassword: (name) {
