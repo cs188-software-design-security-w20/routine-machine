@@ -35,6 +35,7 @@ class WidgetData {
   int periodicalGoal;
   List<DateTime> checkins;
 
+
   factory WidgetData.fromJson(Map<String, dynamic> json) => WidgetData(
         title: json["title"],
         widgetType: json["widgetType"],
@@ -89,6 +90,7 @@ class WidgetData {
       periodicalGoal: 2,
       checkins: [new DateTime.now(), new DateTime.now()]);
 }
+
 /*
 {
 "title": "t",

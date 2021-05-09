@@ -6,11 +6,13 @@ import '../../constants/Palette.dart' as Palette;
 import '../../constants/Constants.dart';
 import '../components/TopBackBar.dart';
 import '../../Models/FriendStatus.dart';
+
 import '../../Models/UserData.dart';
 
 class FriendProfilePage extends StatelessWidget {
   final UserData friendData;
   FriendStatus friendStatus;
+
 
   FriendProfilePage({this.friendData, this.friendStatus});
 
