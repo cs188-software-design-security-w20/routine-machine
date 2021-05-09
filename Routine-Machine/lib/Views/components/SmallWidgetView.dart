@@ -4,30 +4,60 @@ import 'RingProgressBar.dart';
 import '../../constants/Constants.dart' as Constants;
 import '../pages/HabitDetailPage.dart';
 
+
 class SmallWidgetView extends StatelessWidget {
-  // final String routineName;
-  // final String widgetType;
-  // final int count;
-  // final int goal;
-  // final List<DateTime> checkIns;
-  // final Color color;
   WidgetData data;
+// =======
+// class SmallWidgetView extends StatefulWidget {
+//   final String routineName;
+//   final String widgetType;
+//   final int count;
+//   final int goal;
+//   final List<DateTime> checkIns;
+//   final Color color;
+// >>>>>>> master
 
   SmallWidgetView({this.data});
 
   @override
+  _SmallWidgetViewState createState() => _SmallWidgetViewState();
+}
+
+class _SmallWidgetViewState extends State<SmallWidgetView> {
+  int count = 0; // eventually just fetch this state
+
+  void _incrementCount() {
+    setState(() {
+      this.count++;
+    });
+  }
+
+  void _buildDetailPageAndAwaitCount(BuildContext context) async {
+    // when the detail page is popped
+    // it will return the updated value of count
+    // then we will set the state to match this value
+    final updatedCount = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => HabitDetailPage(
+          routineName: widget.routineName,
+          widgetType: widget.widgetType,
+          count: count,
+          goal: widget.goal,
+          checkIns: widget.checkIns,
+          color: widget.color,
+        ),
+      ),
+    );
+    setState(() {
+      count = updatedCount;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onLongPress: () async {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => HabitDetailPage(
-              data: data,
-            ),
-          ),
-        );
-      },
+      onLongPress: () => _buildDetailPageAndAwaitCount(context),
       child: Container(
         padding: EdgeInsets.all(24),
         width: double.infinity,

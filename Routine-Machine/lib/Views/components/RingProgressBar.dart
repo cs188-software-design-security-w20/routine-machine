@@ -12,8 +12,16 @@ class RingProgressBar extends StatelessWidget {
       this.showText = true,
       this.ringSize = 110}) {
     ringColor = color;
+
     // if current count <= 0, default to 0.01 so a little bit of the ring is visible
-    percentComplete = currentCount > 0 ? currentCount / goalCount : 0.01;
+    if (currentCount > goalCount) {
+      _percentComplete = 1;
+    } else if (currentCount <= 0) {
+      _percentComplete = 0.01;
+    } else {
+      _percentComplete = currentCount / goalCount;
+    }
+    // percentComplete = currentCount > 0 ? currentCount / goalCount : 0.01;
     if (habitType == 'daily') {
       // perhaps want to enumerate these types somewhere
       counterLabel = 'today';
@@ -37,6 +45,7 @@ class RingProgressBar extends StatelessWidget {
   // not sure how sizing is done in mobile dev so hard coding here
   double ringSize;
 
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -59,11 +68,11 @@ class RingProgressBar extends StatelessWidget {
             ),
           ),
           Center(
-            child: percentComplete == 1
+            child: _percentComplete == 1
                 ? Icon(
                     SFSymbols.checkmark_alt,
                     size: 45,
-                    color: ringColor,
+                    color: color,
                   )
                 : this.showText
                     ? RichText(
