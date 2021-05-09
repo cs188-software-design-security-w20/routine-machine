@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import '../components/TopBackBar.dart';
+import '../../Models/FriendStatus.dart';
 
 class FriendProfilePage extends StatelessWidget {
   final String firstName;
   final String lastName;
+  FriendStatus status;
   // TODO: inject more data into this widget
 
   FriendProfilePage({this.firstName, this.lastName});
