@@ -51,8 +51,35 @@ class WidgetData {
         "periodicalGoal": periodicalGoal,
         "checkins": List<dynamic>.from(checkins.map((x) => x)),
       };
-}
 
+  static WidgetData widgetSample1 = WidgetData(
+      title: "Sample",
+      widgetType: "daily",
+      color: 0xffffaabb,
+      createdTime: 123,
+      modifiedTime: 455,
+      currentPeriodCounts: 8,
+      periodicalGoal: 20,
+      checkins: [123, 456]);
+  static WidgetData widgetSample2 = WidgetData(
+      title: "Sample 2",
+      widgetType: "daily",
+      color: 0xfffab1bb,
+      createdTime: 123,
+      modifiedTime: 455,
+      currentPeriodCounts: 8,
+      periodicalGoal: 20,
+      checkins: [123, 456]);
+  static WidgetData widgetSample3 = WidgetData(
+      title: "Eat bana babana sad asd asna na 3123",
+      widgetType: "monthly",
+      color: 0xff1234bb,
+      createdTime: 123,
+      modifiedTime: 455,
+      currentPeriodCounts: 1,
+      periodicalGoal: 2,
+      checkins: [123, 456]);
+}
 /*
 {
 "title": "t",

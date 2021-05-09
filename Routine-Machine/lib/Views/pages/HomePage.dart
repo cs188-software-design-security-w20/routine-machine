@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
-
+import 'package:flutter_sfsymbols/flutter_sfsymbols.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:routine_machine/Models/FriendStatus.dart';
+import 'package:routine_machine/Models/UserData.dart';
+import 'package:routine_machine/Models/UserProfile.dart';
+import 'package:routine_machine/Models/WidgetData.dart';
+import 'package:routine_machine/Views/pages/FriendProfilePage.dart';
+import 'package:routine_machine/Views/subviews/friendWidgetList.dart';
 import 'LoginPage.dart';
 import 'FollowPage.dart';
 import 'MainDashboardPage.dart';
-import 'package:flutter_sfsymbols/flutter_sfsymbols.dart';
-import 'package:flutter/cupertino.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -18,15 +23,17 @@ class _HomePageState extends State<HomePage> {
   );
   int _page = 0;
 
-  final List<Widget> _children = [
+  List<Widget> _children = [
     MainDashboardPage(),
-    FollowPage(),
-    Container(
-      color: Colors.white,
-      padding: EdgeInsets.all(16),
-      child: Center(
-        child: Text("3rd View"),
+    FriendProfilePage(
+      friendData: UserData(
+        profile: UserProfile(userName: "Jack Zhao", userId: "jackzhao98"),
+        data: [WidgetData.widgetSample1, WidgetData.widgetSample3],
       ),
+      friendStatus: FriendStatus.follower,
+    ),
+    FriendWidgetList(
+      data: [WidgetData.widgetSample1, WidgetData.widgetSample3],
     ),
   ];
 

@@ -39,31 +39,33 @@ class SmallWidgetView extends StatelessWidget {
       },
       child: Container(
         padding: EdgeInsets.all(24),
-        width: double.infinity,
+        // width: double.infinity,
         decoration: Constants.kCardDecorationStyle,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Padding(
-              padding: EdgeInsets.only(bottom: 16),
-              child: Text(
-                routineName,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                style: Constants.kCardTitleStyle,
+        child: Expanded(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Padding(
+                padding: EdgeInsets.only(bottom: 16),
+                child: Text(
+                  routineName,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: Constants.kCardTitleStyle,
+                ),
               ),
-            ),
-            GestureDetector(
-              onTap: () => print('increment count!'),
-              child: RingProgressBar(
-                currentCount: count,
-                goalCount: goal,
-                habitType: widgetType,
-                color: color,
+              GestureDetector(
+                onTap: () => print('increment count!'),
+                child: RingProgressBar(
+                  currentCount: count,
+                  goalCount: goal,
+                  habitType: widgetType,
+                  color: color,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

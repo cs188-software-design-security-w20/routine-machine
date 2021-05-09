@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'dart:io';
 import 'package:routine_machine/Models/UserData.dart';
+import 'package:routine_machine/Views/subviews/friendWidgetList.dart';
+import '../../constants/Palette.dart' as Palette;
+import '../../constants/Constants.dart';
 import '../components/TopBackBar.dart';
 import '../../Models/FriendStatus.dart';
 import '../../Models/UserData.dart';
@@ -14,12 +18,50 @@ class FriendProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: TopBackBar(),
-      body: Column(
-        children: [
-          // Image here
-          Text(friendData.profile.userName),
-          Text("@${friendData.profile.userId}")
-        ],
+      body: Container(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              // Image here
+              CircleAvatar(
+                backgroundColor: Palette.primary,
+                radius: 50,
+                child: Text(
+                  this.friendData.profile.userName[0].toUpperCase(),
+                  style: TextStyle(
+                    fontFamily: Platform.isIOS ? 'SF Pro Text' : null,
+                    fontSize: 47.0,
+                    color: Colors.white,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 20),
+                child: Column(
+                  children: [
+                    Text(
+                      friendData.profile.userName,
+                      style: kTitle1Style,
+                    ),
+                    Text(
+                      "@${friendData.profile.userId}",
+                      style: kCaptionLabelStyle,
+                    ),
+                  ],
+                ),
+              ),
+
+              Padding(
+                padding: const EdgeInsets.fromLTRB(20, 0, 20, 30),
+                child: FriendWidgetList(
+                  data: friendData.data,
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

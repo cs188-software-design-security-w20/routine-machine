@@ -67,7 +67,7 @@ class RoutineMachine extends StatelessWidget {
           overline: TextStyle(fontFamily: 'SF Pro Rounded'),
         ),
       ),
-      home: LoginPage(),
+      home: HomePage(),
       // navigatorObservers: [TransitionRouteObserver()],
       // initialRoute: LoginScreen.routeName,
       // routes: {

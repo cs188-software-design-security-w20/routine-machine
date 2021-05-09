@@ -5,7 +5,12 @@ import 'package:flutter_sfsymbols/flutter_sfsymbols.dart';
 
 class RingProgressBar extends StatelessWidget {
   RingProgressBar(
-      {this.currentCount, this.goalCount, habitType, color, this.showText}) {
+      {this.currentCount,
+      this.goalCount,
+      habitType,
+      color,
+      this.showText = true,
+      this.ringSize = 110}) {
     ringColor = color;
     // if current count <= 0, default to 0.01 so a little bit of the ring is visible
     percentComplete = currentCount > 0 ? currentCount / goalCount : 0.01;
@@ -28,9 +33,9 @@ class RingProgressBar extends StatelessWidget {
   final int goalCount;
   double percentComplete;
   Color ringColor;
-  bool showText = true;
+  bool showText;
   // not sure how sizing is done in mobile dev so hard coding here
-  double ringSize = 110;
+  double ringSize;
 
   @override
   Widget build(BuildContext context) {
@@ -39,16 +44,18 @@ class RingProgressBar extends StatelessWidget {
       height: ringSize,
       child: Stack(
         children: <Widget>[
-          Container(
-            width: ringSize,
-            height: ringSize,
-            child: CircularPercentIndicator(
-              radius: ringSize,
-              lineWidth: 5.0,
-              percent: percentComplete,
-              circularStrokeCap: CircularStrokeCap.round,
-              backgroundColor: ringColor.withOpacity(0.3),
-              progressColor: ringColor,
+          Center(
+            child: Container(
+              width: ringSize,
+              height: ringSize,
+              child: CircularPercentIndicator(
+                radius: ringSize,
+                lineWidth: 6.0,
+                percent: percentComplete,
+                circularStrokeCap: CircularStrokeCap.round,
+                backgroundColor: ringColor.withOpacity(0.3),
+                progressColor: ringColor,
+              ),
             ),
           ),
           Center(
