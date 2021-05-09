@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:routine_machine/Models/WidgetData.dart';
 import '../components/SmallWidgetView.dart';
-import '../../Models/SampleWidgetData.dart';
 
 class WidgetList extends StatelessWidget {
-  List<SampleWidgetData> widgetList;
+  // List<SampleWidgetData> widgetList;
+  final List<WidgetData> widgetList;
 
   WidgetList({this.widgetList});
 
@@ -11,21 +12,16 @@ class WidgetList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: GridView.count(
-        padding: EdgeInsets.all(16),
-        crossAxisSpacing: 10,
-        mainAxisSpacing: 10,
+        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 25),
+        crossAxisSpacing: 20,
+        mainAxisSpacing: 25,
         crossAxisCount:
             MediaQuery.of(context).orientation == Orientation.landscape ? 4 : 2,
-        childAspectRatio: 4 / 5,
+        childAspectRatio: 3 / 4,
         children: widgetList
             .map(
               (widget) => SmallWidgetView(
-                routineName: widget.routineName,
-                widgetType: widget.widgetType,
-                count: widget.count,
-                goal: widget.goal,
-                checkIns: widget.checkIns,
-                color: widget.color,
+                data: widget,
               ),
             )
             .toList(),

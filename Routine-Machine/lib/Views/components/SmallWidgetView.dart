@@ -1,23 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:routine_machine/Models/WidgetData.dart';
 import 'RingProgressBar.dart';
 import '../../constants/Constants.dart' as Constants;
 import '../pages/HabitDetailPage.dart';
 
 class SmallWidgetView extends StatelessWidget {
-  final String routineName;
-  final String widgetType;
-  final int count;
-  final int goal;
-  final List<DateTime> checkIns;
-  final Color color;
+  // final String routineName;
+  // final String widgetType;
+  // final int count;
+  // final int goal;
+  // final List<DateTime> checkIns;
+  // final Color color;
+  WidgetData data;
 
-  SmallWidgetView(
-      {this.routineName,
-      this.widgetType,
-      this.count,
-      this.goal,
-      this.checkIns = const <DateTime>[],
-      this.color});
+  SmallWidgetView({this.data});
 
   @override
   Widget build(BuildContext context) {
@@ -27,19 +23,14 @@ class SmallWidgetView extends StatelessWidget {
           context,
           MaterialPageRoute(
             builder: (context) => HabitDetailPage(
-              routineName: this.routineName,
-              widgetType: this.widgetType,
-              count: this.count,
-              goal: this.goal,
-              checkIns: this.checkIns,
-              color: this.color,
+              data: data,
             ),
           ),
         );
       },
       child: Container(
         padding: EdgeInsets.all(24),
-        // width: double.infinity,
+        width: double.infinity,
         decoration: Constants.kCardDecorationStyle,
         child: Expanded(
           child: Column(
@@ -49,8 +40,8 @@ class SmallWidgetView extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.only(bottom: 16),
                 child: Text(
-                  routineName,
-                  maxLines: 2,
+                  data.title,
+                  maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: Constants.kCardTitleStyle,
                 ),
@@ -58,10 +49,10 @@ class SmallWidgetView extends StatelessWidget {
               GestureDetector(
                 onTap: () => print('increment count!'),
                 child: RingProgressBar(
-                  currentCount: count,
-                  goalCount: goal,
-                  habitType: widgetType,
-                  color: color,
+                  currentCount: data.currentPeriodCounts,
+                  goalCount: data.periodicalGoal,
+                  habitType: data.widgetType,
+                  color: Color(data.color),
                 ),
               ),
             ],

@@ -11,8 +11,8 @@ String userProfileToJson(UserProfile data) => json.encode(data.toJson());
 
 class UserProfile {
   UserProfile({
-    this.userId,
-    this.userName,
+    this.username,
+    this.alias,
     this.email,
     this.follower,
     this.following,
@@ -20,8 +20,8 @@ class UserProfile {
     this.pendingFollowing,
   });
 
-  String userId;
-  String userName;
+  String username;
+  String alias;
   String email;
   List<String> follower;
   List<String> following;
@@ -29,8 +29,8 @@ class UserProfile {
   List<String> pendingFollowing;
 
   factory UserProfile.fromJson(Map<String, dynamic> json) => UserProfile(
-        userId: json["userID"],
-        userName: json["userName"],
+        username: json["username"],
+        alias: json["alias"],
         email: json["email"],
         follower: List<String>.from(json["follower"].map((x) => x)),
         following: List<String>.from(json["following"].map((x) => x)),
@@ -41,8 +41,8 @@ class UserProfile {
       );
 
   Map<String, dynamic> toJson() => {
-        "userID": userId,
-        "userName": userName,
+        "username": username,
+        "alias": alias,
         "email": email,
         "follower": List<dynamic>.from(follower.map((x) => x)),
         "following": List<dynamic>.from(following.map((x) => x)),

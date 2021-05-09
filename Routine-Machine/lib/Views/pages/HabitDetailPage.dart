@@ -3,23 +3,23 @@ import '../../constants/Constants.dart' as Constants;
 import '../components/RingProgressBar.dart';
 import '../components/TopBackBar.dart';
 import '../subviews/CheckInList.dart';
+import '../../Models/WidgetData.dart';
 
-class HabitDetailPage extends StatelessWidget {
-  final String routineName;
-  final String widgetType;
-  final int count;
-  final int goal;
-  final List<DateTime> checkIns;
-  final Color color;
+class HabitDetailPage extends StatefulWidget {
+  // final String routineName;
+  // final String widgetType;
+  // final int count;
+  // final int goal;
+  // final List<DateTime> checkIns;
+  // final Color color;
+  WidgetData data;
+  HabitDetailPage({this.data});
+  @override
+  _HabitDetailPageState createState() => _HabitDetailPageState();
+}
 
-  HabitDetailPage(
-      {this.routineName,
-      this.widgetType,
-      this.count,
-      this.goal,
-      this.checkIns,
-      this.color});
-
+class _HabitDetailPageState extends State<HabitDetailPage> {
+  // WidgetData data;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,18 +33,18 @@ class HabitDetailPage extends StatelessWidget {
           child: Column(
             children: [
               Text(
-                routineName,
+                widget.data.title,
                 style: Constants.kLargeTitleStyle,
               ),
               RingProgressBar(
-                currentCount: count,
-                goalCount: goal,
-                habitType: widgetType,
-                color: color,
+                currentCount: widget.data.currentPeriodCounts,
+                goalCount: widget.data.periodicalGoal,
+                habitType: widget.data.widgetType,
+                color: Color(widget.data.color),
               ),
               CheckInList(
-                checkIns: checkIns,
-                color: color,
+                checkIns: widget.data.checkins,
+                color: Color(widget.data.color),
               )
             ],
           ),

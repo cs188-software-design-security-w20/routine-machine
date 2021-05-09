@@ -27,7 +27,7 @@ class FriendProfilePage extends StatelessWidget {
                 backgroundColor: Palette.primary,
                 radius: 50,
                 child: Text(
-                  this.friendData.profile.userName[0].toUpperCase(),
+                  this.friendData.profile.alias[0].toUpperCase(),
                   style: TextStyle(
                     fontFamily: Platform.isIOS ? 'SF Pro Text' : null,
                     fontSize: 47.0,
@@ -42,11 +42,11 @@ class FriendProfilePage extends StatelessWidget {
                 child: Column(
                   children: [
                     Text(
-                      friendData.profile.userName,
+                      friendData.profile.alias,
                       style: kTitle1Style,
                     ),
                     Text(
-                      "@${friendData.profile.userId}",
+                      "@${friendData.profile.username}",
                       style: kCaptionLabelStyle,
                     ),
                   ],

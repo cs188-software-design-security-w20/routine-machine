@@ -27,7 +27,7 @@ class _HomePageState extends State<HomePage> {
     MainDashboardPage(),
     FriendProfilePage(
       friendData: UserData(
-        profile: UserProfile(userName: "Jack Zhao", userId: "jackzhao98"),
+        profile: UserProfile(alias: "Jack Zhao", username: "jackzhao98"),
         data: [WidgetData.widgetSample1, WidgetData.widgetSample3],
       ),
       friendStatus: FriendStatus.follower,

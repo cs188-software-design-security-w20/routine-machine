@@ -17,8 +17,8 @@ class FollowRequestTileList extends StatelessWidget {
         return FollowRequestTile(
           firstName: user.firstName,
           lastName: user.lastName,
-          userName: user.userName,
-          caption: '@${user.userName}',
+          userName: user.alias,
+          caption: '@${user.alias}',
           color: user.color,
         );
       },

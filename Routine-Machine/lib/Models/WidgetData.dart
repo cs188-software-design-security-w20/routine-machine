@@ -3,6 +3,9 @@
 //     final widgetData = widgetDataFromJson(jsonString);
 
 import 'dart:convert';
+import 'package:mock_data/mock_data.dart';
+import 'package:flutter/material.dart';
+import 'package:json_annotation/json_annotation.dart';
 
 WidgetData widgetDataFromJson(String str) =>
     WidgetData.fromJson(json.decode(str));
@@ -24,11 +27,13 @@ class WidgetData {
   String title;
   String widgetType;
   int color;
-  int createdTime;
-  int modifiedTime;
+  @JsonKey(fromJson: _fromJson, toJson: _toJson)
+  DateTime createdTime;
+  @JsonKey(fromJson: _fromJson, toJson: _toJson)
+  DateTime modifiedTime;
   int currentPeriodCounts;
   int periodicalGoal;
-  List<int> checkins;
+  List<DateTime> checkins;
 
   factory WidgetData.fromJson(Map<String, dynamic> json) => WidgetData(
         title: json["title"],
@@ -38,7 +43,7 @@ class WidgetData {
         modifiedTime: json["modifiedTime"],
         currentPeriodCounts: json["currentPeriodCounts"],
         periodicalGoal: json["periodicalGoal"],
-        checkins: List<int>.from(json["checkins"].map((x) => x)),
+        checkins: List<DateTime>.from(json["checkins"].map((x) => x)),
       );
 
   Map<String, dynamic> toJson() => {
@@ -52,33 +57,37 @@ class WidgetData {
         "checkins": List<dynamic>.from(checkins.map((x) => x)),
       };
 
+  static DateTime _fromJson(int int) =>
+      DateTime.fromMillisecondsSinceEpoch(int);
+  static int _toJson(DateTime time) => time.millisecondsSinceEpoch;
+
   static WidgetData widgetSample1 = WidgetData(
       title: "Sample",
       widgetType: "daily",
       color: 0xffffaabb,
-      createdTime: 123,
-      modifiedTime: 455,
+      createdTime: new DateTime.now(),
+      modifiedTime: new DateTime.now(),
       currentPeriodCounts: 8,
       periodicalGoal: 20,
-      checkins: [123, 456]);
+      checkins: [new DateTime.now(), new DateTime.now()]);
   static WidgetData widgetSample2 = WidgetData(
       title: "Sample 2",
       widgetType: "daily",
       color: 0xfffab1bb,
-      createdTime: 123,
-      modifiedTime: 455,
+      createdTime: new DateTime.now(),
+      modifiedTime: new DateTime.now(),
       currentPeriodCounts: 8,
       periodicalGoal: 20,
-      checkins: [123, 456]);
+      checkins: [new DateTime.now(), new DateTime.now()]);
   static WidgetData widgetSample3 = WidgetData(
       title: "Eat bana babana sad asd asna na 3123",
       widgetType: "monthly",
       color: 0xff1234bb,
-      createdTime: 123,
-      modifiedTime: 455,
+      createdTime: new DateTime.now(),
+      modifiedTime: new DateTime.now(),
       currentPeriodCounts: 1,
       periodicalGoal: 2,
-      checkins: [123, 456]);
+      checkins: [new DateTime.now(), new DateTime.now()]);
 }
 /*
 {
