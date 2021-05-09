@@ -105,24 +105,81 @@ final List<SampleWidgetData> sampleWidgetList = [
   ),
 ];
 
-class MainDashboardPage extends StatelessWidget {
+class MainDashboardPage extends StatefulWidget {
+  @override
+  _MainDashboardPageState createState() => _MainDashboardPageState();
+}
+
+class _MainDashboardPageState extends State<MainDashboardPage> {
+  Future<List<SampleWidgetData>> widgetList;
+
+  Future<List<SampleWidgetData>> _fetchWidgetData() {
+    // TODO: replace this with actual api wrapper call
+    return Future<List<SampleWidgetData>>.delayed(
+        const Duration(seconds: 2), () => sampleWidgetList);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    widgetList = _fetchWidgetData();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Container(
-        child: Column(
-          children: [
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16),
-              child: ProfileBarView(
-                firstName: 'Jody',
-                lastName: 'Lin',
+      child: RefreshIndicator(
+        onRefresh: () async {
+          // TODO: implement pull to refresh
+          setState(() {
+            widgetList = _fetchWidgetData();
+          });
+        },
+        child: Container(
+          child: Column(
+            children: [
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16),
+                child: ProfileBarView(
+                  firstName: 'Jody',
+                  lastName: 'Lin',
+                ),
               ),
-            ),
-            WidgetList(
-              widgetList: sampleWidgetList,
-            ),
-          ],
+              FutureBuilder(
+                future: widgetList,
+                builder: (BuildContext context,
+                    AsyncSnapshot<List<SampleWidgetData>> snapshot) {
+                  Widget dashboardContent;
+                  if (snapshot.hasData) {
+                    dashboardContent = WidgetList(
+                      widgetList: snapshot.data,
+                    );
+                  } else if (snapshot.hasError) {
+                    dashboardContent = Expanded(
+                      child: Center(
+                        child: Text('Error loading habit data'),
+                      ),
+                    );
+                  } else {
+                    dashboardContent = Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          CircularProgressIndicator(
+                            valueColor:
+                                AlwaysStoppedAnimation<Color>(Palette.primary),
+                          ),
+                          Text('Loading your habits...'),
+                        ],
+                      ),
+                    );
+                  }
+                  return dashboardContent;
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );
