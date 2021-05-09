@@ -27,27 +27,28 @@ class HabitDetailPage extends StatelessWidget {
       body: Padding(
         padding: EdgeInsets.all(16),
         child: Container(
-            padding: EdgeInsets.all(24),
-            width: double.infinity,
-            decoration: Constants.kCardDecorationStyle,
-            child: Column(
-              children: [
-                Text(
-                  routineName,
-                  style: Constants.kLargeTitleStyle,
-                ),
-                RingProgressBar(
-                  currentCount: count,
-                  goalCount: goal,
-                  habitType: widgetType,
-                  color: color,
-                ),
-                CheckInList(
-                  checkIns: checkIns,
-                  color: color,
-                )
-              ],
-            )),
+          padding: EdgeInsets.all(24),
+          width: double.infinity,
+          decoration: Constants.kCardDecorationStyle,
+          child: Column(
+            children: [
+              Text(
+                routineName,
+                style: Constants.kLargeTitleStyle,
+              ),
+              RingProgressBar(
+                currentCount: count,
+                goalCount: goal,
+                habitType: widgetType,
+                color: color,
+              ),
+              CheckInList(
+                checkIns: checkIns,
+                color: color,
+              )
+            ],
+          ),
+        ),
       ),
     );
   }

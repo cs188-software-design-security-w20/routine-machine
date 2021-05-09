@@ -4,7 +4,8 @@ import 'package:percent_indicator/percent_indicator.dart';
 import 'package:flutter_sfsymbols/flutter_sfsymbols.dart';
 
 class RingProgressBar extends StatelessWidget {
-  RingProgressBar({this.currentCount, this.goalCount, habitType, color}) {
+  RingProgressBar(
+      {this.currentCount, this.goalCount, habitType, color, this.showText}) {
     ringColor = color;
     // if current count <= 0, default to 0.01 so a little bit of the ring is visible
     percentComplete = currentCount > 0 ? currentCount / goalCount : 0.01;
@@ -27,6 +28,7 @@ class RingProgressBar extends StatelessWidget {
   final int goalCount;
   double percentComplete;
   Color ringColor;
+  bool showText = true;
   // not sure how sizing is done in mobile dev so hard coding here
   double ringSize = 110;
 
@@ -56,29 +58,31 @@ class RingProgressBar extends StatelessWidget {
                     size: 45,
                     color: ringColor,
                   )
-                : RichText(
-                    textAlign: TextAlign.center,
-                    text: TextSpan(
-                      text: currentCount.toString(),
-                      style: kLargeTitleStyle,
-                      children: [
-                        TextSpan(
-                          text: '/$goalCount\n',
-                          style: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 24.0,
-                          ),
+                : this.showText
+                    ? RichText(
+                        textAlign: TextAlign.center,
+                        text: TextSpan(
+                          text: currentCount.toString(),
+                          style: kLargeTitleStyle,
+                          children: [
+                            TextSpan(
+                              text: '/$goalCount\n',
+                              style: TextStyle(
+                                color: Colors.grey,
+                                fontSize: 24.0,
+                              ),
+                            ),
+                            TextSpan(
+                              text: counterLabel,
+                              style: TextStyle(
+                                color: Colors.grey,
+                                fontSize: 14.0,
+                              ),
+                            ),
+                          ],
                         ),
-                        TextSpan(
-                          text: counterLabel,
-                          style: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 14.0,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                      )
+                    : Text(""),
           )
         ],
       ),

@@ -29,10 +29,9 @@ class FollowingTile extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                   builder: (context) => FriendProfilePage(
-                    firstName: this.firstName,
-                    lastName: this.lastName,
-                    // TODO: pass other data
-                  ),
+
+                      // TODO: pass other data
+                      ),
                 ),
               );
             },

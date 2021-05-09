@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_sfsymbols/flutter_sfsymbols.dart';
+
 import 'LoginPage.dart';
 import 'FollowPage.dart';
 import 'MainDashboardPage.dart';
+import 'package:flutter_sfsymbols/flutter_sfsymbols.dart';
 import 'package:flutter/cupertino.dart';
 
 class HomePage extends StatefulWidget {
