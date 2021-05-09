@@ -35,19 +35,22 @@ class SearchResultPage extends StatefulWidget {
 
 class _SearchResultPageState extends State<SearchResultPage> {
   TextEditingController searchController;
-  List<SampleFollowerRequestData> _searchResults;
+  Future<List<SampleFollowerRequestData>> _searchResults;
+
+  @override
+  void initState() {
+    super.initState();
+    _searchResults = _searchForUser(searchController.text);
+  }
 
   _SearchResultPageState(String searchText) {
     searchController = TextEditingController(text: searchText);
-    // Note: do NOT need to call setState() in constructor
-    _searchResults = _searchForUser(searchText);
   }
 
-  List<SampleFollowerRequestData> _searchForUser(String userName) {
-    // TODO: search for results and return list
-    // TODO: will have to convert this to use futures
+  Future<List<SampleFollowerRequestData>> _searchForUser(String userName) {
+    // TODO: update to call api wrapper
     print('search for user $userName...');
-    return sampleSearchResults;
+    return Future.delayed(new Duration(seconds: 2), () => sampleSearchResults);
   }
 
   @override
@@ -73,8 +76,7 @@ class _SearchResultPageState extends State<SearchResultPage> {
                   labelText: 'Search for friends...',
                   suffixIcon: IconButton(
                     icon: Icon(Icons.search_rounded),
-                    onPressed: () async {
-                      // TODO: update so search for people
+                    onPressed: () {
                       setState(() {
                         _searchResults = _searchForUser(searchController.text);
                       });
@@ -83,17 +85,41 @@ class _SearchResultPageState extends State<SearchResultPage> {
                 ),
               ),
             ),
-            Expanded(
-              child: _searchResults.isEmpty // default message if no results
-                  ? Center(
-                      child: Text(
-                        'Sorry, the user "${searchController.text}" was not found',
-                        style: TextStyle(color: Colors.black),
+            FutureBuilder(
+              future: _searchResults,
+              builder: (BuildContext context,
+                  AsyncSnapshot<List<dynamic>> snapshot) {
+                Widget searchContent;
+                if (snapshot.hasData) {
+                  searchContent =
+                      snapshot.data.isEmpty // default message if no results
+                          ? Center(
+                              child: Text(
+                                'Sorry, the user "${searchController.text}" was not found',
+                                style: TextStyle(color: Colors.black),
+                              ),
+                            )
+                          : FollowRequestTileList(
+                              followRequestList: snapshot.data,
+                            );
+                } else if (snapshot.hasError) {
+                  searchContent = Text('Error loading username data');
+                } else {
+                  searchContent = Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CircularProgressIndicator(
+                        valueColor:
+                            AlwaysStoppedAnimation<Color>(Palette.primary),
                       ),
-                    )
-                  : FollowRequestTileList(
-                      followRequestList: _searchResults,
-                    ),
+                      Text('Searching for friend...'),
+                    ],
+                  );
+                }
+                return Expanded(
+                  child: searchContent,
+                );
+              },
             ),
           ],
         ),
