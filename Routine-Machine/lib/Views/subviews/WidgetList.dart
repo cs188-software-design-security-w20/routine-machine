@@ -17,7 +17,7 @@ class WidgetList extends StatelessWidget {
         mainAxisSpacing: 25,
         crossAxisCount:
             MediaQuery.of(context).orientation == Orientation.landscape ? 4 : 2,
-        childAspectRatio: 3 / 4,
+        childAspectRatio: 2.5 / 3,
         children: widgetList
             .map(
               (widget) => SmallWidgetView(

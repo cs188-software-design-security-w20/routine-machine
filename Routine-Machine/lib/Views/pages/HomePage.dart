@@ -32,9 +32,13 @@ class _HomePageState extends State<HomePage> {
       ),
       friendStatus: FriendStatus.follower,
     ),
-    FriendWidgetList(
-      data: [WidgetData.widgetSample1, WidgetData.widgetSample3],
-    ),
+    // FriendWidgetList(
+    //   data: [WidgetData.widgetSample1, WidgetData.widgetSample3],
+    // ),
+    Center(
+      child: Text(
+          "${WidgetData.widgetSample1.toJson()}, \n${WidgetData.widgetSample1.toJson()['createdTime'].runtimeType}"),
+    )
   ];
 
   List<BottomNavigationBarItem> buildBottomNavBarItems() {
