@@ -16,6 +16,12 @@ class SmallWidgetView extends StatefulWidget {
 class _SmallWidgetViewState extends State<SmallWidgetView> {
   int count = 0; // eventually just fetch this state
 
+  @override
+  void initState() {
+    super.initState();
+    count = widget.data.currentPeriodCounts;
+  }
+
   void _incrementCount() {
     setState(() {
       this.count++;
@@ -69,7 +75,7 @@ class _SmallWidgetViewState extends State<SmallWidgetView> {
               GestureDetector(
                 onTap: _incrementCount,
                 child: RingProgressBar(
-                  currentCount: widget.data.currentPeriodCounts,
+                  currentCount: count,
                   goalCount: widget.data.periodicalGoal,
                   habitType: widget.data.widgetType,
                   color: Color(widget.data.color),
