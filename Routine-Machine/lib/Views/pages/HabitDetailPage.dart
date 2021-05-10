@@ -45,7 +45,6 @@ class _HabitDetailPageState extends State<HabitDetailPage> {
     });
   }
 
-class _HabitDetailPageState extends State<HabitDetailPage> {
   // WidgetData data;
   @override
   Widget build(BuildContext context) {
