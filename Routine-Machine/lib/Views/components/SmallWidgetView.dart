@@ -4,18 +4,8 @@ import 'RingProgressBar.dart';
 import '../../constants/Constants.dart' as Constants;
 import '../pages/HabitDetailPage.dart';
 
-
-class SmallWidgetView extends StatelessWidget {
+class SmallWidgetView extends StatefulWidget {
   WidgetData data;
-// =======
-// class SmallWidgetView extends StatefulWidget {
-//   final String routineName;
-//   final String widgetType;
-//   final int count;
-//   final int goal;
-//   final List<DateTime> checkIns;
-//   final Color color;
-// >>>>>>> master
 
   SmallWidgetView({this.data});
 
@@ -40,12 +30,12 @@ class _SmallWidgetViewState extends State<SmallWidgetView> {
       context,
       MaterialPageRoute(
         builder: (context) => HabitDetailPage(
-          routineName: widget.routineName,
-          widgetType: widget.widgetType,
+          routineName: widget.data.title,
+          widgetType: widget.data.widgetType,
           count: count,
-          goal: widget.goal,
-          checkIns: widget.checkIns,
-          color: widget.color,
+          goal: widget.data.periodicalGoal,
+          checkIns: widget.data.checkins,
+          color: Color(widget.data.color),
         ),
       ),
     );
@@ -70,19 +60,19 @@ class _SmallWidgetViewState extends State<SmallWidgetView> {
               Padding(
                 padding: EdgeInsets.only(bottom: 16),
                 child: Text(
-                  data.title,
+                  widget.data.title,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: Constants.kCardTitleStyle,
                 ),
               ),
               GestureDetector(
-                onTap: () => print('increment count!'),
+                onTap: _incrementCount,
                 child: RingProgressBar(
-                  currentCount: data.currentPeriodCounts,
-                  goalCount: data.periodicalGoal,
-                  habitType: data.widgetType,
-                  color: Color(data.color),
+                  currentCount: widget.data.currentPeriodCounts,
+                  goalCount: widget.data.periodicalGoal,
+                  habitType: widget.data.widgetType,
+                  color: Color(widget.data.color),
                 ),
               ),
             ],
