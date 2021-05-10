@@ -16,9 +16,8 @@ export interface UserSchema {
 
 @Table({ modelName: 'user' })
 export default class User extends Model<UserSchema> {
-  @IsUUID(4)
   @PrimaryKey
-  @Column(DataType.UUID)
+  @Column
   id: string;
 
   @Unique
