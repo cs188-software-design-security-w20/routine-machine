@@ -1,12 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sfsymbols/flutter_sfsymbols.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:routine_machine/Models/FriendStatus.dart';
-import 'package:routine_machine/Models/UserData.dart';
-import 'package:routine_machine/Models/UserProfile.dart';
 import 'package:routine_machine/Models/WidgetData.dart';
-import 'package:routine_machine/Views/pages/FriendProfilePage.dart';
-import 'package:routine_machine/Views/subviews/friendWidgetList.dart';
 import 'LoginPage.dart';
 import 'FollowPage.dart';
 import 'MainDashboardPage.dart';
@@ -25,16 +20,7 @@ class _HomePageState extends State<HomePage> {
 
   List<Widget> _children = [
     MainDashboardPage(),
-    FriendProfilePage(
-      friendData: UserData(
-        profile: UserProfile(alias: "Jack Zhao", username: "jackzhao98"),
-        data: [WidgetData.widgetSample1, WidgetData.widgetSample3],
-      ),
-      friendStatus: FriendStatus.follower,
-    ),
-    // FriendWidgetList(
-    //   data: [WidgetData.widgetSample1, WidgetData.widgetSample3],
-    // ),
+    FollowPage(),
     Center(
       child: Text(
           "${WidgetData.widgetSample1.toJson()}, \n${WidgetData.widgetSample1.toJson()['createdTime'].runtimeType}"),
