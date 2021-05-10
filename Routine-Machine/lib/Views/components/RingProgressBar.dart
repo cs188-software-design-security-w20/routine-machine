@@ -4,7 +4,15 @@ import 'package:percent_indicator/percent_indicator.dart';
 import 'package:flutter_sfsymbols/flutter_sfsymbols.dart';
 
 class RingProgressBar extends StatelessWidget {
-  RingProgressBar({this.currentCount, this.goalCount, habitType, this.color}) {
+  RingProgressBar(
+      {this.currentCount,
+      this.goalCount,
+      habitType,
+      color,
+      this.showText = true,
+      this.ringSize = 110}) {
+    ringColor = color;
+
     // if current count <= 0, default to 0.01 so a little bit of the ring is visible
     if (currentCount > goalCount) {
       _percentComplete = 1;
@@ -32,9 +40,10 @@ class RingProgressBar extends StatelessWidget {
   final int currentCount;
   final int goalCount;
   double _percentComplete;
+  Color ringColor;
+  bool showText;
   // not sure how sizing is done in mobile dev so hard coding here
-  final double ringSize = 110;
-  final Color color;
+  double ringSize;
 
   @override
   Widget build(BuildContext context) {
@@ -43,16 +52,18 @@ class RingProgressBar extends StatelessWidget {
       height: ringSize,
       child: Stack(
         children: <Widget>[
-          Container(
-            width: ringSize,
-            height: ringSize,
-            child: CircularPercentIndicator(
-              radius: ringSize,
-              lineWidth: 5.0,
-              percent: _percentComplete,
-              circularStrokeCap: CircularStrokeCap.round,
-              backgroundColor: color.withOpacity(0.3),
-              progressColor: color,
+          Center(
+            child: Container(
+              width: ringSize,
+              height: ringSize,
+              child: CircularPercentIndicator(
+                radius: ringSize,
+                lineWidth: 6.0,
+                percent: _percentComplete,
+                circularStrokeCap: CircularStrokeCap.round,
+                backgroundColor: ringColor.withOpacity(0.3),
+                progressColor: ringColor,
+              ),
             ),
           ),
           Center(
@@ -60,31 +71,33 @@ class RingProgressBar extends StatelessWidget {
                 ? Icon(
                     SFSymbols.checkmark_alt,
                     size: 45,
-                    color: color,
+                    color: ringColor,
                   )
-                : RichText(
-                    textAlign: TextAlign.center,
-                    text: TextSpan(
-                      text: currentCount.toString(),
-                      style: kLargeTitleStyle,
-                      children: [
-                        TextSpan(
-                          text: '/$goalCount\n',
-                          style: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 24.0,
-                          ),
+                : this.showText
+                    ? RichText(
+                        textAlign: TextAlign.center,
+                        text: TextSpan(
+                          text: currentCount.toString(),
+                          style: kLargeTitleStyle,
+                          children: [
+                            TextSpan(
+                              text: '/$goalCount\n',
+                              style: TextStyle(
+                                color: Colors.grey,
+                                fontSize: 24.0,
+                              ),
+                            ),
+                            TextSpan(
+                              text: counterLabel,
+                              style: TextStyle(
+                                color: Colors.grey,
+                                fontSize: 14.0,
+                              ),
+                            ),
+                          ],
                         ),
-                        TextSpan(
-                          text: counterLabel,
-                          style: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 14.0,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                      )
+                    : Text(""),
           )
         ],
       ),

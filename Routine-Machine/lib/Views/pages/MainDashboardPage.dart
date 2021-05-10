@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:routine_machine/Models/WidgetData.dart';
 import '../subviews/WidgetList.dart';
 import '../components/ProfileBarView.dart';
 import '../../constants/Palette.dart' as Palette;
@@ -105,6 +106,15 @@ final List<SampleWidgetData> sampleWidgetList = [
   ),
 ];
 
+final List<WidgetData> samples = [
+  WidgetData.widgetSample1,
+  WidgetData.widgetSample2,
+  WidgetData.widgetSample3,
+  WidgetData.widgetSample1,
+  WidgetData.widgetSample2,
+  WidgetData.widgetSample3,
+];
+
 class MainDashboardPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -120,7 +130,7 @@ class MainDashboardPage extends StatelessWidget {
               ),
             ),
             WidgetList(
-              widgetList: sampleWidgetList,
+              widgetList: samples,
             ),
           ],
         ),

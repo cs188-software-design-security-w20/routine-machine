@@ -1,23 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:routine_machine/Models/WidgetData.dart';
 import 'RingProgressBar.dart';
 import '../../constants/Constants.dart' as Constants;
 import '../pages/HabitDetailPage.dart';
 
 class SmallWidgetView extends StatefulWidget {
-  final String routineName;
-  final String widgetType;
-  final int count;
-  final int goal;
-  final List<DateTime> checkIns;
-  final Color color;
+  final WidgetData data;
 
-  SmallWidgetView(
-      {this.routineName,
-      this.widgetType,
-      this.count,
-      this.goal,
-      this.checkIns = const <DateTime>[],
-      this.color});
+  SmallWidgetView({this.data});
 
   @override
   _SmallWidgetViewState createState() => _SmallWidgetViewState();
@@ -25,6 +15,12 @@ class SmallWidgetView extends StatefulWidget {
 
 class _SmallWidgetViewState extends State<SmallWidgetView> {
   int count = 0; // eventually just fetch this state
+
+  @override
+  void initState() {
+    super.initState();
+    count = widget.data.currentPeriodCounts;
+  }
 
   void _incrementCount() {
     setState(() {
@@ -40,12 +36,12 @@ class _SmallWidgetViewState extends State<SmallWidgetView> {
       context,
       MaterialPageRoute(
         builder: (context) => HabitDetailPage(
-          routineName: widget.routineName,
-          widgetType: widget.widgetType,
+          routineName: widget.data.title,
+          widgetType: widget.data.widgetType,
           count: count,
-          goal: widget.goal,
-          checkIns: widget.checkIns,
-          color: widget.color,
+          goal: widget.data.periodicalGoal,
+          checkIns: widget.data.checkins,
+          color: Color(widget.data.color),
         ),
       ),
     );
@@ -62,29 +58,31 @@ class _SmallWidgetViewState extends State<SmallWidgetView> {
         padding: EdgeInsets.all(24),
         width: double.infinity,
         decoration: Constants.kCardDecorationStyle,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Padding(
-              padding: EdgeInsets.only(bottom: 16),
-              child: Text(
-                widget.routineName,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                style: Constants.kCardTitleStyle,
+        child: Expanded(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Padding(
+                padding: EdgeInsets.only(bottom: 16),
+                child: Text(
+                  widget.data.title,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: Constants.kCardTitleStyle,
+                ),
               ),
-            ),
-            GestureDetector(
-              onTap: _incrementCount,
-              child: RingProgressBar(
-                currentCount: count,
-                goalCount: widget.goal,
-                habitType: widget.widgetType,
-                color: widget.color,
+              GestureDetector(
+                onTap: _incrementCount,
+                child: RingProgressBar(
+                  currentCount: count,
+                  goalCount: widget.data.periodicalGoal,
+                  habitType: widget.data.widgetType,
+                  color: Color(widget.data.color),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

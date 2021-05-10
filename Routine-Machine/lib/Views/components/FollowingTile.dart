@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:routine_machine/Views/pages/FriendProfilePage.dart';
+import 'package:routine_machine/Models/FriendStatus.dart';
+import 'package:routine_machine/Models/UserData.dart';
+import 'package:routine_machine/Models/UserProfile.dart';
+import 'package:routine_machine/Models/WidgetData.dart';
 import './FollowTileInfo.dart';
 
 class FollowingTile extends StatelessWidget {
@@ -29,9 +33,15 @@ class FollowingTile extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                   builder: (context) => FriendProfilePage(
-                    firstName: this.firstName,
-                    lastName: this.lastName,
-                    // TODO: pass other data
+                    friendData: UserData(
+                      profile: UserProfile(
+                          alias: "Jack Zhao", username: "jackzhao98"),
+                      data: [
+                        WidgetData.widgetSample1,
+                        WidgetData.widgetSample3
+                      ],
+                    ),
+                    friendStatus: FriendStatus.follower,
                   ),
                 ),
               );

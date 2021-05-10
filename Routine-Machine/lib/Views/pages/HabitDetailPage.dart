@@ -4,6 +4,7 @@ import '../../constants/Palette.dart' as Palette;
 import '../components/RingProgressBar.dart';
 import '../components/TopBackBar.dart';
 import '../subviews/CheckInList.dart';
+import '../../Models/WidgetData.dart';
 
 class HabitDetailPage extends StatefulWidget {
   final String routineName;
@@ -12,7 +13,8 @@ class HabitDetailPage extends StatefulWidget {
   final int goal;
   final List<DateTime> checkIns;
   final Color color;
-
+//   WidgetData data;
+//   HabitDetailPage({this.data});
   HabitDetailPage({
     this.routineName,
     this.widgetType,
@@ -43,6 +45,7 @@ class _HabitDetailPageState extends State<HabitDetailPage> {
     });
   }
 
+  // WidgetData data;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
