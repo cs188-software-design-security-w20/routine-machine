@@ -5,7 +5,7 @@ import '../../constants/Constants.dart' as Constants;
 import '../pages/HabitDetailPage.dart';
 
 class SmallWidgetView extends StatefulWidget {
-  WidgetData data;
+  final WidgetData data;
 
   SmallWidgetView({this.data});
 
