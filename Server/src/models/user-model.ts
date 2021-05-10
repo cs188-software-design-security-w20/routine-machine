@@ -1,5 +1,5 @@
 import {
-  Table, Model, Column, PrimaryKey, DataType, BelongsToMany, AllowNull, IsUUID, Unique,
+  Table, Model, Column, PrimaryKey, DataType, BelongsToMany, AllowNull, Unique,
 } from 'sequelize-typescript';
 import Follow from './follow-model';
 import PendingFollow from './pending-follow-model';
