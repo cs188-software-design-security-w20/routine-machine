@@ -14,6 +14,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use('/user', authenticate, userRouter);
 app.use('/follow', authenticate, followRouter);
-app.use('/user_habit_data', authenticate, habitDataRouter);
+app.use('/habit_data', authenticate, habitDataRouter);
 
 export default app;
