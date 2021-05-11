@@ -11,8 +11,10 @@ String userProfileToJson(UserProfile data) => json.encode(data.toJson());
 
 class UserProfile {
   UserProfile({
+    this.userID,
     this.username,
-    this.alias,
+    this.firstName,
+    this.lastName,
     this.email,
     this.follower,
     this.following,
@@ -20,8 +22,10 @@ class UserProfile {
     this.pendingFollowing,
   });
 
+  String userID;
   String username;
-  String alias;
+  String firstName;
+  String lastName;
   String email;
   List<String> follower;
   List<String> following;
@@ -29,8 +33,10 @@ class UserProfile {
   List<String> pendingFollowing;
 
   factory UserProfile.fromJson(Map<String, dynamic> json) => UserProfile(
+        userID: json["userID"],
         username: json["username"],
-        alias: json["alias"],
+        firstName: json["firstName"],
+        lastName: json["lastName"],
         email: json["email"],
         follower: List<String>.from(json["follower"].map((x) => x)),
         following: List<String>.from(json["following"].map((x) => x)),
@@ -41,8 +47,10 @@ class UserProfile {
       );
 
   Map<String, dynamic> toJson() => {
+        "userID": userID,
         "username": username,
-        "alias": alias,
+        "firstName": firstName,
+        "lastName": lastName,
         "email": email,
         "follower": List<dynamic>.from(follower.map((x) => x)),
         "following": List<dynamic>.from(following.map((x) => x)),

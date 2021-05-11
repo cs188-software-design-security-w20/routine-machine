@@ -1,6 +1,15 @@
 import 'package:flutter/material.dart';
 import '../components/FollowingTile.dart';
-import 'package:timeago/timeago.dart' as timeago;
+import '../../constants/Palette.dart' as Palette;
+
+final List colors = [
+  Palette.pink,
+  Palette.yellow,
+  Palette.orange,
+  Palette.green,
+  Palette.blue,
+  Palette.purple,
+];
 
 class FollowingTileList extends StatelessWidget {
   final List followingList;
@@ -17,14 +26,9 @@ class FollowingTileList extends StatelessWidget {
             shrinkWrap: true,
             separatorBuilder: (BuildContext context, int index) => Divider(),
             itemBuilder: (context, index) {
-              var user = followingList[index];
-              String lastRoutineCheckIn =
-                  '${user.routineName} ${timeago.format(user.lastCheckIn)}';
               return FollowingTile(
-                firstName: user.firstName,
-                lastName: user.lastName,
-                caption: lastRoutineCheckIn,
-                color: user.color,
+                followingProfile: followingList[index],
+                color: colors[index % colors.length],
               );
             },
           );
