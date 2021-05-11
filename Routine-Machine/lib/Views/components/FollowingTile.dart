@@ -1,18 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:routine_machine/Views/pages/FriendProfilePage.dart';
-import 'package:routine_machine/Models/FriendStatus.dart';
-import 'package:routine_machine/Models/UserData.dart';
 import 'package:routine_machine/Models/UserProfile.dart';
-import 'package:routine_machine/Models/WidgetData.dart';
 import './FollowTileInfo.dart';
 
 class FollowingTile extends StatelessWidget {
-  final String firstName;
-  final String lastName;
-  final String caption;
+  final UserProfile followingProfile;
   final Color color;
 
-  FollowingTile({this.firstName, this.lastName, this.caption, this.color});
+  FollowingTile({this.followingProfile, this.color});
 
   @override
   Widget build(BuildContext context) {
@@ -20,9 +15,9 @@ class FollowingTile extends StatelessWidget {
       child: Row(
         children: [
           FollowTileInfo(
-            firstName: this.firstName,
-            lastName: this.lastName,
-            caption: this.caption,
+            firstName: this.followingProfile.firstName,
+            lastName: this.followingProfile.lastName,
+            caption: '@${this.followingProfile.username}',
             color: this.color,
           ),
           IconButton(
@@ -33,15 +28,8 @@ class FollowingTile extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                   builder: (context) => FriendProfilePage(
-                    friendData: UserData(
-                      profile: UserProfile(
-                          alias: "Jack Zhao", username: "jackzhao98"),
-                      data: [
-                        WidgetData.widgetSample1,
-                        WidgetData.widgetSample3
-                      ],
-                    ),
-                    friendStatus: FriendStatus.follower,
+                    friendProfile: followingProfile,
+                    userColor: this.color,
                   ),
                 ),
               );

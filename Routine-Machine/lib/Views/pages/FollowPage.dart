@@ -4,75 +4,57 @@ import 'dart:io';
 import 'SearchResultPage.dart';
 import '../../constants/Palette.dart' as Palette;
 import '../../constants/Constants.dart' as Constants;
-import '../../Models/SampleFollowTileData.dart';
 import '../subviews/FollowingTileList.dart';
 import '../subviews/FollowerRequestTileList.dart';
 import '../../Models/SampleFollowerRequestData.dart';
+import '../../Models/UserProfile.dart';
 
-final List<SampleFollowTileData> sampleFollowingList = [
-  SampleFollowTileData(
+final List<UserProfile> sampleFollowingList = [
+  UserProfile(
     firstName: 'Spencer',
     lastName: 'Jin',
-    routineName: 'Workout',
-    lastCheckIn: new DateTime.now(),
-    color: Palette.pink,
+    username: 'sj_sj_sj',
   ),
-  SampleFollowTileData(
-    firstName: 'Lee',
-    lastName: 'Jieun',
-    routineName: 'Practice singing',
-    lastCheckIn: new DateTime.now().subtract(new Duration(minutes: 15)),
-    color: Palette.purple,
-  ),
-  SampleFollowTileData(
+  UserProfile(
     firstName: 'Erika',
     lastName: 'Shen',
-    routineName: 'Hike',
-    lastCheckIn: new DateTime.now().subtract(new Duration(days: 1)),
-    color: Palette.blue,
+    username: 'eggy',
   ),
-  SampleFollowTileData(
+  UserProfile(
+    firstName: 'Jody',
+    lastName: 'Lin',
+    username: 'jowody',
+  ),
+  UserProfile(
     firstName: 'Spencer',
     lastName: 'Jin',
-    routineName: 'Workout',
-    lastCheckIn: new DateTime.now(),
-    color: Palette.pink,
+    username: 'sj_sj_sj',
   ),
-  SampleFollowTileData(
-    firstName: 'Lee',
-    lastName: 'Jieun',
-    routineName: 'Practice singing',
-    lastCheckIn: new DateTime.now().subtract(new Duration(minutes: 15)),
-    color: Palette.purple,
-  ),
-  SampleFollowTileData(
+  UserProfile(
     firstName: 'Erika',
     lastName: 'Shen',
-    routineName: 'Hike',
-    lastCheckIn: new DateTime.now().subtract(new Duration(days: 1)),
-    color: Palette.blue,
+    username: 'eggy',
   ),
-  SampleFollowTileData(
+  UserProfile(
+    firstName: 'Jody',
+    lastName: 'Lin',
+    username: 'jowody',
+  ),
+  UserProfile(
     firstName: 'Spencer',
     lastName: 'Jin',
-    routineName: 'Workout',
-    lastCheckIn: new DateTime.now(),
-    color: Palette.pink,
+    username: 'sj_sj_sj',
   ),
-  SampleFollowTileData(
-    firstName: 'Lee',
-    lastName: 'Jieun',
-    routineName: 'Practice singing',
-    lastCheckIn: new DateTime.now().subtract(new Duration(minutes: 15)),
-    color: Palette.purple,
-  ),
-  SampleFollowTileData(
+  UserProfile(
     firstName: 'Erika',
     lastName: 'Shen',
-    routineName: 'Hike',
-    lastCheckIn: new DateTime.now().subtract(new Duration(days: 1)),
-    color: Palette.blue,
+    username: 'eggy',
   ),
+  UserProfile(
+    firstName: 'Jody',
+    lastName: 'Lin',
+    username: 'jowody',
+  )
 ];
 
 final List<SampleFollowerRequestData> sampleFollowerRequestList = [
