@@ -11,7 +11,7 @@ const habitDataRouter = Router();
  */
 habitDataRouter.get('/', async (req, res) => {
   try {
-    const { id } = req.params;
+    const { id } = req.query;
     const habitDataDEKPair = await HabitDataService.getUserHabitDataDEKPair(id);
     res.status(200).json(habitDataDEKPair);
   } catch (error) {
@@ -28,7 +28,7 @@ habitDataRouter.post('/', async (req, res) => {
   try {
     const { id, habit_data } = req.body;
     await setHabitData(id, habit_data);
-    res.status(200);
+    res.json({ success: `Habit data for ${id} successfully updated`, status: 200 });
   } catch (error) {
     res.status(409).send(error);
   }
@@ -43,7 +43,7 @@ habitDataRouter.post('/', async (req, res) => {
  */
 habitDataRouter.get('/following/', async (req, res) => {
   try {
-    const { followee_id, follower_id } = req.params;
+    const { followee_id, follower_id } = req.query;
     const followingHabitDataDEKPair = await HabitDataService
       .getFollowingHabitDataDEKPair(followee_id, follower_id);
     res.status(200).json(followingHabitDataDEKPair);
