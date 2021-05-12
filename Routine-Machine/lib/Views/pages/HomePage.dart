@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sfsymbols/flutter_sfsymbols.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:routine_machine/Models/WidgetData.dart';
 import 'LoginPage.dart';
 import 'FollowPage.dart';
 import 'MainDashboardPage.dart';
-import 'package:flutter/cupertino.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -17,16 +18,13 @@ class _HomePageState extends State<HomePage> {
   );
   int _page = 0;
 
-  final List<Widget> _children = [
+  List<Widget> _children = [
     MainDashboardPage(),
     FollowPage(),
-    Container(
-      color: Colors.white,
-      padding: EdgeInsets.all(16),
-      child: Center(
-        child: Text("3rd View"),
-      ),
-    ),
+    Center(
+      child: Text(
+          "${WidgetData.widgetSample1.toJson()}, \n${WidgetData.widgetSample1.toJson()['createdTime'].runtimeType}"),
+    )
   ];
 
   List<BottomNavigationBarItem> buildBottomNavBarItems() {

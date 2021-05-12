@@ -1,108 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:routine_machine/Models/WidgetData.dart';
 import '../subviews/WidgetList.dart';
 import '../components/ProfileBarView.dart';
 import '../../constants/Palette.dart' as Palette;
-import '../../Models/SampleWidgetData.dart';
 
-final List<SampleWidgetData> sampleWidgetList = [
-  SampleWidgetData(
-    routineName: 'Drink Water',
-    widgetType: 'daily',
-    count: 2,
-    goal: 5,
-    checkIns: [
-      new DateTime.now(),
-      new DateTime.now().subtract(Duration(hours: 2)),
-      new DateTime.now().subtract(Duration(days: 1)),
-    ],
-    color: Palette.blue,
-  ),
-  SampleWidgetData(
-    routineName: 'Workout',
-    widgetType: 'weekly',
-    count: 3,
-    goal: 5,
-    checkIns: [],
-    color: Palette.pink,
-  ),
-  SampleWidgetData(
-    routineName: 'Read a Book',
-    widgetType: 'monthly',
-    count: 11,
-    goal: 20,
-    checkIns: [
-      new DateTime.now(),
-      new DateTime.now().subtract(Duration(hours: 2)),
-      new DateTime.now().subtract(Duration(days: 1)),
-    ],
-    color: Palette.green,
-  ),
-  SampleWidgetData(
-    routineName: 'Sleep Early',
-    widgetType: 'weekly',
-    count: 2,
-    goal: 7,
-    checkIns: [
-      new DateTime.now(),
-      new DateTime.now().subtract(Duration(hours: 2)),
-      new DateTime.now().subtract(Duration(days: 1)),
-    ],
-    color: Palette.yellow,
-  ),
-  SampleWidgetData(
-    routineName: 'Drink Water',
-    widgetType: 'daily',
-    count: 2,
-    goal: 5,
-    checkIns: [
-      new DateTime.now(),
-      new DateTime.now().subtract(Duration(hours: 2)),
-      new DateTime.now().subtract(Duration(days: 1)),
-    ],
-    color: Palette.blue,
-  ),
-  SampleWidgetData(
-    routineName: 'Workout',
-    widgetType: 'weekly',
-    count: 3,
-    goal: 5,
-    checkIns: [
-      new DateTime.now(),
-      new DateTime.now().subtract(Duration(hours: 2)),
-      new DateTime.now().subtract(Duration(days: 1)),
-    ],
-    color: Palette.pink,
-  ),
-  SampleWidgetData(
-    routineName: 'Read a Book',
-    widgetType: 'monthly',
-    count: 11,
-    goal: 20,
-    checkIns: [],
-    color: Palette.green,
-  ),
-  SampleWidgetData(
-    routineName: 'Sleep Early',
-    widgetType: 'weekly',
-    count: 2,
-    goal: 7,
-    checkIns: [
-      new DateTime.now(),
-      new DateTime.now().subtract(Duration(days: 1)),
-    ],
-    color: Palette.yellow,
-  ),
-  SampleWidgetData(
-    routineName: 'Study More You Dummy Get Up and Work',
-    widgetType: 'weekly',
-    count: 2,
-    goal: 7,
-    checkIns: [
-      new DateTime.now(),
-      new DateTime.now().subtract(Duration(days: 1)),
-    ],
-    color: Palette.yellow,
-  ),
+final List<WidgetData> samples = [
+  WidgetData.widgetSample1,
+  WidgetData.widgetSample2,
+  WidgetData.widgetSample3,
+  WidgetData.widgetSample1,
+  WidgetData.widgetSample2,
+  WidgetData.widgetSample3,
 ];
 
 class MainDashboardPage extends StatefulWidget {
@@ -111,12 +19,12 @@ class MainDashboardPage extends StatefulWidget {
 }
 
 class _MainDashboardPageState extends State<MainDashboardPage> {
-  Future<List<SampleWidgetData>> widgetList;
+  Future<List<WidgetData>> widgetList;
 
-  Future<List<SampleWidgetData>> _fetchWidgetData() {
+  Future<List<WidgetData>> _fetchWidgetData() {
     // TODO: replace this with actual api wrapper call
-    return Future<List<SampleWidgetData>>.delayed(
-        const Duration(seconds: 2), () => sampleWidgetList);
+    return Future<List<WidgetData>>.delayed(
+        const Duration(seconds: 2), () => samples);
   }
 
   @override
@@ -149,7 +57,7 @@ class _MainDashboardPageState extends State<MainDashboardPage> {
               FutureBuilder(
                 future: widgetList,
                 builder: (BuildContext context,
-                    AsyncSnapshot<List<SampleWidgetData>> snapshot) {
+                    AsyncSnapshot<List<WidgetData>> snapshot) {
                   Widget dashboardContent;
                   if (snapshot.hasData) {
                     dashboardContent = WidgetList(
