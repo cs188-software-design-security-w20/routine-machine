@@ -9,10 +9,11 @@
     "dev": "ts-node-dev src/index.ts",
     "start": "ts-node src/index.ts"
   },
-  "author": "", 
+  "author": "",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "firebase-admin": "^9.6.0",
@@ -27,6 +28,7 @@
     "sequelize-typescript": "^2.1.0"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.10",
     "@types/express": "^4.17.11",
     "@types/jest": "^26.0.22",
     "@types/morgan": "^1.9.2",
