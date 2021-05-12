@@ -6,6 +6,8 @@ class AESKey {
   String key;
   String iv;
   AESKey({this.key, this.iv});
+  @override
+  String toString() => "$key$iv";
 }
 
 class EncryptedDEK {
