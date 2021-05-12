@@ -2,12 +2,14 @@
 class UserProfile {
   final String userID;
   final String userName;
-  final String bio;
-  final String profileImage;
+  final dynamic profile;
+  final String firstName;
+  final String lastName;
 
   UserProfile.fromJSON(Map<String, dynamic> json)
-      : userID = json['user_id'],
+      : userID = json['id'],
         userName = json['user_name'],
-        bio = json['bio'],
-        profileImage = json['profile_image'];
+        profile = json['profile'],
+        firstName = json['first_name'],
+        lastName = json['last_name'];
 }
