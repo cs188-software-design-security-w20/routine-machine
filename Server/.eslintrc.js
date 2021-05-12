@@ -19,5 +19,6 @@ module.exports = {
   rules: {
     'import/no-cycle': 'off',
     'linebreak-style': 'off',
+    '@typescript-eslint/naming-convention': 'off',
   },
 };
