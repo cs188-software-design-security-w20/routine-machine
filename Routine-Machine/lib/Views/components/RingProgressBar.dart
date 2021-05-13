@@ -57,6 +57,9 @@ class RingProgressBar extends StatelessWidget {
               width: ringSize,
               height: ringSize,
               child: CircularPercentIndicator(
+                animateFromLastPercent: true,
+                animation: true,
+                animationDuration: 200,
                 radius: ringSize,
                 lineWidth: 6.0,
                 percent: _percentComplete,

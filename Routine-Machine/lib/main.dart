@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:routine_machine/Views/pages/HomePage.dart';
 
-import 'Models/SampleFollowTileData.dart';
-import 'constants/Palette.dart' as Palette;
+// import 'Models/SampleFollowTileData.dart';
+// import 'constants/Palette.dart' as Palette;
 
-import 'Views/components/RingProgressBar.dart';
+// import 'Views/components/RingProgressBar.dart';
 // import 'Views/components/BottomNavBar.dart';
-import 'Views/components/ProfileBarView.dart';
-import 'Views/subviews/CheckInList.dart';
-import 'Views/subviews/FollowingTileList.dart';
-import 'Views/components/SmallWidgetView.dart';
+// import 'Views/components/ProfileBarView.dart';
+// import 'Views/subviews/CheckInList.dart';
+// import 'Views/subviews/FollowingTileList.dart';
+// import 'Views/components/SmallWidgetView.dart';
 
-import 'package:flutter/services.dart';
-import 'Views/pages/LoginPage.dart';
-import 'Views/components/transition_route_observer.dart';
+// import 'package:flutter/services.dart';
+// import 'Views/pages/LoginPage.dart';
+// import 'Views/components/transition_route_observer.dart';
 
 // sample data to demo the check in list
 final sampleCheckIns = <DateTime>[
@@ -27,10 +27,7 @@ class RoutineMachine extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      // theme: ThemeData(fontFamily: "SF Pro Rounded"),
-      // title: "Routine Machine",
-      // home: HomePage(),
-
+      debugShowCheckedModeBanner: false,
       //sample login page
       title: 'Login Page',
       theme: ThemeData(
