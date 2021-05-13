@@ -23,7 +23,6 @@ class APIWrapper {
   }
 
   Future<String> _getAuthHeader() async {
-    return 'Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IjUzNmRhZWFiZjhkZDY1ZDRkZTIxZTgyNGI4OTlhMWYzZGEyZjg5NTgiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vcm91dGluZS1tYWNoaW5lLTU2ZWMxIiwiYXVkIjoicm91dGluZS1tYWNoaW5lLTU2ZWMxIiwiYXV0aF90aW1lIjoxNjIwNzg5NzA4LCJ1c2VyX2lkIjoic3hEQ000RGdsUmdJSHB1dExrTlpWM0ZIRXlBMyIsInN1YiI6InN4RENNNERnbFJnSUhwdXRMa05aVjNGSEV5QTMiLCJpYXQiOjE2MjA3ODk3MDgsImV4cCI6MTYyMDc5MzMwOCwiZW1haWwiOiJyaWNoYXJkLmN4LnRhbmdAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJmaXJlYmFzZSI6eyJpZGVudGl0aWVzIjp7ImVtYWlsIjpbInJpY2hhcmQuY3gudGFuZ0BnbWFpbC5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJwYXNzd29yZCJ9fQ.dviDDqXPKn7myaKd9GlYtH2M-VPeaNV7U0Clokqgy8yCjr10wWa3o-MOoyBdAu7F7b8HrOUmFjGpX8VByG6hT4UlmAyfao5NFpmD_QbyxwbvNWAszbGSW91n3h37838Ylm0AW8aVHM7lpY5BLusad4pgp92Kqrem7tAKFX8B8_mSf1bbvv2B8b1jn-V-n6rUZaXASLGbyQEeZo2jhe6VyJAjNm4Tz__j4hx2LG3WmsUtP7jjfc3-FzEL6hXGyrHHkwAg0-RK9ka20sd92TMdjHHh12oXvJJIVVp7zP5ll-doGIvt6Io93D1gAe3jMq4FeHOvbf_3i3QAX_0XFRQAEg';
     if (user == null) {
       throw Exception(
           'No associated firebase user. Be sure to use "setUser" before other methods');
@@ -49,7 +48,7 @@ class APIWrapper {
     }
     final json = Convert.jsonDecode(response.body);
     print(json);
-    return UserProfile.fromJSON(json);
+    return UserProfile.fromJson(json);
   }
 
   Future<void> setUserProfile({Object userProfile}) async {
