@@ -153,7 +153,9 @@ class _FollowPageState extends State<FollowPage> {
         children: [
           Platform.isAndroid
               ? SizedBox(height: 36)
-              : null, // for Jody's phone lmao - i have camera overlap
+              : SizedBox(
+                  height: 0,
+                ), // for Jody's phone lmao - i have camera overlap
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
