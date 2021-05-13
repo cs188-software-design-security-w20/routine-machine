@@ -51,17 +51,7 @@ class LoginPage extends StatelessWidget {
       logo: '../assets/images/rmlogo.png',
       logoTag: Constants.logoTag,
       titleTag: Constants.titleTag,
-      loginProviders: <LoginProvider>[
-        LoginProvider(
-          icon: FontAwesomeIcons.google,
-          callback: () async {
-            print('start google sign in');
-            await Future.delayed(loginTime);
-            print('stop google sign in');
-            return null;
-          },
-        ),
-      ],
+      loginProviders: null,
       messages: LoginMessages(
         usernameHint: 'Email',
         passwordHint: 'Password',
@@ -99,8 +89,8 @@ class LoginPage extends StatelessWidget {
         return null;
       },
       passwordValidator: (value) {
-        if (value.isEmpty) {
-          return 'Password is empty';
+        if (value.length < 6) {
+          return 'Password must be at least 6 characters.';
         }
         return null;
       },

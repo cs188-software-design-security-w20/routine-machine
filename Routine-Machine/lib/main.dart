@@ -14,6 +14,7 @@ import 'Views/components/SmallWidgetView.dart';
 import 'package:flutter/services.dart';
 import 'Views/pages/LoginPage.dart';
 import 'Views/components/transition_route_observer.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 // sample data to demo the check in list
 final sampleCheckIns = <DateTime>[
@@ -21,9 +22,15 @@ final sampleCheckIns = <DateTime>[
   new DateTime.utc(2021, 4, 20),
   new DateTime.utc(2020, 4, 30),
 ];
-void main() => runApp(RoutineMachine());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+
+  runApp(RoutineMachine());
+}
 
 class RoutineMachine extends StatelessWidget {
+  final Future<FirebaseApp> _fbApp = Firebase.initializeApp();
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
