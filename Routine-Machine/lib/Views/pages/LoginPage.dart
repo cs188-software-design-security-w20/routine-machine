@@ -15,33 +15,27 @@ class LoginPage extends StatelessWidget {
   Duration get loginTime => Duration(milliseconds: timeDilation.ceil() * 2250);
 
   Future<String> _loginUser(LoginData loginData) async {
-    if (_formKey.currentState.validate()) {
-      final User user = (await _auth.signInWithEmailAndPassword(
-        email: loginData.name,
-        password: loginData.password,
-      ))
-          .user;
+    final User user = (await _auth.signInWithEmailAndPassword(
+      email: loginData.name,
+      password: loginData.password,
+    ))
+        .user;
 
-      if (user != null) {
-        return null;
-      } else {
-        return null;
-      }
+    if (user != null) {
+      return null;
+    } else {
+      return null;
     }
-    return 'Invalid email or password.';
   }
 
   Future<String> _registerUser(LoginData loginData) async {
-    if (_formKey.currentState.validate()) {
-      final User user = (await _auth.createUserWithEmailAndPassword(
-        email: loginData.name,
-        password: loginData.password,
-      ))
-          .user;
+    final User user = (await _auth.createUserWithEmailAndPassword(
+      email: loginData.name,
+      password: loginData.password,
+    ))
+        .user;
 
-      return null;
-    }
-    return "Invalid email or password.";
+    return null;
   }
 
   @override
