@@ -5,10 +5,10 @@ import User from '../models/user-model';
 export const addPendingFollow = (pf: PendingFollowSchema) => PendingFollow.create(pf);
 
 export const removePendingFollow = (
-  pf: PendingFollowSchema
+  pf: PendingFollowSchema,
 ) => PendingFollow.destroy({
   where: {
-    ...pf
+    ...pf,
   },
 });
 

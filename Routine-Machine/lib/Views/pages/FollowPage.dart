@@ -1,100 +1,81 @@
 import 'package:flutter/material.dart';
 import 'dart:io';
-
 import 'SearchResultPage.dart';
-import '../../constants/Palette.dart' as Palette;
 import '../../constants/Constants.dart' as Constants;
-import '../../Models/SampleFollowTileData.dart';
 import '../subviews/FollowingTileList.dart';
-import '../subviews/FollowerRequestTileList.dart';
-import '../../Models/SampleFollowerRequestData.dart';
+import '../subviews/FollowerTileList.dart';
+import '../../Models/UserProfile.dart';
 
-final List<SampleFollowTileData> sampleFollowingList = [
-  SampleFollowTileData(
+final List<UserProfile> sampleFollowingList = [
+  UserProfile(
     firstName: 'Spencer',
     lastName: 'Jin',
-    routineName: 'Workout',
-    lastCheckIn: new DateTime.now(),
-    color: Palette.pink,
+    username: 'sj_sj_sj',
   ),
-  SampleFollowTileData(
-    firstName: 'Lee',
-    lastName: 'Jieun',
-    routineName: 'Practice singing',
-    lastCheckIn: new DateTime.now().subtract(new Duration(minutes: 15)),
-    color: Palette.purple,
-  ),
-  SampleFollowTileData(
+  UserProfile(
     firstName: 'Erika',
     lastName: 'Shen',
-    routineName: 'Hike',
-    lastCheckIn: new DateTime.now().subtract(new Duration(days: 1)),
-    color: Palette.blue,
+    username: 'eggy',
   ),
-  SampleFollowTileData(
-    firstName: 'Spencer',
-    lastName: 'Jin',
-    routineName: 'Workout',
-    lastCheckIn: new DateTime.now(),
-    color: Palette.pink,
-  ),
-  SampleFollowTileData(
-    firstName: 'Lee',
-    lastName: 'Jieun',
-    routineName: 'Practice singing',
-    lastCheckIn: new DateTime.now().subtract(new Duration(minutes: 15)),
-    color: Palette.purple,
-  ),
-  SampleFollowTileData(
-    firstName: 'Erika',
-    lastName: 'Shen',
-    routineName: 'Hike',
-    lastCheckIn: new DateTime.now().subtract(new Duration(days: 1)),
-    color: Palette.blue,
-  ),
-  SampleFollowTileData(
-    firstName: 'Spencer',
-    lastName: 'Jin',
-    routineName: 'Workout',
-    lastCheckIn: new DateTime.now(),
-    color: Palette.pink,
-  ),
-  SampleFollowTileData(
-    firstName: 'Lee',
-    lastName: 'Jieun',
-    routineName: 'Practice singing',
-    lastCheckIn: new DateTime.now().subtract(new Duration(minutes: 15)),
-    color: Palette.purple,
-  ),
-  SampleFollowTileData(
-    firstName: 'Erika',
-    lastName: 'Shen',
-    routineName: 'Hike',
-    lastCheckIn: new DateTime.now().subtract(new Duration(days: 1)),
-    color: Palette.blue,
-  ),
-];
-
-final List<SampleFollowerRequestData> sampleFollowerRequestList = [
-  SampleFollowerRequestData(
-    firstName: 'Carina',
-    lastName: 'Xiong',
-    userName: 'carina_x',
-    color: Palette.blue,
-  ),
-  SampleFollowerRequestData(
-    firstName: 'Jack',
-    lastName: 'Zhao',
-    userName: 'jjack_zz',
-    color: Palette.pink,
-  ),
-  SampleFollowerRequestData(
+  UserProfile(
     firstName: 'Jody',
     lastName: 'Lin',
-    userName: 'jowody',
-    color: Palette.yellow,
+    username: 'jowody',
+  ),
+  UserProfile(
+    firstName: 'Spencer',
+    lastName: 'Jin',
+    username: 'sj_sj_sj',
+  ),
+  UserProfile(
+    firstName: 'Erika',
+    lastName: 'Shen',
+    username: 'eggy',
+  ),
+  UserProfile(
+    firstName: 'Jody',
+    lastName: 'Lin',
+    username: 'jowody',
+  ),
+  UserProfile(
+    firstName: 'Spencer',
+    lastName: 'Jin',
+    username: 'sj_sj_sj',
+  ),
+  UserProfile(
+    firstName: 'Erika',
+    lastName: 'Shen',
+    username: 'eggy',
+  ),
+  UserProfile(
+    firstName: 'Jody',
+    lastName: 'Lin',
+    username: 'jowody',
+  )
+];
+
+final List<UserProfile> sampleFollowerRequestList = [
+  UserProfile(
+    firstName: 'Carina',
+    lastName: 'Xiong',
+    username: 'carina_x',
+  ),
+  UserProfile(
+    firstName: 'Jack',
+    lastName: 'Zhao',
+    username: 'jjack_zz',
+  ),
+  UserProfile(
+    firstName: 'Jody',
+    lastName: 'Lin',
+    username: 'jowody',
   ),
 ];
+
+enum FollowPageType {
+  followers,
+  following,
+}
 
 class FollowPage extends StatefulWidget {
   @override
@@ -105,7 +86,18 @@ class _FollowPageState extends State<FollowPage> {
   // Create a text controller and use it to retrieve the current value
   // of the TextField.
   final searchController = TextEditingController();
-  String _page = 'following';
+  FollowPageType _page = FollowPageType.following;
+  Future<List<UserProfile>> _followingList;
+  Future<List<UserProfile>> _followerRequestList;
+  Future<List<UserProfile>> _followerList;
+
+  @override
+  void initState() {
+    super.initState();
+    _followingList = _getFollowingList();
+    _followerRequestList = _getFollowerRequestList();
+    _followerList = _getFollowerList();
+  }
 
   @override
   void dispose() {
@@ -114,18 +106,32 @@ class _FollowPageState extends State<FollowPage> {
     super.dispose();
   }
 
+  Future<List<UserProfile>> _getFollowingList() {
+    return Future.delayed(new Duration(seconds: 2), () => sampleFollowingList);
+  }
+
+  Future<List<UserProfile>> _getFollowerRequestList() {
+    return Future.delayed(
+        new Duration(seconds: 2), () => sampleFollowerRequestList);
+  }
+
+  Future<List<UserProfile>> _getFollowerList() {
+    return Future.delayed(
+        new Duration(seconds: 2), () => sampleFollowerRequestList);
+  }
+
   void _switchToFollowers() {
-    if (_page != 'followers') {
+    if (_page != FollowPageType.followers) {
       setState(() {
-        _page = 'followers';
+        _page = FollowPageType.followers;
       });
     }
   }
 
   void _switchToFollowing() {
-    if (_page != 'following') {
+    if (_page != FollowPageType.following) {
       setState(() {
-        _page = 'following';
+        _page = FollowPageType.following;
       });
     }
   }
@@ -155,7 +161,7 @@ class _FollowPageState extends State<FollowPage> {
                 onTap: _switchToFollowing,
                 child: Text(
                   'Following',
-                  style: _page == 'following'
+                  style: _page == FollowPageType.following
                       ? Constants.kLargeTitleStyle
                       : Constants.kUnselectedTitleStyle,
                 ),
@@ -164,7 +170,7 @@ class _FollowPageState extends State<FollowPage> {
                 onTap: _switchToFollowers,
                 child: Text(
                   'Followers',
-                  style: _page == 'followers'
+                  style: _page == FollowPageType.followers
                       ? Constants.kLargeTitleStyle
                       : Constants.kUnselectedTitleStyle,
                 ),
@@ -192,14 +198,48 @@ class _FollowPageState extends State<FollowPage> {
             ),
           ),
           Expanded(
-            child: _page == 'following'
-                ? FollowingTileList(
-                    followingList: sampleFollowingList,
-                  )
-                : FollowerRequestTileList(
-                    followerRequestList: sampleFollowerRequestList,
-                  ),
-          ),
+              child: FutureBuilder(
+            future: Future.wait(
+                [_followingList, _followerRequestList, _followerList]),
+            builder:
+                (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
+              Widget followContent;
+              if (snapshot.hasData) {
+                followContent = _page == FollowPageType.following
+                    ? RefreshIndicator(
+                        onRefresh: () async {
+                          setState(() {
+                            _followingList = _getFollowingList();
+                          });
+                        },
+                        child: FollowingTileList(
+                          followingList: snapshot.data[0],
+                        ),
+                      )
+                    : RefreshIndicator(
+                        onRefresh: () async {
+                          setState(() {
+                            _followerRequestList = _getFollowerRequestList();
+                            _followerList = _getFollowerList();
+                          });
+                        },
+                        child: FollowerTileList(
+                          followerRequestList: snapshot.data[1],
+                          followerList: snapshot.data[2],
+                        ),
+                      );
+              } else if (snapshot.hasError) {
+                followContent = Center(
+                  child: Text('Error loading follow data'),
+                );
+              } else {
+                followContent = Center(
+                  child: Text('loading follow data...'),
+                );
+              }
+              return followContent;
+            },
+          )),
         ],
       ),
     );

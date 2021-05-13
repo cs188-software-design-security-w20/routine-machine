@@ -48,7 +48,7 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return FlutterLogin(
       title: 'Routine Machine',
-      logo: '../assets/images/rmlogo.png',
+      logo: 'assets/images/rmlogo.png',
       logoTag: Constants.logoTag,
       titleTag: Constants.titleTag,
       loginProviders: null,

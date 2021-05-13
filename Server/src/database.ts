@@ -25,7 +25,7 @@ function initDB(): Sequelize {
 
   const sequelizeOptions = dbConfig[environment];
   const sequelize = new Sequelize(sequelizeOptions);
-  sequelize.addModels([path.join(__dirname, '/models/*.model.ts')]);
+  sequelize.addModels([path.join(__dirname, '/models/*-model.ts')]);
   return sequelize;
 }
 

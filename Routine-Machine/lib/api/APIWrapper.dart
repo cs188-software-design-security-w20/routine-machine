@@ -8,12 +8,7 @@ class APIWrapper {
   APIWrapper(this.user);
 
   Future<UserProfile> getUserProfile({String username}) async {
-    return UserProfile.fromJSON({
-      'user_id': 'temp',
-      'user_name': 'temp',
-      'bio': 'temp',
-      'profile_image': null,
-    });
+    return UserProfile.fromJson({});
   }
 
   Future<String> getUserPublicKey({String userID}) async {

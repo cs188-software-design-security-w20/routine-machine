@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 class TopBackBar extends StatelessWidget implements PreferredSizeWidget {
-  TopBackBar({Key key})
+  final dynamic passBack;
+  TopBackBar({this.passBack, Key key})
       : preferredSize = Size.fromHeight(kToolbarHeight),
         super(
           key: key,
@@ -10,7 +11,7 @@ class TopBackBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       leading: IconButton(
-        onPressed: () => Navigator.pop(context),
+        onPressed: () => Navigator.pop(context, passBack),
         icon: Icon(Icons.arrow_back_ios_rounded),
         color: Colors.grey,
       ),

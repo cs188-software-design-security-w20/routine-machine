@@ -1,5 +1,5 @@
 import {
-  Table, Model, Column, PrimaryKey, DataType, BelongsToMany, AllowNull, IsUUID, Unique,
+  Table, Model, Column, PrimaryKey, DataType, BelongsToMany, AllowNull, Unique,
 } from 'sequelize-typescript';
 import Follow from './follow-model';
 import PendingFollow from './pending-follow-model';
@@ -16,9 +16,8 @@ export interface UserSchema {
 
 @Table({ modelName: 'user' })
 export default class User extends Model<UserSchema> {
-  @IsUUID(4)
   @PrimaryKey
-  @Column(DataType.UUID)
+  @Column
   id: string;
 
   @Unique

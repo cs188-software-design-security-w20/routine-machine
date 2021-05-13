@@ -5,7 +5,7 @@ import 'Models/SampleFollowTileData.dart';
 import 'constants/Palette.dart' as Palette;
 
 import 'Views/components/RingProgressBar.dart';
-import 'Views/components/BottomNavBar.dart';
+// import 'Views/components/BottomNavBar.dart';
 import 'Views/components/ProfileBarView.dart';
 import 'Views/subviews/CheckInList.dart';
 import 'Views/subviews/FollowingTileList.dart';
@@ -74,7 +74,7 @@ class RoutineMachine extends StatelessWidget {
           overline: TextStyle(fontFamily: 'SF Pro Rounded'),
         ),
       ),
-      home: LoginPage(),
+      home: HomePage(),
       // navigatorObservers: [TransitionRouteObserver()],
       // initialRoute: LoginScreen.routeName,
       // routes: {

@@ -3,11 +3,11 @@ import 'package:routine_machine/Views/pages/FriendProfilePage.dart';
 import 'package:routine_machine/Models/UserProfile.dart';
 import './FollowTileInfo.dart';
 
-class FollowingTile extends StatelessWidget {
-  final UserProfile followingProfile;
+class FollowerTile extends StatelessWidget {
+  final UserProfile followerProfile;
   final Color color;
 
-  FollowingTile({this.followingProfile, this.color});
+  FollowerTile({this.followerProfile, this.color});
 
   @override
   Widget build(BuildContext context) {
@@ -15,9 +15,9 @@ class FollowingTile extends StatelessWidget {
       child: Row(
         children: [
           FollowTileInfo(
-            firstName: this.followingProfile.firstName,
-            lastName: this.followingProfile.lastName,
-            caption: '@${this.followingProfile.username}',
+            firstName: this.followerProfile.firstName,
+            lastName: this.followerProfile.lastName,
+            caption: '@${this.followerProfile.username} follows you',
             color: this.color,
           ),
           IconButton(
@@ -28,7 +28,7 @@ class FollowingTile extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                   builder: (context) => FriendProfilePage(
-                    friendProfile: followingProfile,
+                    friendProfile: followerProfile,
                     userColor: this.color,
                   ),
                 ),

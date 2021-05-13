@@ -18,6 +18,7 @@ const dbOptions: SequelizeOptionEnvironments = {
     port: env.db.port,
     dialect: 'postgres',
     isolationLevel: Transaction.ISOLATION_LEVELS.SERIALIZABLE,
+    logging: false
   },
   test: {
     username: env.db.user,
@@ -27,6 +28,7 @@ const dbOptions: SequelizeOptionEnvironments = {
     port: env.db.port,
     dialect: 'postgres',
     isolationLevel: Transaction.ISOLATION_LEVELS.SERIALIZABLE,
+    logging: false
   },
   production: {
     username: env.db.user,
@@ -36,6 +38,7 @@ const dbOptions: SequelizeOptionEnvironments = {
     port: env.db.port,
     dialect: 'postgres',
     isolationLevel: Transaction.ISOLATION_LEVELS.SERIALIZABLE,
+    logging: false,
     dialectOptions: {
       ssl: {
         require: true,
