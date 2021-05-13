@@ -1,19 +1,33 @@
 import 'package:flutter/material.dart';
 import './FollowTileInfo.dart';
 import '../../constants/Palette.dart' as Palette;
+import '../../Models/UserProfile.dart';
 
-class FollowRequestTile extends StatelessWidget {
-  final String firstName;
-  final String lastName;
-  final String userName;
-  final String caption;
+enum FollowStatus {
+  pending,
+  following,
+}
+
+class FollowRequestTile extends StatefulWidget {
+  final UserProfile userProfile;
   final Color color;
 
-  FollowRequestTile(
-      {this.firstName, this.lastName, this.userName, this.caption, this.color});
+  FollowRequestTile({this.userProfile, this.color});
+
+  @override
+  _FollowRequestTileState createState() => _FollowRequestTileState();
+}
+
+class _FollowRequestTileState extends State<FollowRequestTile> {
+  FollowStatus _followStatus =
+      FollowStatus.pending; // TODO: initialize with actual following status
 
   void _followUser() {
-    print('follow user @$userName!');
+    // TODO: call API Wrapper to send following request
+    setState(() {
+      _followStatus = FollowStatus.following;
+    });
+    print('follow user @${this.widget.userProfile.username}!');
   }
 
   @override
@@ -22,27 +36,29 @@ class FollowRequestTile extends StatelessWidget {
       child: Row(
         children: [
           FollowTileInfo(
-            firstName: this.firstName,
-            lastName: this.lastName,
-            caption: this.caption,
-            color: this.color,
+            firstName: this.widget.userProfile.firstName,
+            lastName: this.widget.userProfile.lastName,
+            caption: '@${this.widget.userProfile.username}',
+            color: this.widget.color,
           ),
-          TextButton(
-            onPressed: _followUser,
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16),
-              child: Text('Follow'),
-            ),
-            style: ButtonStyle(
-              foregroundColor: MaterialStateProperty.all(Colors.white),
-              backgroundColor: MaterialStateProperty.all(Palette.primary),
-              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(18.0),
-                ),
-              ),
-            ),
-          ),
+          _followStatus == FollowStatus.pending
+              ? TextButton(
+                  onPressed: _followUser,
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16),
+                    child: Text('Follow'),
+                  ),
+                  style: ButtonStyle(
+                    foregroundColor: MaterialStateProperty.all(Colors.white),
+                    backgroundColor: MaterialStateProperty.all(Palette.primary),
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(18.0),
+                      ),
+                    ),
+                  ),
+                )
+              : Text('request sent'),
         ],
       ),
     );

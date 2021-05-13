@@ -3,26 +3,23 @@ import '../../constants/Constants.dart' as Constants;
 import '../../constants/Palette.dart' as Palette;
 import '../subviews/FollowRequestTileList.dart';
 import '../components/TopBackBar.dart';
-import '../../Models/SampleFollowerRequestData.dart';
+import '../../Models/UserProfile.dart';
 
-final List<SampleFollowerRequestData> sampleSearchResults = [
-  SampleFollowerRequestData(
+final List<UserProfile> sampleSearchResults = [
+  UserProfile(
     firstName: 'Richard',
     lastName: 'Tang',
-    userName: 'rich_tang',
-    color: Palette.blue,
+    username: 'rich_tang',
   ),
-  SampleFollowerRequestData(
+  UserProfile(
     firstName: 'Joohyuk',
     lastName: 'Nam',
-    userName: 'nam_dosan',
-    color: Palette.yellow,
+    username: 'nam_dosan',
   ),
-  SampleFollowerRequestData(
+  UserProfile(
     firstName: 'Richard',
     lastName: 'Tang',
-    userName: 'rich_tang',
-    color: Palette.blue,
+    username: 'rich_tang',
   ),
 ];
 
@@ -35,7 +32,7 @@ class SearchResultPage extends StatefulWidget {
 
 class _SearchResultPageState extends State<SearchResultPage> {
   TextEditingController searchController;
-  Future<List<SampleFollowerRequestData>> _searchResults;
+  Future<List<UserProfile>> _searchResults;
 
   @override
   void initState() {
@@ -47,9 +44,9 @@ class _SearchResultPageState extends State<SearchResultPage> {
     searchController = TextEditingController(text: searchText);
   }
 
-  Future<List<SampleFollowerRequestData>> _searchForUser(String userName) {
+  Future<List<UserProfile>> _searchForUser(String username) {
     // TODO: update to call api wrapper
-    print('search for user $userName...');
+    print('search for user $username...');
     return Future.delayed(new Duration(seconds: 2), () => sampleSearchResults);
   }
 

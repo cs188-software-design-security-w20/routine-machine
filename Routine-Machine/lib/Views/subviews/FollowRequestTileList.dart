@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../components/FollowRequestTile.dart';
+import '../../constants/Palette.dart' as Palette;
 
 class FollowRequestTileList extends StatelessWidget {
   final List followRequestList;
@@ -13,13 +14,9 @@ class FollowRequestTileList extends StatelessWidget {
       shrinkWrap: true,
       separatorBuilder: (BuildContext context, int index) => Divider(),
       itemBuilder: (context, index) {
-        var user = followRequestList[index];
         return FollowRequestTile(
-          firstName: user.firstName,
-          lastName: user.lastName,
-          userName: user.userName,
-          caption: '@${user.userName}',
-          color: user.color,
+          userProfile: followRequestList[index],
+          color: Palette.purple,
         );
       },
     );
