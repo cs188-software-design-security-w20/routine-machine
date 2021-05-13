@@ -6,14 +6,20 @@ class AESKey {
   String key;
   String iv;
   AESKey({this.key, this.iv});
-  @override
-  String toString() => "$key$iv";
 }
 
 class EncryptedDEK {
   String encrypted;
   String iv;
   EncryptedDEK({this.encrypted, this.iv});
+
+  @override
+  toString() => '$encrypted$iv';
+
+  EncryptedDEK.fromString(String input) {
+    this.encrypted = input.substring(0, 256);
+    this.iv = input.substring(256);
+  }
 }
 
 class MissingKeyException implements Exception {
@@ -122,7 +128,10 @@ class CSE {
   /// Used to encrypt the owner's DEK using a follower's public key
   /// before distribution to that follower
   Future<EncryptedDEK> encryptOwnerDEK({String usingPublicKey}) async {
-    final publicKey = Crypton.RSAPublicKey.fromString(usingPublicKey);
+    final publicKey = await (() async {
+      if (usingPublicKey == null) return await this.getPublicKey();
+      return Crypton.RSAPublicKey.fromString(usingPublicKey);
+    })();
     final ownerDEK = await getDEK();
     final encryptedKey = publicKey.encrypt(ownerDEK.key);
     return EncryptedDEK(encrypted: encryptedKey, iv: ownerDEK.iv);
