@@ -45,7 +45,7 @@ class LoginPage extends StatelessWidget {
       logo: 'assets/images/rmlogo.png',
       logoTag: Constants.logoTag,
       titleTag: Constants.titleTag,
-      loginProviders: null,
+      loginProviders: [],
       messages: LoginMessages(
         usernameHint: 'Email',
         passwordHint: 'Password',

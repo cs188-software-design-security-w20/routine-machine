@@ -23,6 +23,7 @@ final sampleCheckIns = <DateTime>[
   new DateTime.utc(2020, 4, 30),
 ];
 Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
 
   runApp(RoutineMachine());
