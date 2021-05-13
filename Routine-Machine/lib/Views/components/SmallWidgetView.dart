@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_sfsymbols/flutter_sfsymbols.dart';
 import 'package:routine_machine/Models/WidgetData.dart';
 import 'RingProgressBar.dart';
 import '../../constants/Constants.dart' as Constants;
