@@ -23,23 +23,18 @@ final sampleCheckIns = <DateTime>[
   new DateTime.utc(2020, 4, 30),
 ];
 Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
 
   runApp(RoutineMachine());
 }
 
 class RoutineMachine extends StatelessWidget {
-  final Future<FirebaseApp> _fbApp = Firebase.initializeApp();
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      // theme: ThemeData(fontFamily: "SF Pro Rounded"),
-      // title: "Routine Machine",
-      // home: HomePage(),
-
+      home: LoginPage(),
       //sample login page
-      title: 'Login Page',
+      title: 'Routine Machine',
       theme: ThemeData(
         // brightness: Brightness.dark,
         primaryColor: Color(0xffB057F5),
@@ -74,13 +69,6 @@ class RoutineMachine extends StatelessWidget {
           overline: TextStyle(fontFamily: 'SF Pro Rounded'),
         ),
       ),
-      home: HomePage(),
-      // navigatorObservers: [TransitionRouteObserver()],
-      // initialRoute: LoginScreen.routeName,
-      // routes: {
-      //   LoginScreen.routeName: (context) => LoginScreen(),
-      //   DashboardScreen.routeName: (context) => DashboardScreen(),
-      // },
     );
   }
 }
