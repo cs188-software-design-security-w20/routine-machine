@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:routine_machine/Models/UserProfile.dart';
 import '../../constants/Palette.dart' as Palette;
-import '../pages/AccountPage.dart';
 
 class ProfileBarView extends StatelessWidget {
   // note: assuming that firstName and lastName are not empty strings
@@ -39,14 +38,7 @@ class ProfileBarView extends StatelessWidget {
           ),
           GestureDetector(
             onTap: () async {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => AccountPage(
-                    userProfile: this.user,
-                  ),
-                ),
-              );
+              // TODO: perhaps navigate to account page
               print('Clicked profile icon!');
             },
             child: CircleAvatar(
