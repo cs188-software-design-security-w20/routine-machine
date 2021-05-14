@@ -12,12 +12,12 @@ class WidgetList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: GridView.count(
-        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 25),
-        crossAxisSpacing: 20,
-        mainAxisSpacing: 25,
+        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        crossAxisSpacing: 16,
+        mainAxisSpacing: 16,
         crossAxisCount:
             MediaQuery.of(context).orientation == Orientation.landscape ? 4 : 2,
-        childAspectRatio: 2.5 / 3,
+        childAspectRatio: 0.73,
         children: widgetList
             .map(
               (widget) => SmallWidgetView(

@@ -57,7 +57,7 @@ class _SmallWidgetViewState extends State<SmallWidgetView> {
     return GestureDetector(
       onLongPress: () => _buildDetailPageAndAwaitCount(context),
       child: Container(
-        padding: EdgeInsets.all(24),
+        padding: EdgeInsets.all(16),
         width: double.infinity,
         decoration: Constants.kCardDecorationStyle,
         child: Expanded(
@@ -66,12 +66,12 @@ class _SmallWidgetViewState extends State<SmallWidgetView> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Padding(
-                padding: EdgeInsets.only(bottom: 16),
+                padding: EdgeInsets.only(bottom: 20),
                 child: Text(
                   widget.data.title,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: Constants.kCardTitleStyle,
+                  style: Constants.kTitle2Style,
                 ),
               ),
               GestureDetector(

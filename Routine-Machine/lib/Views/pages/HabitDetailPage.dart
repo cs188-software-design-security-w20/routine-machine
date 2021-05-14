@@ -55,23 +55,61 @@ class _HabitDetailPageState extends State<HabitDetailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: TopBackBar(passBack: _count),
-      body: Padding(
-        padding: EdgeInsets.all(16),
-        child: Container(
-          padding: EdgeInsets.all(24),
-          width: double.infinity,
-          decoration: Constants.kCardDecorationStyle,
-          child: SlidingUpPanel(
-            panel: Center(
-              child: Text("Edit page"),
-            ),
-            body: Column(
+      body: Container(
+        width: double.infinity,
+        decoration: Constants.kCardDecorationStyle,
+        child: SlidingUpPanel(
+          backdropEnabled: true,
+          maxHeight: 0.8 * MediaQuery.of(context).size.height,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(34.0),
+            topRight: Radius.circular(34.0),
+          ),
+          boxShadow: [
+            BoxShadow(
+                color: Constants.kShadowColor,
+                offset: Offset(0, -12),
+                blurRadius: 30),
+          ],
+          // TODO: Edit page here
+          panel: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Center(
+                child: Padding(
+                  padding: EdgeInsets.only(top: 16, bottom: 20),
+                  child: Container(
+                    width: 42.0,
+                    height: 4.0,
+                    decoration: BoxDecoration(
+                      color: Color(0xFFC5CBD6),
+                      borderRadius: BorderRadius.circular(2.0),
+                    ),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 32),
+                child: Text(
+                  "Habit settings",
+                  style: Constants.kTitle2Style,
+                ),
+              ),
+              // TODO: Add more settings here
+            ],
+          ),
+          body: Container(
+            padding: EdgeInsets.symmetric(horizontal: 16),
+            child: Column(
               children: [
+                TopBackBar(passBack: _count),
                 Text(
                   widget.routineName,
                   // widget.data.title,
                   style: Constants.kLargeTitleStyle,
+                ),
+                SizedBox(
+                  height: 26,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -87,9 +125,6 @@ class _HabitDetailPageState extends State<HabitDetailPage> {
                       goalCount: widget.goal,
                       habitType: widget.widgetType,
                       color: widget.color,
-                      // goalCount: widget.data.periodicalGoal,
-                      // habitType: widget.data.widgetType,
-                      // color: Color(widget.data.color),
                     ),
                     IconButton(
                       icon: Icon(Icons.add_circle_rounded),
@@ -99,11 +134,12 @@ class _HabitDetailPageState extends State<HabitDetailPage> {
                     ),
                   ],
                 ),
+                SizedBox(
+                  height: 26,
+                ),
                 CheckInList(
                   checkIns: widget.checkIns,
                   color: widget.color,
-                  // checkIns: widget.data.checkins,
-                  // color: Color(widget.data.color),
                 )
               ],
             ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:routine_machine/Views/components/MenuRow.dart';
 import 'package:routine_machine/Views/components/custom_route.dart';
+import 'package:routine_machine/constants/Constants.dart';
 import '../components/TopBackBar.dart';
 import 'package:flutter_sfsymbols/flutter_sfsymbols.dart';
 import 'package:routine_machine/Models/UserProfile.dart';
@@ -70,6 +71,7 @@ class _AccountPageState extends State<AccountPage> {
       MaterialPageRoute(
         builder: (context) => Scaffold(
             appBar: TopBackBar(),
+            backgroundColor: Colors.white,
             body: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 35),
               child: Column(
@@ -136,6 +138,7 @@ class _AccountPageState extends State<AccountPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Container(
+        padding: EdgeInsets.symmetric(vertical: 16),
         child: Center(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -151,11 +154,7 @@ class _AccountPageState extends State<AccountPage> {
                           children: [
                             Text(
                               "Options",
-                              style: TextStyle(
-                                fontSize: 32,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: "SF Pro Text",
-                              ),
+                              style: kLargeTitleStyle,
                             ),
                             Spacer(),
                           ],
@@ -182,7 +181,8 @@ class _AccountPageState extends State<AccountPage> {
                             MenuRow(
                               icon: new Icon(
                                 Icons.face,
-                                size: 32,
+                                size: 26,
+                                color: Colors.green,
                               ),
                               title: "Change Name",
                               action: () => activeChangeNamePage(context),
@@ -201,6 +201,7 @@ class _AccountPageState extends State<AccountPage> {
                               icon: new Icon(
                                 SFSymbols.alarm,
                                 size: 32,
+                                color: Colors.blue,
                               ),
                               title: "Notifications",
                               action: () => activeNotificationPage(context),
@@ -213,7 +214,10 @@ class _AccountPageState extends State<AccountPage> {
                                   Spacer(),
                                   Text("Logout"),
                                   SizedBox(width: 6),
-                                  new Icon(Icons.exit_to_app),
+                                  new Icon(
+                                    Icons.exit_to_app,
+                                    color: Colors.red,
+                                  ),
                                 ],
                               ),
                             ),
