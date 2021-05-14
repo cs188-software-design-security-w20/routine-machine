@@ -151,11 +151,11 @@ class _FollowPageState extends State<FollowPage> {
       padding: EdgeInsets.fromLTRB(16, 16, 16, 0),
       child: Column(
         children: [
-          Platform.isAndroid
-              ? SizedBox(height: 36)
-              : SizedBox(
-                  height: 0,
-                ), // for Jody's phone lmao - i have camera overlap
+          // Platform.isAndroid
+          //     ? SizedBox(height: 36)
+          //     : SizedBox(
+          //         height: 0,
+          //       ), // for Jody's phone lmao - i have camera overlap
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [

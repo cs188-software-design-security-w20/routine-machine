@@ -6,7 +6,6 @@ import 'Views/pages/LoginPage.dart';
 import 'Views/components/transition_route_observer.dart';
 import 'package:firebase_core/firebase_core.dart';
 
-
 // sample data to demo the check in list
 final sampleCheckIns = <DateTime>[
   new DateTime.now(),
@@ -16,7 +15,7 @@ final sampleCheckIns = <DateTime>[
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-
+  print("firebase init");
   runApp(RoutineMachine());
 }
 
@@ -24,6 +23,7 @@ class RoutineMachine extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: LoginPage(),
       //sample login page
       title: 'Routine Machine',
@@ -64,4 +64,3 @@ class RoutineMachine extends StatelessWidget {
     );
   }
 }
-
