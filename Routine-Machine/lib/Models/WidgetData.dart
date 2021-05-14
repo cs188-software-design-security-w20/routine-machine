@@ -50,11 +50,11 @@ class WidgetData {
         "title": title,
         "widgetType": widgetType,
         "color": color,
-        "createdTime": createdTime,
-        "modifiedTime": modifiedTime,
+        "createdTime": _toJson(createdTime),
+        "modifiedTime": _toJson(modifiedTime),
         "currentPeriodCounts": currentPeriodCounts,
         "periodicalGoal": periodicalGoal,
-        "checkins": List<dynamic>.from(checkins.map((x) => x)),
+        "checkins": checkins.map((checkin) => _toJson(checkin)).toList(),
       };
 
   static DateTime _fromJson(int int) =>
