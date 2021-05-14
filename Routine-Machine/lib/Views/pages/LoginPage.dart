@@ -1,3 +1,5 @@
+// import 'dart:html';
+import 'dart:io';
 import 'package:flutter/scheduler.dart' show timeDilation;
 import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
@@ -7,6 +9,7 @@ import '../components/custom_route.dart';
 import 'package:routine_machine/Views/pages/HomePage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:io' show Platform;
+
 
 FirebaseAuth _auth = FirebaseAuth.instance;
 final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -79,7 +82,22 @@ class LoginPage extends StatelessWidget {
       logo: 'assets/images/rmlogo.png',
       logoTag: Constants.logoTag,
       titleTag: Constants.titleTag,
-      loginProviders: [],
+      loginProviders: Platform.isIOS
+          ? [
+              LoginProvider(
+                icon: FontAwesomeIcons.apple,
+                callback: () async {
+                  final credential = await SignInWithApple.getAppleIDCredential(
+                    scopes: [
+                      AppleIDAuthorizationScopes.email,
+                      AppleIDAuthorizationScopes.fullName,
+                    ],
+                  );
+                  print(credential);
+                },
+              ),
+            ]
+          : [],
       messages: LoginMessages(
         usernameHint: 'Email',
         passwordHint: 'Password',
@@ -90,6 +108,7 @@ class LoginPage extends StatelessWidget {
         // recoverPasswordButton: 'HELP ME',
         goBackButton: 'Back to Log In',
         confirmPasswordError: 'Not match!',
+
         // recoverPasswordIntro: 'Don\'t feel bad. Happens all the time.',
         // recoverPasswordDescription:
         //     'Lorem Ipsum is simply dummy text of the printing and typesetting industry',
@@ -144,7 +163,7 @@ class LoginPage extends StatelessWidget {
         ));
       },
       onRecoverPassword: null,
-      showDebugButtons: true,
+      showDebugButtons: false,
     );
   }
 }
