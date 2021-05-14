@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../constants/Palette.dart' as Palette;
 import '../components/FollowerRequestTile.dart';
 import '../components/FollowerTile.dart';
+import 'package:flutter/cupertino.dart';
 
 class FollowerTileList extends StatelessWidget {
   final List followerRequestList;

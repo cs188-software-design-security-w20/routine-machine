@@ -58,7 +58,7 @@ class _MainDashboardPageState extends State<MainDashboardPage> {
           child: Column(
             children: [
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16),
+                padding: EdgeInsets.symmetric(horizontal: 26),
                 child: FutureBuilder(
                   future: userData,
                   builder: (BuildContext context,

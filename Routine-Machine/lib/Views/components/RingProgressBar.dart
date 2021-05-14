@@ -10,7 +10,7 @@ class RingProgressBar extends StatelessWidget {
       habitType,
       color,
       this.showText = true,
-      this.ringSize = 110}) {
+      this.ringSize = 105}) {
     ringColor = color;
 
     // if current count <= 0, default to 0.01 so a little bit of the ring is visible
@@ -81,13 +81,13 @@ class RingProgressBar extends StatelessWidget {
                         textAlign: TextAlign.center,
                         text: TextSpan(
                           text: currentCount.toString(),
-                          style: kLargeTitleStyle,
+                          style: kTitle1Style,
                           children: [
                             TextSpan(
                               text: '/$goalCount\n',
                               style: TextStyle(
                                 color: Colors.grey,
-                                fontSize: 24.0,
+                                fontSize: 20.0,
                               ),
                             ),
                             TextSpan(

@@ -15,7 +15,7 @@ class TopBackBar extends StatelessWidget implements PreferredSizeWidget {
         icon: Icon(Icons.arrow_back_ios_rounded),
         color: Colors.grey,
       ),
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      backgroundColor: Colors.white,
       elevation: 0,
     );
   }

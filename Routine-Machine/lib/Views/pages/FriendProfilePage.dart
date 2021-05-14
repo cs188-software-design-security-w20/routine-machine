@@ -59,6 +59,7 @@ class _FriendProfilePageState extends State<FriendProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: TopBackBar(),
+      backgroundColor: Colors.white,
       body: Container(
         child: SingleChildScrollView(
           child: Column(

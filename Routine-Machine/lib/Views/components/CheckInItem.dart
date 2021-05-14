@@ -12,8 +12,8 @@ class CheckInItem extends StatelessWidget {
     return RichText(
       text: TextSpan(
         style: TextStyle(
-          fontSize: 18.0,
-          color: Colors.black,
+          fontSize: 14.0,
+          color: Colors.black.withOpacity(0.8),
           height: 1.5,
         ),
         children: [

@@ -12,11 +12,11 @@ class CheckInList extends StatelessWidget {
   Widget build(BuildContext context) {
     return GreyContainer(
       child: ListView(
-        padding: EdgeInsets.all(16),
+        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
         shrinkWrap: true,
         children: checkIns.isEmpty
             // if no check ins, show this default message text
-            ? [Text('No recent activity', style: TextStyle(fontSize: 18.0))]
+            ? [Text('No recent activity', style: TextStyle(fontSize: 14.0))]
             : checkIns
                 .map(
                     (time) => CheckInItem(checkInTime: time, color: this.color))
