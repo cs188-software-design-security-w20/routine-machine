@@ -25,7 +25,7 @@ class APIWrapper {
   }
 
   Future<String> _getAuthHeader() async {
-    return 'Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IjUzNmRhZWFiZjhkZDY1ZDRkZTIxZTgyNGI4OTlhMWYzZGEyZjg5NTgiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vcm91dGluZS1tYWNoaW5lLTU2ZWMxIiwiYXVkIjoicm91dGluZS1tYWNoaW5lLTU2ZWMxIiwiYXV0aF90aW1lIjoxNjIwOTMwMjA1LCJ1c2VyX2lkIjoic3hEQ000RGdsUmdJSHB1dExrTlpWM0ZIRXlBMyIsInN1YiI6InN4RENNNERnbFJnSUhwdXRMa05aVjNGSEV5QTMiLCJpYXQiOjE2MjA5MzAyMDUsImV4cCI6MTYyMDkzMzgwNSwiZW1haWwiOiJyaWNoYXJkLmN4LnRhbmdAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJmaXJlYmFzZSI6eyJpZGVudGl0aWVzIjp7ImVtYWlsIjpbInJpY2hhcmQuY3gudGFuZ0BnbWFpbC5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJwYXNzd29yZCJ9fQ.N6eBnP3E_jVKISyvpd88l_rB6nuYxaPWUbjLfam_y6X4b5lLycX0xklS8CvJw_TWIYkntNHEClBHyXw-lpbvapEEGUP9FBRWNkRBWxjqKaETjCdDhZjihtp9_ECWdmdDqnrzz4CMqoH5UV6FeZzDaoqwvV6ZiNr1aEVj0WN1ZPmv-jMw7RR0vZrwtMf0GPZax1_OhIP4P2oENOaW3nuQTEqb1yMF9-xBerUM_8BufD5rYB9IqS9LGQi3Q-oSc7fnlFHcdojP5DRpKAxytX_Ms2Ec6x0mC4DRK-CVal7rVtts9RJ61jopdF-MpHpEfzX5CtJYRTFTYbXa04ylNa35dg';
+    return 'Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IjUzNmRhZWFiZjhkZDY1ZDRkZTIxZTgyNGI4OTlhMWYzZGEyZjg5NTgiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vcm91dGluZS1tYWNoaW5lLTU2ZWMxIiwiYXVkIjoicm91dGluZS1tYWNoaW5lLTU2ZWMxIiwiYXV0aF90aW1lIjoxNjIwOTU2OTg3LCJ1c2VyX2lkIjoic3hEQ000RGdsUmdJSHB1dExrTlpWM0ZIRXlBMyIsInN1YiI6InN4RENNNERnbFJnSUhwdXRMa05aVjNGSEV5QTMiLCJpYXQiOjE2MjA5NTY5ODcsImV4cCI6MTYyMDk2MDU4NywiZW1haWwiOiJyaWNoYXJkLmN4LnRhbmdAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJmaXJlYmFzZSI6eyJpZGVudGl0aWVzIjp7ImVtYWlsIjpbInJpY2hhcmQuY3gudGFuZ0BnbWFpbC5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJwYXNzd29yZCJ9fQ.bthy4VRQ9-9HWJVfIJTBOvP_qJwnamrFye_FlUdHRkN3Wu6ePWTyZXmKbhzLuhXlOyqUI_EjzMc8UMTedNm4OaSPbOBVBjZjkZUuARHM0K-Du8ldXmhiBEdpocN8NHG1mJ_fE3wfga-IebgjAu_IiwVj9g_-Tp9sLEhmRBJC-MCEdXGrhcKNvh0z4MjFeRHQN65_dMyFrMGmkeXwdZIeJfdhpsmS5-QbMtnqIolimLWrEzHKxttHn1hf3vwxyR6HGSciaAcc7-LAmib8jQ6PZrjappKb1xnKsjPPR0j_BWDEwcLdvmLMz-Zvw-QCsEcGMIS9o1kJvhPbyDssNFKQzQ';
     if (user == null) {
       throw Exception(
           'No associated firebase user. Be sure to use "setUser" before other methods');
@@ -86,11 +86,62 @@ class APIWrapper {
     return [];
   }
 
-  Future<List<WidgetData>> getFollowingHabitData({String id}) async {
-    return [];
+  Future<List<WidgetData>> getFollowingHabitData({String targetUserID}) async {
+    final query = {
+      'followee_id': targetUserID,
+      'follower_id': 'WAYuxGZyXseKqBbFluqmCgyDH4O2', //user.uid,
+    };
+    final headers = {
+      HttpHeaders.authorizationHeader: await _getAuthHeader(),
+      HttpHeaders.contentTypeHeader: 'application/json',
+    };
+    final url = Uri.http(apiBaseURL, '/habit_data/following', query);
+    final response = await client.get(url, headers: headers);
+    print(response.body);
+    if (response.statusCode != 200) {
+      throw Exception('Failed to get habit data from user ($targetUserID)');
+    }
+    final json = Convert.jsonDecode(response.body) as Map<String, dynamic>;
+    if (!json.containsKey('dek')) {
+      throw Exception(
+          'Failed to get habit data from user ($targetUserID): No DEK in response');
+    }
+    if (json['habit_data'] == null) {
+      return [];
+    }
+    final encryptedDEK = EncryptedDEK.fromString(json['dek']);
+    print(encryptedDEK.iv);
+    final dek = await cse.decryptOtherDEK(encryptedDEK: encryptedDEK);
+    final decryptedHabitData =
+        await cse.decryptText(text: json['habit_data'], usingKey: dek);
+    final jsonHabitData = Convert.jsonDecode(decryptedHabitData) as List;
+    if (!(jsonHabitData is List)) {
+      throw Exception(
+          'Decrypted Habit Data from ($targetUserID) was malformed');
+    }
+    print(jsonHabitData);
+    return jsonHabitData.map((habitWidget) => WidgetData.fromJson(habitWidget));
   }
 
-  Future<void> setHabitData() async {}
+  Future<void> setHabitData({List<WidgetData> habitData}) async {
+    final mappedWidgets = habitData.map((e) => widgetDataToJson(e)).toList();
+    final encodedHabitData = Convert.jsonEncode(mappedWidgets);
+    final encryptedHabitData = await cse.encryptText(text: encodedHabitData);
+    print(encodedHabitData);
+    print(encryptedHabitData);
+    final headers = {
+      HttpHeaders.authorizationHeader: await _getAuthHeader(),
+    };
+    final url = Uri.http(apiBaseURL, '/habit_data');
+    final response = await client.post(url, headers: headers, body: {
+      'id': 'vgtA9uzhBuURByr7aXeUEtbs1yC3', //user.uid
+      'habit_data': encryptedHabitData,
+    });
+    print(response.body);
+    if (response.statusCode != 200) {
+      throw Exception('Failed to set habit data');
+    }
+  }
 
   Future<void> sendFollowRequest({String targetUserID}) async {
     final headers = {
@@ -225,23 +276,27 @@ class APIWrapper {
 
   Future<void> approveFollowRequest(
       {String targetUserID, String targetUserPublicKey}) async {
-    final encryptedDEK = await (() async {
-      if (await cse.hasDEK())
-        return cse.encryptOwnerDEK(usingPublicKey: targetUserPublicKey);
-      else
-        return EncryptedDEK(encrypted: '', iv: '');
-    })();
+    EncryptedDEK encryptedDEK;
+    if (await cse.hasDEK()) {
+      encryptedDEK =
+          await cse.encryptOwnerDEK(usingPublicKey: targetUserPublicKey);
+    } else {
+      encryptedDEK = EncryptedDEK(encrypted: '', iv: '');
+    }
+    print('${encryptedDEK.toString().length} ${encryptedDEK.toString()}');
     final headers = {
       HttpHeaders.authorizationHeader: await _getAuthHeader(),
     };
-    final url = Uri.http(apiBaseURL, '/follow/requests');
+    final url = Uri.http(apiBaseURL, '/follow');
     final response = await client.post(url, headers: headers, body: {
       'followee_id': 'vgtA9uzhBuURByr7aXeUEtbs1yC3', //user.uid,
       'follower_id': targetUserID,
+      'dek': encryptedDEK.toString(),
     });
+    print(response.body);
     if (response.statusCode != 200) {
       throw Exception(
-          'Failed to reject follow request from user ($targetUserID)');
+          'Failed to approve follow request from user ($targetUserID)');
     }
   }
 
