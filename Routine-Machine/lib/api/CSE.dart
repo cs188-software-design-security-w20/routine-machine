@@ -6,6 +6,12 @@ class AESKey {
   String key;
   String iv;
   AESKey({this.key, this.iv});
+
+  EncryptedDEK encrypt({String usingPublicKey}) {
+    final pk = Crypton.RSAPublicKey.fromString(usingPublicKey);
+    final encryptedKey = pk.encrypt(key);
+    return EncryptedDEK(encrypted: encryptedKey, iv: iv);
+  }
 }
 
 class EncryptedDEK {
@@ -14,11 +20,18 @@ class EncryptedDEK {
   EncryptedDEK({this.encrypted, this.iv});
 
   @override
-  toString() => '$encrypted$iv';
+  toString() => '$encrypted\$$iv';
 
   EncryptedDEK.fromString(String input) {
-    this.encrypted = input.substring(0, 256);
-    this.iv = input.substring(256);
+    final tokens = input.split('\$');
+    this.encrypted = tokens[0];
+    this.iv = tokens[1];
+  }
+
+  AESKey decrypt({String usingPrivateKey}) {
+    final pk = Crypton.RSAPrivateKey.fromString(usingPrivateKey);
+    final decryptedKey = pk.decrypt(encrypted);
+    return AESKey(key: decryptedKey, iv: iv);
   }
 }
 
