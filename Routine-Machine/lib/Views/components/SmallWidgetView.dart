@@ -37,12 +37,13 @@ class _SmallWidgetViewState extends State<SmallWidgetView> {
       context,
       MaterialPageRoute(
         builder: (context) => HabitDetailPage(
-          routineName: widget.data.title,
-          widgetType: widget.data.widgetType,
-          count: count,
-          goal: widget.data.periodicalGoal,
-          checkIns: widget.data.checkins,
-          color: Color(widget.data.color),
+          // routineName: widget.data.title,
+          // widgetType: widget.data.widgetType,
+          // count: count,
+          // goal: widget.data.periodicalGoal,
+          // checkIns: widget.data.checkins,
+          // color: Color(widget.data.color),
+          data: widget.data,
         ),
       ),
     );
