@@ -71,7 +71,7 @@ class _SmallWidgetViewState extends State<SmallWidgetView> {
                   widget.data.title,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: Constants.kTitle2Style,
+                  style: Constants.kTitle3Style,
                 ),
               ),
               GestureDetector(

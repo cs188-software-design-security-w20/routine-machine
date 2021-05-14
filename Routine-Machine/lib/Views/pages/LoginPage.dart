@@ -4,12 +4,12 @@ import 'package:flutter/scheduler.dart' show timeDilation;
 import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import '../../constants/Constants.dart' as Constants;
 import '../components/custom_route.dart';
 import 'package:routine_machine/Views/pages/HomePage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:io' show Platform;
-
 
 FirebaseAuth _auth = FirebaseAuth.instance;
 final GlobalKey<FormState> _formKey = GlobalKey<FormState>();

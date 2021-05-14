@@ -12,7 +12,7 @@ class HabitDetailPage extends StatefulWidget {
   final String widgetType;
   final int count;
   final int goal;
-  final List<DateTime> checkIns;
+  List<DateTime> checkIns;
   final Color color;
 
   HabitDetailPage({
@@ -27,17 +27,19 @@ class HabitDetailPage extends StatefulWidget {
   // HabitDetailPage({this.data});
 
   @override
-  _HabitDetailPageState createState() => _HabitDetailPageState(this.count);
+  _HabitDetailPageState createState() =>
+      _HabitDetailPageState(this.count, this.checkIns);
 }
 
 class _HabitDetailPageState extends State<HabitDetailPage> {
-  _HabitDetailPageState(this._count);
+  _HabitDetailPageState(this._count, this._checkIns);
 
   int _count;
-
+  List<DateTime> _checkIns;
   void _incrementCount() {
     setState(() {
       _count++;
+      _checkIns.add(DateTime.now());
       // widget.data.currentPeriodCounts += 1;
       // widget.data.checkins.add(DateTime.now());
     });
@@ -46,6 +48,7 @@ class _HabitDetailPageState extends State<HabitDetailPage> {
   void _decrementCount() {
     setState(() {
       _count--;
+      _checkIns.removeLast();
       // widget.data.currentPeriodCounts -= 1;
       // widget.data.checkins.removeLast();
     });
@@ -138,7 +141,7 @@ class _HabitDetailPageState extends State<HabitDetailPage> {
                   height: 26,
                 ),
                 CheckInList(
-                  checkIns: widget.checkIns,
+                  checkIns: widget.checkIns.reversed.toList(),
                   color: widget.color,
                 )
               ],
