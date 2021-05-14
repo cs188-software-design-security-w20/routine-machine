@@ -35,7 +35,6 @@ class WidgetData {
   int periodicalGoal;
   List<DateTime> checkins;
 
-
   factory WidgetData.fromJson(Map<String, dynamic> json) => WidgetData(
         title: json["title"],
         widgetType: json["widgetType"],
@@ -63,31 +62,31 @@ class WidgetData {
   static int _toJson(DateTime time) => time.millisecondsSinceEpoch;
 
   static WidgetData widgetSample1 = WidgetData(
-      title: "Sample",
+      title: "Drink Water",
       widgetType: "daily",
-      color: 0xffffaabb,
-      createdTime: new DateTime.now(),
-      modifiedTime: new DateTime.now(),
-      currentPeriodCounts: 8,
-      periodicalGoal: 20,
-      checkins: [new DateTime.now(), new DateTime.now()]);
-  static WidgetData widgetSample2 = WidgetData(
-      title: "Sample 2",
-      widgetType: "daily",
-      color: 0xfffab1bb,
-      createdTime: new DateTime.now(),
-      modifiedTime: new DateTime.now(),
-      currentPeriodCounts: 8,
-      periodicalGoal: 20,
-      checkins: [new DateTime.now(), new DateTime.now()]);
-  static WidgetData widgetSample3 = WidgetData(
-      title: "Eat bana babana sad asd asna na 3123",
-      widgetType: "monthly",
-      color: 0xff1234bb,
+      color: 0xFF7CD0FF,
       createdTime: new DateTime.now(),
       modifiedTime: new DateTime.now(),
       currentPeriodCounts: 1,
-      periodicalGoal: 2,
+      periodicalGoal: 6,
+      checkins: [new DateTime.now(), new DateTime.now()]);
+  static WidgetData widgetSample2 = WidgetData(
+      title: "Exercise",
+      widgetType: "weekly",
+      color: 0xFFFFDF6B,
+      createdTime: new DateTime.now(),
+      modifiedTime: new DateTime.now(),
+      currentPeriodCounts: 2,
+      periodicalGoal: 4,
+      checkins: [new DateTime.now(), new DateTime.now()]);
+  static WidgetData widgetSample3 = WidgetData(
+      title: "Read the News",
+      widgetType: "monthly",
+      color: 0xFFFF93BA,
+      createdTime: new DateTime.now(),
+      modifiedTime: new DateTime.now(),
+      currentPeriodCounts: 11,
+      periodicalGoal: 20,
       checkins: [new DateTime.now(), new DateTime.now()]);
 }
 

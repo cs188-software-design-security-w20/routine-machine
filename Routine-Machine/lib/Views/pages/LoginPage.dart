@@ -108,7 +108,7 @@ class LoginPage extends StatelessWidget {
         ));
       },
       onRecoverPassword: null,
-      showDebugButtons: true,
+      showDebugButtons: false,
     );
   }
 }
