@@ -6,26 +6,60 @@ import '../../constants/Constants.dart' as Constants;
 import '../components/custom_route.dart';
 import 'package:routine_machine/Views/pages/HomePage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'dart:io' show Platform;
 
 FirebaseAuth _auth = FirebaseAuth.instance;
 final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+enum authProblems { UserNotFound, PasswordNotValid, NetworkError }
 
 class LoginPage extends StatelessWidget {
   static const routeName = '/auth';
   Duration get loginTime => Duration(milliseconds: timeDilation.ceil() * 2250);
-
   Future<String> _loginUser(LoginData loginData) async {
-    final User user = (await _auth.signInWithEmailAndPassword(
-      email: loginData.name,
-      password: loginData.password,
-    ))
-        .user;
-
-    if (user != null) {
-      return null;
-    } else {
-      return null;
+    try {
+      final User user = (await _auth.signInWithEmailAndPassword(
+        email: loginData.name,
+        password: loginData.password,
+      ))
+          .user;
+    } catch (e) {
+      authProblems errorType;
+      if (Platform.isAndroid) {
+        switch (e.message) {
+          case 'There is no user record corresponding to this identifier. The user may have been deleted.':
+            errorType = authProblems.UserNotFound;
+            break;
+          case 'The password is invalid or the user does not have a password.':
+            errorType = authProblems.PasswordNotValid;
+            break;
+          case 'A network error (such as timeout, interrupted connection or unreachable host) has occurred.':
+            errorType = authProblems.NetworkError;
+            break;
+          // ...
+          default:
+            print('Case ${e.message} is not yet implemented');
+        }
+      } else if (Platform.isIOS) {
+        switch (e.code) {
+          case 'user-not-found':
+            errorType = authProblems.UserNotFound;
+            break;
+          case 'wrong-password':
+            errorType = authProblems.PasswordNotValid;
+            break;
+          // ...
+          default:
+            print('Case ${e.message} is not yet implemented');
+        }
+      }
+      return 'Error: $errorType';
     }
+
+    // if (user != null) {
+    //   return null;
+    // } else {
+    //   return null;
+    // }
   }
 
   Future<String> _registerUser(LoginData loginData) async {
@@ -94,15 +128,17 @@ class LoginPage extends StatelessWidget {
         print('Password: ${loginData.password}');
 
         return _loginUser(loginData);
+        //return _loginUser(loginData);
       },
       onSignup: (loginData) async {
         print('Sign Up');
         print('Email: ${loginData.name}');
         print('Password: ${loginData.password}');
-
         return _registerUser(loginData);
       },
       onSubmitAnimationCompleted: () {
+        // no error found, login success
+        // redirect to home page
         Navigator.of(context).pushReplacement(FadePageRoute(
           builder: (context) => HomePage(),
         ));
