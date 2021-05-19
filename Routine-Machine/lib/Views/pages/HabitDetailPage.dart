@@ -1,60 +1,103 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:routine_machine/Views/subviews/WidgetColorPicker.dart';
 import '../../constants/Constants.dart' as Constants;
 import '../../constants/Palette.dart' as Palette;
 import '../components/RingProgressBar.dart';
 import '../components/TopBackBar.dart';
 import '../subviews/CheckInList.dart';
+import '../subviews/WidgetTypePicker.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
+import 'package:routine_machine/Models/WidgetType.dart';
 import 'package:routine_machine/Models/WidgetData.dart';
 
 class HabitDetailPage extends StatefulWidget {
-  final String routineName;
-  final String widgetType;
-  final int count;
-  final int goal;
-  List<DateTime> checkIns;
-  final Color color;
-
-  HabitDetailPage({
-    this.routineName,
-    this.widgetType,
-    this.count,
-    this.goal,
-    this.checkIns,
-    this.color,
-  });
-  // WidgetData data;
-  // HabitDetailPage({this.data});
+  WidgetData data;
+  HabitDetailPage({this.data});
 
   @override
-  _HabitDetailPageState createState() =>
-      _HabitDetailPageState(this.count, this.checkIns);
+  _HabitDetailPageState createState() => _HabitDetailPageState();
 }
 
 class _HabitDetailPageState extends State<HabitDetailPage> {
-  _HabitDetailPageState(this._count, this._checkIns);
+  TextEditingController _habitNameController;
+  final TextEditingController _goalCountController = TextEditingController();
+  Palette.CardColors color = Palette.CardColors.purple;
+  WidgetType type = WidgetType.daily;
 
-  int _count;
-  List<DateTime> _checkIns;
+  WidgetData data;
+  @override
+  void initState() {
+    super.initState();
+    setState(() {
+      data = widget.data;
+      _habitNameController = TextEditingController(text: data.title);
+    });
+  }
+
   void _incrementCount() {
     setState(() {
-      _count++;
-      _checkIns.add(DateTime.now());
-      // widget.data.currentPeriodCounts += 1;
-      // widget.data.checkins.add(DateTime.now());
+      data.currentPeriodCounts += 1;
+      data.checkins.add(DateTime.now());
     });
   }
 
   void _decrementCount() {
     setState(() {
-      _count--;
-      _checkIns.removeLast();
-      // widget.data.currentPeriodCounts -= 1;
-      // widget.data.checkins.removeLast();
+      if (data.currentPeriodCounts > 0 && data.checkins.isNotEmpty) {
+        data.currentPeriodCounts -= 1;
+        data.checkins.removeLast();
+      }
     });
   }
 
-  // WidgetData data;
+  void _setWidgetTitle(String title) {
+    setState(() {
+      data.title = _habitNameController.text;
+    });
+  }
+
+  void _setGoalCount(String goal) {
+    setState(() {
+      // goal is already validated to be a number in the text field
+      data.periodicalGoal = int.parse(goal);
+    });
+  }
+
+  void _setColor(Palette.CardColors color) {
+    setState(() {
+      data.color = Palette.getColor(enumColor: color).value;
+    });
+  }
+
+  void _setWidgetType(String type) {
+    setState(() {
+      data.widgetType = type;
+    });
+  }
+
+  Palette.CardColors _getCardColor(int color) {
+    // TODO: replace colors with enumerated values this is so tacky
+    switch (color) {
+      case 0xFFFFDF6B:
+        return Palette.CardColors.yellow;
+      case 0xFFFF950F:
+        return Palette.CardColors.orange;
+      case 0xFFFF93BA:
+        return Palette.CardColors.pink;
+      case 0xFF9BE988:
+        return Palette.CardColors.green;
+      case 0xFF7CD0FF:
+        return Palette.CardColors.blue;
+      case 0xFFCACACA:
+        return Palette.CardColors.grey;
+      case 0xFFB057F5:
+        return Palette.CardColors.purple;
+      default:
+        return Palette.CardColors.purple;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -75,40 +118,109 @@ class _HabitDetailPageState extends State<HabitDetailPage> {
                 blurRadius: 30),
           ],
           // TODO: Edit page here
-          panel: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Center(
-                child: Padding(
-                  padding: EdgeInsets.only(top: 16, bottom: 20),
-                  child: Container(
-                    width: 42.0,
-                    height: 4.0,
-                    decoration: BoxDecoration(
-                      color: Color(0xFFC5CBD6),
-                      borderRadius: BorderRadius.circular(2.0),
+          panel: Container(
+            padding: EdgeInsets.symmetric(horizontal: 32),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Center(
+                  child: Padding(
+                    padding: EdgeInsets.only(top: 16, bottom: 20),
+                    child: Container(
+                      width: 42.0,
+                      height: 4.0,
+                      decoration: BoxDecoration(
+                        color: Color(0xFFC5CBD6),
+                        borderRadius: BorderRadius.circular(2.0),
+                      ),
                     ),
                   ),
                 ),
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 32),
-                child: Text(
+                Text(
                   "Habit settings",
-                  style: Constants.kTitle2Style,
+                  style: Constants.kTitle1Style,
                 ),
-              ),
-              // TODO: Add more settings here
-            ],
+                // Add more settings here
+                Row(
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        controller: _habitNameController,
+                        style: Constants.kBodyLabelStyle,
+                        onChanged: (text) {
+                          setState(() {
+                            data.title = text;
+                          });
+                        },
+                        decoration: InputDecoration(
+                          labelText: 'Habit name',
+                          suffixIcon: IconButton(
+                            icon: Icon(Icons.check_rounded),
+                            onPressed: () {
+                              FocusScopeNode currentFocus =
+                                  FocusScope.of(context);
+                              if (!currentFocus.hasPrimaryFocus) {
+                                currentFocus.unfocus();
+                              }
+                            },
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                WidgetColorPicker(
+                  chosenColor: _getCardColor(data.color),
+                  onSelectColor: _setColor,
+                ),
+                Text('Frequency', style: Constants.kTitle2Style),
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: 8),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('Set Goal', style: Constants.kBodyLabelStyle),
+                      Container(
+                        width: 80,
+                        height: 40,
+                        child: TextField(
+                          controller: _goalCountController,
+                          onChanged: (value) {
+                            _setGoalCount(value);
+                          },
+                          keyboardType: TextInputType.number,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly
+                          ],
+                          style: Constants.kBodyLabelStyle,
+                          textAlign: TextAlign.center,
+                          textAlignVertical:
+                              TextAlignVertical.center, // not working :(
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(24),
+                            ),
+                            hintText: '0',
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                WidgetTypePicker(
+                  type: data.widgetType,
+                  onSelectType: _setWidgetType,
+                ),
+              ],
+            ),
           ),
           body: Container(
             padding: EdgeInsets.symmetric(horizontal: 16),
             child: Column(
               children: [
-                TopBackBar(passBack: _count),
+                TopBackBar(passBack: data),
                 Text(
-                  widget.routineName,
-                  // widget.data.title,
+                  data.title,
                   style: Constants.kLargeTitleStyle,
                 ),
                 SizedBox(
@@ -124,10 +236,10 @@ class _HabitDetailPageState extends State<HabitDetailPage> {
                       onPressed: _decrementCount,
                     ),
                     RingProgressBar(
-                      currentCount: _count,
-                      goalCount: widget.goal,
-                      habitType: widget.widgetType,
-                      color: widget.color,
+                      currentCount: data.currentPeriodCounts,
+                      goalCount: data.periodicalGoal,
+                      habitType: data.widgetType,
+                      color: Color(data.color),
                     ),
                     IconButton(
                       icon: Icon(Icons.add_circle_rounded),
@@ -141,8 +253,8 @@ class _HabitDetailPageState extends State<HabitDetailPage> {
                   height: 26,
                 ),
                 CheckInList(
-                  checkIns: widget.checkIns.reversed.toList(),
-                  color: widget.color,
+                  checkIns: data.checkins.reversed.toList(),
+                  color: Color(data.color),
                 )
               ],
             ),
