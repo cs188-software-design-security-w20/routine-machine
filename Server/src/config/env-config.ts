@@ -24,7 +24,7 @@ const {
   DB_USER,
   DB_HOST,
   DB_PORT,
-  SERVER_PORT,
+  PORT,
   NODE_ENV,
   PROJECT_ID,
 } = process.env;
@@ -44,7 +44,7 @@ const env: EnvConfig = {
     user: DB_USER,
     port: DB_PORT ? Number(DB_PORT) : defaultDBPort,
   },
-  serverPort: SERVER_PORT ? Number(SERVER_PORT) : defaultServerPort,
+  serverPort: PORT ? Number(PORT) : defaultServerPort,
   nodeEnv: NODE_ENV,
   firebaseProjectID: PROJECT_ID,
 };
