@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_sfsymbols/flutter_sfsymbols.dart';
 import 'package:routine_machine/Models/WidgetData.dart';
 import 'RingProgressBar.dart';
 import '../../constants/Constants.dart' as Constants;
@@ -7,8 +6,15 @@ import '../pages/HabitDetailPage.dart';
 
 class SmallWidgetView extends StatefulWidget {
   final WidgetData data;
+  final int index;
+  final Function removeWidget;
 
-  SmallWidgetView({this.data});
+  SmallWidgetView({
+    Key key,
+    this.data,
+    this.index,
+    this.removeWidget,
+  }) : super(key: key);
 
   @override
   _SmallWidgetViewState createState() => _SmallWidgetViewState();
@@ -39,6 +45,8 @@ class _SmallWidgetViewState extends State<SmallWidgetView> {
       MaterialPageRoute(
         builder: (context) => HabitDetailPage(
           data: data,
+          index: widget.index,
+          removeWidget: widget.removeWidget,
         ),
       ),
     );

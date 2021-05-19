@@ -5,16 +5,11 @@ import '../subviews/WidgetList.dart';
 import '../components/ProfileBarView.dart';
 import '../../constants/Palette.dart' as Palette;
 
-final List<WidgetData> samples = [
-  WidgetData.widgetSample1,
-  WidgetData.widgetSample2,
-  WidgetData.widgetSample3,
-  WidgetData.widgetSample1,
-  WidgetData.widgetSample2,
-  WidgetData.widgetSample3,
-];
-
 class MainDashboardPage extends StatefulWidget {
+  final Future<List<WidgetData>> widgetList;
+  final Function fetchWidgetData;
+  final Function removeWidget;
+  MainDashboardPage({this.widgetList, this.fetchWidgetData, this.removeWidget});
   @override
   _MainDashboardPageState createState() => _MainDashboardPageState();
 }
@@ -22,6 +17,13 @@ class MainDashboardPage extends StatefulWidget {
 class _MainDashboardPageState extends State<MainDashboardPage> {
   Future<UserProfile> userData;
   Future<List<WidgetData>> widgetList;
+
+  @override
+  void initState() {
+    super.initState();
+    userData = _fetchUserData();
+    widgetList = widget.widgetList;
+  }
 
   Future<UserProfile> _fetchUserData() {
     return Future<UserProfile>.delayed(
@@ -31,28 +33,12 @@ class _MainDashboardPageState extends State<MainDashboardPage> {
     );
   }
 
-  Future<List<WidgetData>> _fetchWidgetData() {
-    // TODO: replace this with actual api wrapper call
-    return Future<List<WidgetData>>.delayed(
-        const Duration(seconds: 2), () => samples);
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    userData = _fetchUserData();
-    widgetList = _fetchWidgetData();
-  }
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: RefreshIndicator(
         onRefresh: () async {
-          // TODO: implement pull to refresh
-          setState(() {
-            widgetList = _fetchWidgetData();
-          });
+          widget.fetchWidgetData();
         },
         child: Container(
           child: Column(
@@ -91,6 +77,7 @@ class _MainDashboardPageState extends State<MainDashboardPage> {
                   if (snapshot.hasData) {
                     dashboardContent = WidgetList(
                       widgetList: snapshot.data,
+                      removeWidget: widget.removeWidget,
                     );
                   } else if (snapshot.hasError) {
                     dashboardContent = Expanded(

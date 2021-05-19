@@ -13,7 +13,9 @@ import 'package:routine_machine/Models/WidgetData.dart';
 
 class HabitDetailPage extends StatefulWidget {
   WidgetData data;
-  HabitDetailPage({this.data});
+  final int index;
+  final Function removeWidget;
+  HabitDetailPage({this.data, this.index, this.removeWidget});
 
   @override
   _HabitDetailPageState createState() => _HabitDetailPageState();
@@ -48,12 +50,6 @@ class _HabitDetailPageState extends State<HabitDetailPage> {
         data.currentPeriodCounts -= 1;
         data.checkins.removeLast();
       }
-    });
-  }
-
-  void _setWidgetTitle(String title) {
-    setState(() {
-      data.title = _habitNameController.text;
     });
   }
 
@@ -117,7 +113,7 @@ class _HabitDetailPageState extends State<HabitDetailPage> {
                 offset: Offset(0, -12),
                 blurRadius: 30),
           ],
-          // TODO: Edit page here
+          // Swipe-up panel starts here
           panel: Container(
             padding: EdgeInsets.symmetric(horizontal: 32),
             child: Column(
@@ -210,6 +206,27 @@ class _HabitDetailPageState extends State<HabitDetailPage> {
                 WidgetTypePicker(
                   type: data.widgetType,
                   onSelectType: _setWidgetType,
+                ),
+                Center(
+                  child: Padding(
+                    padding: EdgeInsets.all(32),
+                    child: OutlinedButton(
+                      onPressed: () {
+                        widget.removeWidget(widget.index);
+                        Navigator.pop(context, data);
+                      },
+                      child: Text(
+                        'Delete Habit',
+                        style: TextStyle(color: Palette.primary),
+                      ),
+                      style: OutlinedButton.styleFrom(
+                        side: BorderSide(
+                          color: Palette.primary,
+                          style: BorderStyle.solid,
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
               ],
             ),
