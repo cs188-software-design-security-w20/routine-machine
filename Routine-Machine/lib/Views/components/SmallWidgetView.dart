@@ -15,17 +15,18 @@ class SmallWidgetView extends StatefulWidget {
 }
 
 class _SmallWidgetViewState extends State<SmallWidgetView> {
-  int count = 0; // eventually just fetch this state
+  WidgetData data;
 
   @override
   void initState() {
     super.initState();
-    count = widget.data.currentPeriodCounts;
+    data = widget.data;
   }
 
   void _incrementCount() {
     setState(() {
-      this.count++;
+      data.currentPeriodCounts += 1;
+      data.checkins.add(DateTime.now());
     });
   }
 
@@ -33,22 +34,16 @@ class _SmallWidgetViewState extends State<SmallWidgetView> {
     // when the detail page is popped
     // it will return the updated value of count
     // then we will set the state to match this value
-    final updatedCount = await Navigator.push(
+    final WidgetData updatedData = await Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => HabitDetailPage(
-          routineName: widget.data.title,
-          widgetType: widget.data.widgetType,
-          count: count,
-          goal: widget.data.periodicalGoal,
-          checkIns: widget.data.checkins,
-          color: Color(widget.data.color),
-          // data: widget.data,
+          data: data,
         ),
       ),
     );
     setState(() {
-      count = updatedCount;
+      data = updatedData;
     });
   }
 
@@ -60,31 +55,29 @@ class _SmallWidgetViewState extends State<SmallWidgetView> {
         padding: EdgeInsets.all(16),
         width: double.infinity,
         decoration: Constants.kCardDecorationStyle,
-        child: Expanded(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Padding(
-                padding: EdgeInsets.only(bottom: 20),
-                child: Text(
-                  widget.data.title,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: Constants.kTitle3Style,
-                ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Padding(
+              padding: EdgeInsets.only(bottom: 20),
+              child: Text(
+                data.title,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: Constants.kTitle3Style,
               ),
-              GestureDetector(
-                onTap: _incrementCount,
-                child: RingProgressBar(
-                  currentCount: count,
-                  goalCount: widget.data.periodicalGoal,
-                  habitType: widget.data.widgetType,
-                  color: Color(widget.data.color),
-                ),
+            ),
+            GestureDetector(
+              onTap: _incrementCount,
+              child: RingProgressBar(
+                currentCount: data.currentPeriodCounts,
+                goalCount: data.periodicalGoal,
+                habitType: data.widgetType,
+                color: Color(data.color),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
