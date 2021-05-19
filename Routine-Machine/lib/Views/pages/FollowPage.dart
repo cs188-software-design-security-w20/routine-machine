@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'dart:io';
-
 import 'SearchResultPage.dart';
-import '../../constants/Palette.dart' as Palette;
 import '../../constants/Constants.dart' as Constants;
 import '../subviews/FollowingTileList.dart';
-import '../subviews/FollowerRequestTileList.dart';
-import '../../Models/SampleFollowerRequestData.dart';
+import '../subviews/FollowerTileList.dart';
 import '../../Models/UserProfile.dart';
 
 final List<UserProfile> sampleFollowingList = [
@@ -57,24 +54,21 @@ final List<UserProfile> sampleFollowingList = [
   )
 ];
 
-final List<SampleFollowerRequestData> sampleFollowerRequestList = [
-  SampleFollowerRequestData(
+final List<UserProfile> sampleFollowerRequestList = [
+  UserProfile(
     firstName: 'Carina',
     lastName: 'Xiong',
-    userName: 'carina_x',
-    color: Palette.blue,
+    username: 'carina_x',
   ),
-  SampleFollowerRequestData(
+  UserProfile(
     firstName: 'Jack',
     lastName: 'Zhao',
-    userName: 'jjack_zz',
-    color: Palette.pink,
+    username: 'jjack_zz',
   ),
-  SampleFollowerRequestData(
+  UserProfile(
     firstName: 'Jody',
     lastName: 'Lin',
-    userName: 'jowody',
-    color: Palette.yellow,
+    username: 'jowody',
   ),
 ];
 
@@ -93,14 +87,16 @@ class _FollowPageState extends State<FollowPage> {
   // of the TextField.
   final searchController = TextEditingController();
   FollowPageType _page = FollowPageType.following;
-  Future<List<dynamic>> _followingList;
-  Future<List<dynamic>> _followerRequestList;
+  Future<List<UserProfile>> _followingList;
+  Future<List<UserProfile>> _followerRequestList;
+  Future<List<UserProfile>> _followerList;
 
   @override
   void initState() {
     super.initState();
     _followingList = _getFollowingList();
     _followerRequestList = _getFollowerRequestList();
+    _followerList = _getFollowerList();
   }
 
   @override
@@ -110,11 +106,16 @@ class _FollowPageState extends State<FollowPage> {
     super.dispose();
   }
 
-  Future<List<dynamic>> _getFollowingList() {
+  Future<List<UserProfile>> _getFollowingList() {
     return Future.delayed(new Duration(seconds: 2), () => sampleFollowingList);
   }
 
-  Future<List<dynamic>> _getFollowerRequestList() {
+  Future<List<UserProfile>> _getFollowerRequestList() {
+    return Future.delayed(
+        new Duration(seconds: 2), () => sampleFollowerRequestList);
+  }
+
+  Future<List<UserProfile>> _getFollowerList() {
     return Future.delayed(
         new Duration(seconds: 2), () => sampleFollowerRequestList);
   }
@@ -146,97 +147,99 @@ class _FollowPageState extends State<FollowPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.fromLTRB(16, 16, 16, 0),
-      child: Column(
-        children: [
-          Platform.isAndroid
-              ? SizedBox(height: 36)
-              : null, // for Jody's phone lmao - i have camera overlap
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              GestureDetector(
-                onTap: _switchToFollowing,
-                child: Text(
-                  'Following',
-                  style: _page == FollowPageType.following
-                      ? Constants.kLargeTitleStyle
-                      : Constants.kUnselectedTitleStyle,
+    return SafeArea(
+      child: Container(
+        padding: EdgeInsets.fromLTRB(16, 16, 16, 0),
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                GestureDetector(
+                  onTap: _switchToFollowing,
+                  child: Text(
+                    'Following',
+                    style: _page == FollowPageType.following
+                        ? Constants.kLargeTitleStyle
+                        : Constants.kUnselectedTitleStyle,
+                  ),
                 ),
-              ),
-              GestureDetector(
-                onTap: _switchToFollowers,
-                child: Text(
-                  'Followers',
-                  style: _page == FollowPageType.followers
-                      ? Constants.kLargeTitleStyle
-                      : Constants.kUnselectedTitleStyle,
+                GestureDetector(
+                  onTap: _switchToFollowers,
+                  child: Text(
+                    'Followers',
+                    style: _page == FollowPageType.followers
+                        ? Constants.kLargeTitleStyle
+                        : Constants.kUnselectedTitleStyle,
+                  ),
                 ),
-              ),
-            ],
-          ),
-          Padding(
-            padding: EdgeInsets.fromLTRB(0, 16, 0, 16),
-            child: TextField(
-              controller: searchController,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30),
-                ),
-                labelText: 'Search for friends...',
-                suffixIcon: IconButton(
-                  icon: Icon(Icons.search_rounded),
-                  onPressed: () async {
-                    // TODO: update so search for people
-                    print('search for ${searchController.text}!');
-                    _searchForUser(context, searchController.text);
-                  },
+              ],
+            ),
+            Padding(
+              padding: EdgeInsets.fromLTRB(0, 16, 0, 16),
+              child: TextField(
+                controller: searchController,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  labelText: 'Search for friends...',
+                  suffixIcon: IconButton(
+                    icon: Icon(Icons.search_rounded),
+                    onPressed: () async {
+                      // TODO: update so search for people
+                      print('search for ${searchController.text}!');
+                      _searchForUser(context, searchController.text);
+                    },
+                  ),
                 ),
               ),
             ),
-          ),
-          Expanded(
-              child: FutureBuilder(
-            future: Future.wait([_followingList, _followerRequestList]),
-            builder:
-                (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
-              Widget followContent;
-              if (snapshot.hasData) {
-                followContent = _page == FollowPageType.following
-                    ? RefreshIndicator(
-                        onRefresh: () async {
-                          setState(() {
-                            _followingList = _getFollowingList();
-                          });
-                        },
-                        child: FollowingTileList(
-                          followingList: snapshot.data[0],
-                        ),
-                      )
-                    : RefreshIndicator(
-                        onRefresh: () async {
-                          setState(() {
-                            _followerRequestList = _getFollowerRequestList();
-                          });
-                        },
-                        child: FollowerRequestTileList(
-                          followerRequestList: snapshot.data[1],
-                        ),
-                      );
-              } else if (snapshot.hasError) {
-                followContent = Center(
-                  child: Text('Error loading follow data'),
-                );
-              } else {
-                followContent = Center(
-                  child: Text('loading follow data...'),
-                );
-              }
-              return followContent;
-            },
-          )),
-        ],
+            Expanded(
+                child: FutureBuilder(
+              future: Future.wait(
+                  [_followingList, _followerRequestList, _followerList]),
+              builder: (BuildContext context,
+                  AsyncSnapshot<List<dynamic>> snapshot) {
+                Widget followContent;
+                if (snapshot.hasData) {
+                  followContent = _page == FollowPageType.following
+                      ? RefreshIndicator(
+                          onRefresh: () async {
+                            setState(() {
+                              _followingList = _getFollowingList();
+                            });
+                          },
+                          child: FollowingTileList(
+                            followingList: snapshot.data[0],
+                          ),
+                        )
+                      : RefreshIndicator(
+                          onRefresh: () async {
+                            setState(() {
+                              _followerRequestList = _getFollowerRequestList();
+                              _followerList = _getFollowerList();
+                            });
+                          },
+                          child: FollowerTileList(
+                            followerRequestList: snapshot.data[1],
+                            followerList: snapshot.data[2],
+                          ),
+                        );
+                } else if (snapshot.hasError) {
+                  followContent = Center(
+                    child: Text('Error loading follow data'),
+                  );
+                } else {
+                  followContent = Center(
+                    child: Text('loading follow data...'),
+                  );
+                }
+                return followContent;
+              },
+            )),
+          ],
+        ),
       ),
     );
   }

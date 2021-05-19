@@ -48,7 +48,9 @@ class LongWidgetView extends StatelessWidget {
                     ),
                     if (data.checkins.length > 0)
                       Text(
-                          "Last checked at ${timeago.format(data.checkins.last)}")
+                        "Last checked at ${timeago.format(data.checkins.last)}",
+                        style: Constants.kCaptionLabelStyle,
+                      )
                   ],
                 ),
               ),

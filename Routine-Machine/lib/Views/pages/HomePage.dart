@@ -5,6 +5,8 @@ import 'package:routine_machine/Models/WidgetData.dart';
 import 'LoginPage.dart';
 import 'FollowPage.dart';
 import 'MainDashboardPage.dart';
+import 'AccountPage.dart';
+import '../../constants/Palette.dart' as Palette;
 
 class HomePage extends StatefulWidget {
   @override
@@ -21,10 +23,7 @@ class _HomePageState extends State<HomePage> {
   List<Widget> _children = [
     MainDashboardPage(),
     FollowPage(),
-    Center(
-      child: Text(
-          "${WidgetData.widgetSample1.toJson()}, \n${WidgetData.widgetSample1.toJson()['createdTime'].runtimeType}"),
-    )
+    AccountPage(),
   ];
 
   List<BottomNavigationBarItem> buildBottomNavBarItems() {
@@ -84,6 +83,11 @@ class _HomePageState extends State<HomePage> {
           print(index);
           buttonTapped(index);
         },
+      ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Palette.purple,
+        child: const Icon(Icons.add_rounded, color: Colors.white),
+        onPressed: () => {},
       ),
     );
   }

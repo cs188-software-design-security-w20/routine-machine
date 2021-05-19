@@ -4,17 +4,17 @@ import '../../constants/Palette.dart' as Palette;
 import '../components/RingProgressBar.dart';
 import '../components/TopBackBar.dart';
 import '../subviews/CheckInList.dart';
-import '../../Models/WidgetData.dart';
+import 'package:sliding_up_panel/sliding_up_panel.dart';
+import 'package:routine_machine/Models/WidgetData.dart';
 
 class HabitDetailPage extends StatefulWidget {
   final String routineName;
   final String widgetType;
   final int count;
   final int goal;
-  final List<DateTime> checkIns;
+  List<DateTime> checkIns;
   final Color color;
-//   WidgetData data;
-//   HabitDetailPage({this.data});
+
   HabitDetailPage({
     this.routineName,
     this.widgetType,
@@ -23,25 +23,34 @@ class HabitDetailPage extends StatefulWidget {
     this.checkIns,
     this.color,
   });
+  // WidgetData data;
+  // HabitDetailPage({this.data});
 
   @override
-  _HabitDetailPageState createState() => _HabitDetailPageState(this.count);
+  _HabitDetailPageState createState() =>
+      _HabitDetailPageState(this.count, this.checkIns);
 }
 
 class _HabitDetailPageState extends State<HabitDetailPage> {
+  _HabitDetailPageState(this._count, this._checkIns);
+
   int _count;
-
-  _HabitDetailPageState(this._count);
-
+  List<DateTime> _checkIns;
   void _incrementCount() {
     setState(() {
       _count++;
+      _checkIns.add(DateTime.now());
+      // widget.data.currentPeriodCounts += 1;
+      // widget.data.checkins.add(DateTime.now());
     });
   }
 
   void _decrementCount() {
     setState(() {
       _count--;
+      _checkIns.removeLast();
+      // widget.data.currentPeriodCounts -= 1;
+      // widget.data.checkins.removeLast();
     });
   }
 
@@ -49,18 +58,61 @@ class _HabitDetailPageState extends State<HabitDetailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: TopBackBar(passBack: _count),
-      body: Padding(
-        padding: EdgeInsets.all(16),
-        child: Container(
-            padding: EdgeInsets.all(24),
-            width: double.infinity,
-            decoration: Constants.kCardDecorationStyle,
+      body: Container(
+        width: double.infinity,
+        decoration: Constants.kCardDecorationStyle,
+        child: SlidingUpPanel(
+          backdropEnabled: true,
+          maxHeight: 0.8 * MediaQuery.of(context).size.height,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(34.0),
+            topRight: Radius.circular(34.0),
+          ),
+          boxShadow: [
+            BoxShadow(
+                color: Constants.kShadowColor,
+                offset: Offset(0, -12),
+                blurRadius: 30),
+          ],
+          // TODO: Edit page here
+          panel: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Center(
+                child: Padding(
+                  padding: EdgeInsets.only(top: 16, bottom: 20),
+                  child: Container(
+                    width: 42.0,
+                    height: 4.0,
+                    decoration: BoxDecoration(
+                      color: Color(0xFFC5CBD6),
+                      borderRadius: BorderRadius.circular(2.0),
+                    ),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 32),
+                child: Text(
+                  "Habit settings",
+                  style: Constants.kTitle2Style,
+                ),
+              ),
+              // TODO: Add more settings here
+            ],
+          ),
+          body: Container(
+            padding: EdgeInsets.symmetric(horizontal: 16),
             child: Column(
               children: [
+                TopBackBar(passBack: _count),
                 Text(
                   widget.routineName,
+                  // widget.data.title,
                   style: Constants.kLargeTitleStyle,
+                ),
+                SizedBox(
+                  height: 26,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -85,12 +137,17 @@ class _HabitDetailPageState extends State<HabitDetailPage> {
                     ),
                   ],
                 ),
+                SizedBox(
+                  height: 26,
+                ),
                 CheckInList(
-                  checkIns: widget.checkIns,
+                  checkIns: widget.checkIns.reversed.toList(),
                   color: widget.color,
                 )
               ],
-            )),
+            ),
+          ),
+        ),
       ),
     );
   }

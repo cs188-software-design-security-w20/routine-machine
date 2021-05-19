@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:routine_machine/Models/UserProfile.dart';
 import 'package:routine_machine/Models/WidgetData.dart';
 import '../subviews/WidgetList.dart';
 import '../components/ProfileBarView.dart';
@@ -19,7 +20,16 @@ class MainDashboardPage extends StatefulWidget {
 }
 
 class _MainDashboardPageState extends State<MainDashboardPage> {
+  Future<UserProfile> userData;
   Future<List<WidgetData>> widgetList;
+
+  Future<UserProfile> _fetchUserData() {
+    return Future<UserProfile>.delayed(
+      const Duration(seconds: 1),
+      () => UserProfile(
+          userID: "jodylin", username: "jodyLin", firstName: "Jody Lin"),
+    );
+  }
 
   Future<List<WidgetData>> _fetchWidgetData() {
     // TODO: replace this with actual api wrapper call
@@ -30,7 +40,7 @@ class _MainDashboardPageState extends State<MainDashboardPage> {
   @override
   void initState() {
     super.initState();
-
+    userData = _fetchUserData();
     widgetList = _fetchWidgetData();
   }
 
@@ -48,10 +58,29 @@ class _MainDashboardPageState extends State<MainDashboardPage> {
           child: Column(
             children: [
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16),
-                child: ProfileBarView(
-                  firstName: 'Jody',
-                  lastName: 'Lin',
+                padding: EdgeInsets.symmetric(horizontal: 26),
+                child: FutureBuilder(
+                  future: userData,
+                  builder: (BuildContext context,
+                      AsyncSnapshot<UserProfile> snapshot) {
+                    Widget profileBarContent;
+                    if (snapshot.hasData) {
+                      profileBarContent = ProfileBarView(
+                        user: snapshot.data,
+                      );
+                    } else if (snapshot.hasError) {
+                      profileBarContent = Expanded(
+                        child: Center(
+                          child: Text('Error loading profile'),
+                        ),
+                      );
+                    } else {
+                      profileBarContent = ProfileBarView(
+                        user: UserProfile(firstName: "Loading..."),
+                      );
+                    }
+                    return profileBarContent;
+                  },
                 ),
               ),
               FutureBuilder(

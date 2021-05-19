@@ -59,6 +59,7 @@ class _FriendProfilePageState extends State<FriendProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: TopBackBar(),
+      backgroundColor: Colors.white,
       body: Container(
         child: SingleChildScrollView(
           child: Column(
@@ -70,7 +71,7 @@ class _FriendProfilePageState extends State<FriendProfilePage> {
                 child: Text(
                   '${widget.friendProfile.firstName[0].toUpperCase()}',
                   style: TextStyle(
-                    fontFamily: Platform.isIOS ? 'SF Pro Text' : null,
+                    fontFamily: 'SF Pro Text',
                     fontSize: 47.0,
                     color: Colors.white,
                     fontWeight: FontWeight.w500,
