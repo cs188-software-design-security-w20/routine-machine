@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sfsymbols/flutter_sfsymbols.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:routine_machine/Models/UserProfile.dart';
 import 'package:routine_machine/Models/WidgetData.dart';
 import 'LoginPage.dart';
 import 'FollowPage.dart';
@@ -58,6 +59,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   Future<List<WidgetData>> _mainDashboardWidgetData;
+  // Future<UserProfile> _mainUserProfileData;
   bool triedLogIn = false;
   int _page = 0;
   PageController _controller = PageController(initialPage: 0);
@@ -156,16 +158,18 @@ class _HomePageState extends State<HomePage> {
           onPressed: () async {
             setState(() {
               _mainDashboardWidgetData.then((widgetList) {
-                widgetList.add(new WidgetData(
-                  title: "New Habit",
-                  widgetType: "daily",
-                  color: 0xFFB057F5,
-                  createdTime: new DateTime.now(),
-                  modifiedTime: new DateTime.now(),
-                  currentPeriodCounts: 0,
-                  periodicalGoal: 1,
-                  checkins: [],
-                ));
+                widgetList.add(
+                  new WidgetData(
+                    title: "New Habit",
+                    widgetType: "daily",
+                    color: 0xFFB057F5,
+                    createdTime: new DateTime.now(),
+                    modifiedTime: new DateTime.now(),
+                    currentPeriodCounts: 0,
+                    periodicalGoal: 1,
+                    checkins: [],
+                  ),
+                );
               });
             });
           },

@@ -17,7 +17,7 @@ class AccountPage extends StatefulWidget {
 
 class _AccountPageState extends State<AccountPage> {
   Future<UserProfile> userProfile;
-
+  TextEditingController _usernameController;
   final String qrKey = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
 
   @override
@@ -38,12 +38,77 @@ class _AccountPageState extends State<AccountPage> {
     );
   }
 
+  void activeChangeUsernamePage(BuildContext context) {
+    // TODO: make this its own page file
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => Scaffold(
+          backgroundColor: Colors.white,
+          appBar: TopBackBar(),
+          body: Container(
+            padding: EdgeInsets.symmetric(horizontal: 16),
+            child: Column(
+              children: [
+                Text(
+                  "Change user name",
+                  style: kTitle1Style,
+                ),
+                SizedBox(
+                  height: 36,
+                ),
+                FutureBuilder<UserProfile>(
+                  future: _fetchUserData(),
+                  builder: (BuildContext context,
+                      AsyncSnapshot<UserProfile> snapshot) {
+                    switch (snapshot.connectionState) {
+                      case ConnectionState.waiting:
+                        return Text("Loading...");
+                      default:
+                        if (snapshot.hasError) {
+                          return Text('Error: ${snapshot.error}');
+                        } else {
+                          return Text("@${snapshot.data.username}");
+                        }
+                    }
+                  },
+                ),
+                TextFormField(
+                    decoration: InputDecoration(
+                      labelText: "enter username",
+                      fillColor: Colors.white,
+                      border: new OutlineInputBorder(
+                        borderRadius: new BorderRadius.circular(25.0),
+                        borderSide: new BorderSide(),
+                      ),
+                    ),
+                    validator: (val) {
+                      // TODO: Validate if username is available here
+                      return null;
+                    },
+                    keyboardType: TextInputType.text,
+                    onFieldSubmitted: (username) async {
+                      setState(() {
+                        this.userProfile.then((data) => {
+                              data.username = username,
+                            });
+                      });
+                    })
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
   void activeChangeNamePage(BuildContext context) {
     // TODO: make this its own page file
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => Scaffold(
+          backgroundColor: Colors.white,
           appBar: TopBackBar(),
           body: Text("Change name"),
         ),
@@ -178,6 +243,16 @@ class _AccountPageState extends State<AccountPage> {
                         SizedBox(height: 35),
                         Column(
                           children: [
+                            MenuRow(
+                              icon: new Icon(
+                                SFSymbols.at,
+                                size: 32,
+                                color: Colors.grey,
+                              ),
+                              title: "Change username",
+                              action: () => activeChangeUsernamePage(context),
+                            ),
+                            SizedBox(height: 16),
                             MenuRow(
                               icon: new Icon(
                                 Icons.face,
