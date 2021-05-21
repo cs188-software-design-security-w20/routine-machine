@@ -3,10 +3,10 @@ import 'package:routine_machine/Models/WidgetData.dart';
 import '../components/SmallWidgetView.dart';
 
 class WidgetList extends StatelessWidget {
-  // List<SampleWidgetData> widgetList;
   final List<WidgetData> widgetList;
+  final Function removeWidget;
 
-  WidgetList({this.widgetList});
+  WidgetList({this.widgetList, this.removeWidget});
 
   @override
   Widget build(BuildContext context) {
@@ -19,9 +19,14 @@ class WidgetList extends StatelessWidget {
             MediaQuery.of(context).orientation == Orientation.landscape ? 4 : 2,
         childAspectRatio: 0.73,
         children: widgetList
+            .asMap()
+            .entries
             .map(
               (widget) => SmallWidgetView(
-                data: widget,
+                key: ObjectKey(widget),
+                data: widget.value,
+                index: widget.key,
+                removeWidget: removeWidget,
               ),
             )
             .toList(),

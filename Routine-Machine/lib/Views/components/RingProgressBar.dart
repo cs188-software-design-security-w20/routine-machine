@@ -8,11 +8,9 @@ class RingProgressBar extends StatelessWidget {
       {this.currentCount,
       this.goalCount,
       habitType,
-      color,
+      this.color,
       this.showText = true,
       this.ringSize = 105}) {
-    ringColor = color;
-
     // if current count <= 0, default to 0.01 so a little bit of the ring is visible
     if (currentCount > goalCount) {
       _percentComplete = 1;
@@ -40,7 +38,7 @@ class RingProgressBar extends StatelessWidget {
   final int currentCount;
   final int goalCount;
   double _percentComplete;
-  Color ringColor;
+  Color color;
   bool showText;
   // not sure how sizing is done in mobile dev so hard coding here
   double ringSize;
@@ -64,8 +62,8 @@ class RingProgressBar extends StatelessWidget {
                 lineWidth: 6.0,
                 percent: _percentComplete,
                 circularStrokeCap: CircularStrokeCap.round,
-                backgroundColor: ringColor.withOpacity(0.3),
-                progressColor: ringColor,
+                backgroundColor: color.withOpacity(0.3),
+                progressColor: color,
               ),
             ),
           ),
@@ -74,7 +72,7 @@ class RingProgressBar extends StatelessWidget {
                 ? Icon(
                     SFSymbols.checkmark_alt,
                     size: 45,
-                    color: ringColor,
+                    color: color,
                   )
                 : this.showText
                     ? RichText(

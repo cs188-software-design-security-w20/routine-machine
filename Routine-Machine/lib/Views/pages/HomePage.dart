@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sfsymbols/flutter_sfsymbols.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:routine_machine/Models/UserProfile.dart';
 import 'package:routine_machine/Models/WidgetData.dart';
 import 'LoginPage.dart';
 import 'FollowPage.dart';
@@ -8,23 +9,80 @@ import 'MainDashboardPage.dart';
 import 'AccountPage.dart';
 import '../../constants/Palette.dart' as Palette;
 
+List<WidgetData> samples = [
+  new WidgetData(
+    title: "Drink Water",
+    widgetType: "daily",
+    color: 0xFF7CD0FF,
+    createdTime: new DateTime.now(),
+    modifiedTime: new DateTime.now(),
+    currentPeriodCounts: 1,
+    periodicalGoal: 6,
+    checkins: [new DateTime.now()],
+  ),
+  WidgetData(
+    title: "Exercise",
+    widgetType: "weekly",
+    color: 0xFFFFDF6B,
+    createdTime: new DateTime.now(),
+    modifiedTime: new DateTime.now(),
+    currentPeriodCounts: 2,
+    periodicalGoal: 4,
+    checkins: [new DateTime.now(), new DateTime.now()],
+  ),
+  WidgetData(
+    title: "Read the News",
+    widgetType: "monthly",
+    color: 0xFFFF93BA,
+    createdTime: new DateTime.now(),
+    modifiedTime: new DateTime.now(),
+    currentPeriodCounts: 1,
+    periodicalGoal: 20,
+    checkins: [new DateTime.now()],
+  ),
+  WidgetData(
+    title: "Exercise",
+    widgetType: "weekly",
+    color: 0xFFFFDF6B,
+    createdTime: new DateTime.now(),
+    modifiedTime: new DateTime.now(),
+    currentPeriodCounts: 2,
+    periodicalGoal: 4,
+    checkins: [new DateTime.now(), new DateTime.now()],
+  ),
+];
+
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
+  Future<List<WidgetData>> _mainDashboardWidgetData;
+  // Future<UserProfile> _mainUserProfileData;
   bool triedLogIn = false;
-  PageController _controller = PageController(
-    initialPage: 0,
-  );
   int _page = 0;
+  PageController _controller = PageController(initialPage: 0);
 
-  List<Widget> _children = [
-    MainDashboardPage(),
-    FollowPage(),
-    AccountPage(),
-  ];
+  @override
+  void initState() {
+    super.initState();
+    _mainDashboardWidgetData = _fetchWidgetData();
+  }
+
+  Future<List<WidgetData>> _fetchWidgetData() {
+    // TODO: replace this with actual api wrapper call
+    return Future<List<WidgetData>>.delayed(
+        const Duration(seconds: 2), () => samples);
+  }
+
+  void _removeWidget(int index) {
+    setState(() {
+      _mainDashboardWidgetData.then((widgetList) {
+        widgetList.removeAt(index);
+      });
+    });
+  }
 
   List<BottomNavigationBarItem> buildBottomNavBarItems() {
     return [
@@ -68,7 +126,15 @@ class _HomePageState extends State<HomePage> {
       onPageChanged: (index) {
         onPageChanged(index);
       },
-      children: this._children,
+      children: [
+        MainDashboardPage(
+          widgetList: _mainDashboardWidgetData,
+          fetchWidgetData: _fetchWidgetData,
+          removeWidget: _removeWidget,
+        ),
+        FollowPage(),
+        AccountPage(),
+      ],
     );
   }
 
@@ -84,10 +150,30 @@ class _HomePageState extends State<HomePage> {
           buttonTapped(index);
         },
       ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Palette.purple,
-        child: const Icon(Icons.add_rounded, color: Colors.white),
-        onPressed: () => {},
+      floatingActionButton: Visibility(
+        visible: _page == 0,
+        child: FloatingActionButton(
+          backgroundColor: Palette.purple,
+          child: const Icon(Icons.add_rounded, color: Colors.white),
+          onPressed: () async {
+            setState(() {
+              _mainDashboardWidgetData.then((widgetList) {
+                widgetList.add(
+                  new WidgetData(
+                    title: "New Habit",
+                    widgetType: "daily",
+                    color: 0xFFB057F5,
+                    createdTime: new DateTime.now(),
+                    modifiedTime: new DateTime.now(),
+                    currentPeriodCounts: 0,
+                    periodicalGoal: 1,
+                    checkins: [],
+                  ),
+                );
+              });
+            });
+          },
+        ),
       ),
     );
   }

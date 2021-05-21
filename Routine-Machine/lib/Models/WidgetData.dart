@@ -58,14 +58,15 @@ class WidgetData {
   static int _toJson(DateTime time) => time.millisecondsSinceEpoch;
 
   static WidgetData widgetSample1 = WidgetData(
-      title: "Drink Water",
-      widgetType: "daily",
-      color: 0xFF7CD0FF,
-      createdTime: new DateTime.now(),
-      modifiedTime: new DateTime.now(),
-      currentPeriodCounts: 1,
-      periodicalGoal: 6,
-      checkins: [new DateTime.now(), new DateTime.now()]);
+    title: "Drink Water",
+    widgetType: "daily",
+    color: 0xFF7CD0FF,
+    createdTime: new DateTime.now(),
+    modifiedTime: new DateTime.now(),
+    currentPeriodCounts: 1,
+    periodicalGoal: 6,
+    checkins: [new DateTime.now(), new DateTime.now()],
+  );
   static WidgetData widgetSample2 = WidgetData(
       title: "Exercise",
       widgetType: "weekly",
