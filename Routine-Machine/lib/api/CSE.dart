@@ -154,6 +154,7 @@ class CSE {
   /// using the owner's public key and distributed to the owner
   Future<AESKey> decryptOtherDEK({EncryptedDEK encryptedDEK}) async {
     final privateKey = await getPrivateKey();
+    return encryptedDEK.decrypt(usingPrivateKey: privateKey.toString());
     final decryptedDEK = privateKey.decrypt(encryptedDEK.encrypted);
     return AESKey(key: decryptedDEK, iv: encryptedDEK.iv);
   }
