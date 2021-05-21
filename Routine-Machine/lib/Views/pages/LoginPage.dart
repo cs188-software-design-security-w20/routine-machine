@@ -57,12 +57,6 @@ class LoginPage extends StatelessWidget {
       }
       return 'Error: $errorType';
     }
-
-    // if (user != null) {
-    //   return null;
-    // } else {
-    //   return null;
-    // }
   }
 
   Future<String> _registerUser(LoginData loginData) async {
@@ -108,13 +102,6 @@ class LoginPage extends StatelessWidget {
         // recoverPasswordButton: 'HELP ME',
         goBackButton: 'Back to Log In',
         confirmPasswordError: 'Not match!',
-
-        // recoverPasswordIntro: 'Don\'t feel bad. Happens all the time.',
-        // recoverPasswordDescription:
-        //     'Lorem Ipsum is simply dummy text of the printing and typesetting industry',
-        // recoverPasswordSuccess: 'Password rescued successfully',
-        // flushbarTitleError: 'Oh no!',
-        // flushbarTitleSuccess: 'Succes!',
       ),
       theme: LoginTheme(
         primaryColor: Color(0xffB057F5),
@@ -145,9 +132,7 @@ class LoginPage extends StatelessWidget {
         print('Login');
         print('Email: ${loginData.name}');
         print('Password: ${loginData.password}');
-
         return _loginUser(loginData);
-        //return _loginUser(loginData);
       },
       onSignup: (loginData) async {
         print('Sign Up');
