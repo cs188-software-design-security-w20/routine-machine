@@ -57,6 +57,37 @@ class APIWrapper {
     }
   }
 
+  Future<bool> isUsernameTaken({String username}) async {
+    final query = {
+      'user_name': username,
+    };
+    final headers = {
+      HttpHeaders.authorizationHeader: await _getAuthHeader(),
+      HttpHeaders.contentTypeHeader: 'application/json',
+    };
+    final url = Uri.https(apiBaseURL, '/user/username', query);
+    final response = await client.get(url, headers: headers);
+    if (response.statusCode != 200) {
+      throw Exception('Failed to check username avaliability');
+    }
+    final json = Convert.jsonDecode(response.body);
+    return json;
+  }
+
+  Future<void> setUserName({String username}) async {
+    final headers = {
+      HttpHeaders.authorizationHeader: await _getAuthHeader(),
+    };
+    final url = Uri.https(apiBaseURL, '/user/username');
+    final response = await client.post(url, headers: headers, body: {
+      'id': user.uid,
+      'user_name': username,
+    });
+    if (response.statusCode != 200) {
+      throw Exception('Failed to set username');
+    }
+  }
+
   Future<UserProfile> getUserProfile({String username}) async {
     final query = {
       'user_name': username,
