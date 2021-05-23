@@ -27,7 +27,7 @@ export default class User extends Model<UserSchema> {
 
   @Unique
   @AllowNull(false)
-  @Column
+  @Column(DataType.TEXT)
   public_key: string;
 
   @AllowNull(false)
@@ -41,7 +41,7 @@ export default class User extends Model<UserSchema> {
   @Column(DataType.JSON)
   profile: object;
 
-  @Column
+  @Column(DataType.TEXT)
   habit_data: string;
 
   @BelongsToMany(() => User, () => Follow, 'followee_id', 'follower_id')

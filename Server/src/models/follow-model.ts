@@ -1,5 +1,5 @@
 import {
-  Model, Table, Column, ForeignKey, Unique, AllowNull,
+  Model, Table, Column, ForeignKey, Unique, AllowNull, DataType,
 } from 'sequelize-typescript';
 import User from './user-model';
 
@@ -23,6 +23,6 @@ export default class Follow extends Model<FollowSchema> {
 
   @Unique
   @AllowNull(false)
-  @Column
+  @Column(DataType.TEXT)
   dek: string;
 }
