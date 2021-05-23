@@ -6,12 +6,33 @@ class AESKey {
   String key;
   String iv;
   AESKey({this.key, this.iv});
+
+  EncryptedDEK encrypt({String usingPublicKey}) {
+    final pk = Crypton.RSAPublicKey.fromString(usingPublicKey);
+    final encryptedKey = pk.encrypt(key);
+    return EncryptedDEK(encrypted: encryptedKey, iv: iv);
+  }
 }
 
 class EncryptedDEK {
   String encrypted;
   String iv;
   EncryptedDEK({this.encrypted, this.iv});
+
+  @override
+  toString() => '$encrypted\$$iv';
+
+  EncryptedDEK.fromString(String input) {
+    final tokens = input.split('\$');
+    this.encrypted = tokens[0];
+    this.iv = tokens[1];
+  }
+
+  AESKey decrypt({String usingPrivateKey}) {
+    final pk = Crypton.RSAPrivateKey.fromString(usingPrivateKey);
+    final decryptedKey = pk.decrypt(encrypted);
+    return AESKey(key: decryptedKey, iv: iv);
+  }
 }
 
 class MissingKeyException implements Exception {
@@ -120,7 +141,10 @@ class CSE {
   /// Used to encrypt the owner's DEK using a follower's public key
   /// before distribution to that follower
   Future<EncryptedDEK> encryptOwnerDEK({String usingPublicKey}) async {
-    final publicKey = Crypton.RSAPublicKey.fromString(usingPublicKey);
+    final publicKey = await (() async {
+      if (usingPublicKey == null) return await this.getPublicKey();
+      return Crypton.RSAPublicKey.fromString(usingPublicKey);
+    })();
     final ownerDEK = await getDEK();
     final encryptedKey = publicKey.encrypt(ownerDEK.key);
     return EncryptedDEK(encrypted: encryptedKey, iv: ownerDEK.iv);
@@ -130,6 +154,7 @@ class CSE {
   /// using the owner's public key and distributed to the owner
   Future<AESKey> decryptOtherDEK({EncryptedDEK encryptedDEK}) async {
     final privateKey = await getPrivateKey();
+    return encryptedDEK.decrypt(usingPrivateKey: privateKey.toString());
     final decryptedDEK = privateKey.decrypt(encryptedDEK.encrypted);
     return AESKey(key: decryptedDEK, iv: encryptedDEK.iv);
   }
