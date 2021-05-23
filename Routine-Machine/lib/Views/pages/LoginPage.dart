@@ -8,16 +8,31 @@ import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import '../../constants/Constants.dart' as Constants;
 import '../components/custom_route.dart';
 import 'package:routine_machine/Views/pages/HomePage.dart';
+import 'ScanQRPage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:io' show Platform;
 
 FirebaseAuth _auth = FirebaseAuth.instance;
 final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 enum authProblems { UserNotFound, PasswordNotValid, NetworkError }
+enum SignInType { signUp, logIn }
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   static const routeName = '/auth';
+
+  @override
+  _LoginPageState createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
   Duration get loginTime => Duration(milliseconds: timeDilation.ceil() * 2250);
+  SignInType _signInType = SignInType.logIn;
+
+  bool _keyExistsOnDevice() {
+    // TODO: implement this
+    return false; // set to true to bypass qr scanner page
+  }
+
   Future<String> _loginUser(LoginData loginData) async {
     try {
       final User user = (await _auth.signInWithEmailAndPassword(
@@ -132,20 +147,38 @@ class LoginPage extends StatelessWidget {
         print('Login');
         print('Email: ${loginData.name}');
         print('Password: ${loginData.password}');
+        setState(() {
+          _signInType = SignInType.logIn;
+        });
         return _loginUser(loginData);
       },
       onSignup: (loginData) async {
         print('Sign Up');
         print('Email: ${loginData.name}');
         print('Password: ${loginData.password}');
+        setState(() {
+          _signInType = SignInType.signUp;
+        });
         return _registerUser(loginData);
       },
       onSubmitAnimationCompleted: () {
         // no error found, login success
         // redirect to home page
-        Navigator.of(context).pushReplacement(FadePageRoute(
-          builder: (context) => HomePage(),
-        ));
+        if (_signInType == SignInType.signUp) {
+          Navigator.of(context).pushReplacement(FadePageRoute(
+            builder: (context) => HomePage(),
+          ));
+        } else if (_signInType == SignInType.logIn) {
+          if (_keyExistsOnDevice()) {
+            // TODO: implement this function above
+            Navigator.of(context).pushReplacement(
+                FadePageRoute(builder: (context) => HomePage()));
+          } else {
+            // go to scan page
+            Navigator.of(context).pushReplacement(
+                FadePageRoute(builder: (context) => ScanQRPage()));
+          }
+        }
       },
       onRecoverPassword: null,
       showDebugButtons: false,
