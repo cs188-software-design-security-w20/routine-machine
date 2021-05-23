@@ -29,3 +29,7 @@ export const setHabitData = (id: string, habit_data: string) => User.update({
 export const setProfile = (id: string, profile: JSON) => User.update({
   profile,
 }, { where: { id } });
+
+export const setUsername = (id: string, user_name: string) => User.update({
+  user_name,
+}, { where: { id } });
