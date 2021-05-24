@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
@@ -13,6 +14,8 @@ enum VerificationStatus {
 }
 
 class ScanQRPage extends StatefulWidget {
+  final User user;
+  ScanQRPage({this.user});
   @override
   _ScanQRPageState createState() => _ScanQRPageState();
 }
@@ -119,7 +122,7 @@ class _ScanQRPageState extends State<ScanQRPage> {
             _verificationStatus = VerificationStatus.success;
             Navigator.pushReplacement(
               context,
-              FadePageRoute(builder: (context) => HomePage()),
+              FadePageRoute(builder: (context) => HomePage(user: widget.user)),
             );
           } else {
             _verificationStatus = VerificationStatus.failed;

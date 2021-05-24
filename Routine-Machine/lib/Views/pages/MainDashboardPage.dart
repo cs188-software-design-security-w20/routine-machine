@@ -82,7 +82,8 @@ class _MainDashboardPageState extends State<MainDashboardPage> {
                   } else if (snapshot.hasError) {
                     dashboardContent = Expanded(
                       child: Center(
-                        child: Text('Error loading habit data'),
+                        child:
+                            Text('Error loading habit data: ${snapshot.error}'),
                       ),
                     );
                   } else {

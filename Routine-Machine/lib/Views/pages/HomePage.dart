@@ -1,8 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sfsymbols/flutter_sfsymbols.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:routine_machine/Models/UserProfile.dart';
 import 'package:routine_machine/Models/WidgetData.dart';
+import 'package:routine_machine/api/APIWrapper.dart';
 import 'LoginPage.dart';
 import 'FollowPage.dart';
 import 'MainDashboardPage.dart';
@@ -53,6 +55,8 @@ List<WidgetData> samples = [
 ];
 
 class HomePage extends StatefulWidget {
+  final User user;
+  HomePage({this.user});
   @override
   _HomePageState createState() => _HomePageState();
 }
@@ -67,13 +71,15 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    _mainDashboardWidgetData = _fetchWidgetData();
+    print("HomePage user: ${widget.user}");
+    _mainDashboardWidgetData = _fetchWidgetData(widget.user);
   }
 
-  Future<List<WidgetData>> _fetchWidgetData() {
+  Future<List<WidgetData>> _fetchWidgetData(User user) {
     // TODO: replace this with actual api wrapper call
-    return Future<List<WidgetData>>.delayed(
-        const Duration(seconds: 2), () => samples);
+    APIWrapper apiWrapper = new APIWrapper();
+    apiWrapper.setUser(user);
+    return apiWrapper.getHabitData();
   }
 
   void _removeWidget(int index) {
