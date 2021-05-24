@@ -11,6 +11,7 @@ import '../components/custom_route.dart';
 import 'package:routine_machine/Views/pages/HomePage.dart';
 import 'ScanQRPage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'dart:io' show Platform;
 
 FirebaseAuth _auth = FirebaseAuth.instance;
@@ -27,7 +28,7 @@ enum SignInType {
 
 class LoginPage extends StatefulWidget {
   static const routeName = '/auth';
-
+  final storage = new FlutterSecureStorage();
   @override
   _LoginPageState createState() => _LoginPageState();
 }
@@ -35,12 +36,13 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   APIWrapper apiWrapper;
   User user;
+  String key;
   Duration get loginTime => Duration(milliseconds: timeDilation.ceil() * 2250);
   SignInType _signInType = SignInType.logIn;
 
   bool _keyExistsOnDevice() {
     // TODO: implement this
-    return true; // set to true to bypass qr scanner page
+    return key != null; // set to true to bypass qr scanner page
   }
 
   Future<String> _loginUser(LoginData loginData) async {
@@ -186,17 +188,23 @@ class _LoginPageState extends State<LoginPage> {
             builder: (context) => HomePage(user: this.user),
           ));
         } else if (_signInType == SignInType.logIn) {
-          if (_keyExistsOnDevice()) {
-            // TODO: implement this function above
-            Navigator.of(context).pushReplacement(FadePageRoute(
-                builder: (context) => HomePage(
-                      user: this.user,
-                    )));
-          } else {
-            // go to scan page
-            Navigator.of(context).pushReplacement(
-                FadePageRoute(builder: (context) => ScanQRPage()));
-          }
+          APIWrapper api = APIWrapper();
+          api.setUser(this.user);
+          api.cse.hasKeyPair().then((value) => {
+                print("hasKeyPair: ${this.user}"),
+                if (value)
+                  {
+                    // TODO: implement this function above
+                    Navigator.of(context).pushReplacement(FadePageRoute(
+                        builder: (context) => HomePage(user: this.user))),
+                  }
+                else
+                  {
+                    // go to scan page
+                    Navigator.of(context).pushReplacement(FadePageRoute(
+                        builder: (context) => ScanQRPage(user: this.user))),
+                  }
+              });
         }
       },
       onRecoverPassword: null,
