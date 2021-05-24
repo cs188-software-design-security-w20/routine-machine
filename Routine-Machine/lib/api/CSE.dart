@@ -45,10 +45,10 @@ class MissingKeyException implements Exception {
 /// Utility class for management of keys and encryption/decryption of data
 class CSE {
   var _storage = const FlutterSecureStorage();
-  static const privateKeyStorageKey = 'routine-machine-private-key';
-  static const publicKeyStorageKey = 'routine-machine-public-key';
-  static const dekStorageKey = 'routine-machine-dek';
-  static const ivStorageKey = 'routine-machine-iv';
+  String privateKeyStorageKey; // = 'routine-machine-private-key';
+  String publicKeyStorageKey; //= 'routine-machine-public-key';
+  String dekStorageKey;
+  String ivStorageKey; // = 'routine-machine-iv';
   static final CSE _instance = CSE._create();
   factory CSE() => _instance;
   CSE._create();
@@ -56,6 +56,13 @@ class CSE {
   /// Inject a key-value storage system using the FlutterSecureStorage interface
   injectStorageProvider({FlutterSecureStorage provider}) {
     _storage = provider;
+  }
+
+  void setUID(String uid) {
+    this.privateKeyStorageKey = 'private-key-$uid';
+    this.publicKeyStorageKey = 'public-key-$uid';
+    this.dekStorageKey = 'dek-$uid';
+    this.ivStorageKey = 'iv-$uid';
   }
 
   /// Changes the DEK and IV of the client for AES-CBC-256

@@ -22,6 +22,7 @@ class APIWrapper {
 
   void setUser(Auth.User user) {
     this.user = user;
+    cse.setUID(this.user.uid);
   }
 
   Future<String> _getAuthHeader() async {
