@@ -5,8 +5,13 @@ import '../components/SmallWidgetView.dart';
 class WidgetList extends StatelessWidget {
   final List<WidgetData> widgetList;
   final Function removeWidget;
+  final Function updateWidget;
 
-  WidgetList({this.widgetList, this.removeWidget});
+  WidgetList({
+    this.widgetList,
+    this.removeWidget,
+    this.updateWidget,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +32,7 @@ class WidgetList extends StatelessWidget {
                 data: widget.value,
                 index: widget.key,
                 removeWidget: removeWidget,
+                updateWidget: updateWidget,
               ),
             )
             .toList(),

@@ -58,6 +58,7 @@ List<WidgetData> samples = [
 class HomePage extends StatefulWidget {
   final User user;
   final FlutterSecureStorage storage = FlutterSecureStorage();
+  final APIWrapper api = APIWrapper();
   HomePage({this.user});
   @override
   _HomePageState createState() => _HomePageState();
@@ -79,20 +80,31 @@ class _HomePageState extends State<HomePage> {
           this.key = value,
           print("HomePage user: ${widget.user}, ${this.key}"),
         });
-    _mainDashboardWidgetData = _fetchWidgetData(widget.user);
+    _fetchWidgetData();
   }
 
-  Future<List<WidgetData>> _fetchWidgetData(User user) {
-    // TODO: replace this with actual api wrapper call
+  void _fetchWidgetData() {
     APIWrapper apiWrapper = new APIWrapper();
-    apiWrapper.setUser(user);
-    return apiWrapper.getHabitData();
+    apiWrapper.setUser(widget.user);
+    setState(() {
+      _mainDashboardWidgetData = apiWrapper.getHabitData();
+    });
+  }
+
+  void _updateWidget(WidgetData data, int index) {
+    setState(() {
+      _mainDashboardWidgetData.then((widgetList) {
+        widgetList[index] = data;
+        widget.api.setHabitData(habitData: widgetList);
+      });
+    });
   }
 
   void _removeWidget(int index) {
     setState(() {
       _mainDashboardWidgetData.then((widgetList) {
         widgetList.removeAt(index);
+        widget.api.setHabitData(habitData: widgetList);
       });
     });
   }
@@ -144,6 +156,7 @@ class _HomePageState extends State<HomePage> {
           widgetList: _mainDashboardWidgetData,
           fetchWidgetData: _fetchWidgetData,
           removeWidget: _removeWidget,
+          updateWidget: _updateWidget,
         ),
         FollowPage(),
         AccountPage(),
@@ -183,6 +196,7 @@ class _HomePageState extends State<HomePage> {
                     checkins: [],
                   ),
                 );
+                widget.api.setHabitData(habitData: widgetList);
               });
             });
           },

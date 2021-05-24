@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 import 'package:routine_machine/Models/WidgetData.dart';
 import 'RingProgressBar.dart';
@@ -5,15 +7,17 @@ import '../../constants/Constants.dart' as Constants;
 import '../pages/HabitDetailPage.dart';
 
 class SmallWidgetView extends StatefulWidget {
-  final WidgetData data;
+  WidgetData data;
   final int index;
   final Function removeWidget;
+  final Function updateWidget;
 
   SmallWidgetView({
     Key key,
     this.data,
     this.index,
     this.removeWidget,
+    this.updateWidget,
   }) : super(key: key);
 
   @override
@@ -21,18 +25,19 @@ class SmallWidgetView extends StatefulWidget {
 }
 
 class _SmallWidgetViewState extends State<SmallWidgetView> {
-  WidgetData data;
+  // WidgetData data;
 
   @override
   void initState() {
     super.initState();
-    data = widget.data;
+    // data = widget.data;
   }
 
   void _incrementCount() {
     setState(() {
-      data.currentPeriodCounts += 1;
-      data.checkins.add(DateTime.now());
+      widget.data.currentPeriodCounts += 1;
+      widget.data.checkins.add(DateTime.now());
+      // widget.updateWidget(widget.data, widget.index);
     });
   }
 
@@ -44,14 +49,14 @@ class _SmallWidgetViewState extends State<SmallWidgetView> {
       context,
       MaterialPageRoute(
         builder: (context) => HabitDetailPage(
-          data: data,
+          data: widget.data,
           index: widget.index,
           removeWidget: widget.removeWidget,
         ),
       ),
     );
     setState(() {
-      data = updatedData;
+      widget.data = updatedData;
     });
   }
 
@@ -70,7 +75,7 @@ class _SmallWidgetViewState extends State<SmallWidgetView> {
             Padding(
               padding: EdgeInsets.only(bottom: 20),
               child: Text(
-                data.title,
+                widget.data.title,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: Constants.kTitle3Style,
@@ -79,15 +84,21 @@ class _SmallWidgetViewState extends State<SmallWidgetView> {
             GestureDetector(
               onTap: _incrementCount,
               child: RingProgressBar(
-                currentCount: data.currentPeriodCounts,
-                goalCount: data.periodicalGoal,
-                habitType: data.widgetType,
-                color: Color(data.color),
+                currentCount: widget.data.currentPeriodCounts,
+                goalCount: widget.data.periodicalGoal,
+                habitType: widget.data.widgetType,
+                color: Color(widget.data.color),
               ),
             ),
           ],
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    widget.updateWidget(widget.data, widget.index);
   }
 }
