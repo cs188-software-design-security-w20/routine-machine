@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:routine_machine/Views/components/custom_route.dart';
-import './HomePage.dart';
+import './SetUserInfoPage.dart';
 import '../../constants/Constants.dart' as Constants;
 import '../../constants/Palette.dart' as Palette;
 
@@ -119,7 +119,7 @@ class _ScanQRPageState extends State<ScanQRPage> {
             _verificationStatus = VerificationStatus.success;
             Navigator.pushReplacement(
               context,
-              FadePageRoute(builder: (context) => HomePage()),
+              FadePageRoute(builder: (context) => SetUserInfoPage()),
             );
           } else {
             _verificationStatus = VerificationStatus.failed;
