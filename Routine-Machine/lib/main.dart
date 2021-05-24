@@ -7,6 +7,7 @@ import 'Views/components/transition_route_observer.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 import 'Views/pages/ScanQRPage.dart';
+import 'Views/pages/SetUserInfoPage.dart';
 
 // sample data to demo the check in list
 final sampleCheckIns = <DateTime>[

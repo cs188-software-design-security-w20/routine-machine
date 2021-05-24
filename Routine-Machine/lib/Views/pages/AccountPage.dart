@@ -90,7 +90,8 @@ class _AccountPageState extends State<AccountPage> {
                     onFieldSubmitted: (username) async {
                       setState(() {
                         this.userProfile.then((data) => {
-                              data.username = username,
+                              // username = data.username,
+                              // TODO: fix this bc throwing compilations error
                             });
                       });
                     })
