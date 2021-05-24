@@ -24,6 +24,10 @@ class APIWrapper {
     this.user = user;
   }
 
+  void setAPIBaseURL({String baseURL}) {
+    this.apiBaseURL = baseURL;
+  }
+
   Future<String> _getAuthHeader() async {
     if (user == null) {
       throw Exception(
