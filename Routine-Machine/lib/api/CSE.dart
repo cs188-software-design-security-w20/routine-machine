@@ -45,22 +45,37 @@ class MissingKeyException implements Exception {
 /// Utility class for management of keys and encryption/decryption of data
 class CSE {
   var _storage = const FlutterSecureStorage();
-  static const privateKeyStorageKey = 'routine-machine-private-key';
-  static const publicKeyStorageKey = 'routine-machine-public-key';
-  static const dekStorageKey = 'routine-machine-dek';
-  static const ivStorageKey = 'routine-machine-iv';
+  static const _privateKeyStorageKey = 'routine-machine-private-key';
+  static const _publicKeyStorageKey = 'routine-machine-public-key';
+  static const _dekStorageKey = 'routine-machine-dek';
+  static const _ivStorageKey = 'routine-machine-iv';
+  String userID;
+
   static final CSE _instance = CSE._create();
   factory CSE() => _instance;
   CSE._create();
+
+  String get privateKeyStorageKey => '$_privateKeyStorageKey-$userID';
+  String get publicKeyStorageKey => '$_publicKeyStorageKey-$userID';
+  String get dekStorageKey => '$_dekStorageKey-$userID';
+  String get ivStorageKey => '$_ivStorageKey-$userID';
 
   /// Inject a key-value storage system using the FlutterSecureStorage interface
   injectStorageProvider({FlutterSecureStorage provider}) {
     _storage = provider;
   }
 
+  setUserID({String userID}) {
+    this.userID = userID;
+  }
+
   /// Changes the DEK and IV of the client for AES-CBC-256
   /// If the key does not exist, this is used to initialize the key
   Future<void> refreshOwnerDEK() async {
+    if (userID == null) {
+      throw Exception(
+          'No associated firebase user. Be sure to use "setUser" before other methods');
+    }
     final aesKey = await _generateDEK();
     await _storage.write(key: dekStorageKey, value: aesKey.key);
     await _storage.write(key: ivStorageKey, value: aesKey.iv);
@@ -69,6 +84,10 @@ class CSE {
   /// Changes the PK Pair of the client for RSA-4096
   /// If the key does not exist, this is used to initialize the key
   Future<void> refreshOwnerPKPair() async {
+    if (userID == null) {
+      throw Exception(
+          'No associated firebase user. Be sure to use "setUser" before other methods');
+    }
     final keyPair = await _generateKeyPair();
     final publicKeyStr = keyPair.publicKey.toString();
     final privateKeyStr = keyPair.privateKey.toString();
@@ -167,8 +186,6 @@ class CSE {
   Future<AESKey> decryptOtherDEK({EncryptedDEK encryptedDEK}) async {
     final privateKey = await getPrivateKey();
     return encryptedDEK.decrypt(usingPrivateKey: privateKey.toString());
-    final decryptedDEK = privateKey.decrypt(encryptedDEK.encrypted);
-    return AESKey(key: decryptedDEK, iv: encryptedDEK.iv);
   }
 
   Future<AESKey> _generateDEK() async {
