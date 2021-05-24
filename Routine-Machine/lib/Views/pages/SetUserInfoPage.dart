@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '../components/TopBackBar.dart';
+import 'package:firebase_auth/firebase_auth.dart' as Auth;
 import 'package:routine_machine/Views/components/custom_route.dart';
 import './HomePage.dart';
 import '../../constants/Constants.dart' as Constants;
 import '../../constants/Palette.dart' as Palette;
+import '../../api/APIWrapper.dart';
 
 class SetUserInfoPage extends StatelessWidget {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
+  Auth.User user;
+  SetUserInfoPage({this.user});
 
   @override
   Widget build(BuildContext context) {
@@ -91,12 +94,7 @@ class SetUserInfoPage extends StatelessWidget {
                   children: [
                     TextButton(
                       onPressed: () {
-                        _setUserProfile(); // TODO: implement this
-                        Navigator.pushReplacement(
-                          context,
-                          // TODO: pass stuff to home page here
-                          FadePageRoute(builder: (context) => HomePage()),
-                        );
+                        _onSubmitHandler(context);
                       },
                       child: Row(
                         children: [
@@ -125,12 +123,31 @@ class SetUserInfoPage extends StatelessWidget {
     );
   }
 
-  void _setUserProfile() {
+  void _onSubmitHandler(BuildContext context) {
+    APIWrapper api = APIWrapper();
+    api.setUser(this.user);
     // TODO: call the create user profile stuff here
     String username = _usernameController.text.trim();
     String firstName = _firstNameController.text.trim();
     String lastName = _lastNameController.text.trim();
 
-    print('Username: $username, First Name: $firstName, Last Name: $lastName');
+    try {
+      api
+          .createUser(
+        firstName: firstName,
+        lastName: lastName,
+        userName: username,
+      )
+          .then((value) {
+        print('Created user.');
+        Navigator.pushReplacement(
+          context,
+          FadePageRoute(builder: (context) => HomePage(user: this.user)),
+        );
+      });
+    } catch (e) {
+      print('Error creating user: $e');
+      // TODO: put alert box
+    }
   }
 }
