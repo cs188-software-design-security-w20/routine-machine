@@ -16,7 +16,6 @@ class SetUserInfoPage extends StatelessWidget {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
-      appBar: TopBackBar(),
       body: Container(
         padding: EdgeInsets.all(32),
         child: Column(
