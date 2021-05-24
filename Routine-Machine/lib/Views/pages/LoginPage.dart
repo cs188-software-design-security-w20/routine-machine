@@ -19,6 +19,7 @@ enum authProblems {
   UserNotFound,
   PasswordNotValid,
   NetworkError,
+  Unknown,
 }
 enum SignInType {
   signUp,
@@ -45,16 +46,20 @@ class _LoginPageState extends State<LoginPage> {
 
   Future<String> _loginUser(LoginData loginData) async {
     try {
-      setState(() async {
-        this.user = (await _auth.signInWithEmailAndPassword(
-          email: loginData.name,
-          password: loginData.password,
-        ))
-            .user;
-
-        print("Login: ${this.user}");
+      _auth
+          .signInWithEmailAndPassword(
+        email: loginData.name,
+        password: loginData.password,
+      )
+          .then((user) {
+        setState(() {
+          this.user = user.user;
+          print("Login: ${this.user}");
+        });
       });
+      return null;
     } catch (e) {
+      print('Error occured during login $e');
       authProblems errorType;
       if (Platform.isAndroid) {
         switch (e.message) {
@@ -69,6 +74,7 @@ class _LoginPageState extends State<LoginPage> {
             break;
           // ...
           default:
+            errorType = authProblems.Unknown;
             print('Case ${e.message} is not yet implemented');
         }
       } else if (Platform.isIOS) {
@@ -81,6 +87,7 @@ class _LoginPageState extends State<LoginPage> {
             break;
           // ...
           default:
+            errorType = authProblems.Unknown;
             print('Case ${e.message} is not yet implemented');
         }
       }
@@ -89,15 +96,17 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Future<String> _registerUser(LoginData loginData) async {
-    setState(() async {
-      this.user = (await _auth.createUserWithEmailAndPassword(
-        email: loginData.name,
-        password: loginData.password,
-      ))
-          .user;
-
-      return null;
+    _auth
+        .createUserWithEmailAndPassword(
+      email: loginData.name,
+      password: loginData.password,
+    )
+        .then((user) {
+      setState(() {
+        this.user = user.user;
+      });
     });
+    return null;
   }
 
   @override
