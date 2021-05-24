@@ -76,6 +76,18 @@ class CSE {
     await _storage.write(key: privateKeyStorageKey, value: privateKeyStr);
   }
 
+  /// Overrides the Private Key in storage
+  /// If creating a new user, use "refreshOwnerPKPair" instead
+  Future<void> setPrivateKey({String key}) async {
+    await _storage.write(key: privateKeyStorageKey, value: key);
+  }
+
+  /// Overrides the Public Key in storage
+  /// If creating a new user, use "refreshOwnerPKPair" instead
+  Future<void> setPublicKey({String key}) async {
+    await _storage.write(key: publicKeyStorageKey, value: key);
+  }
+
   /// Get the DEK corresponding to the client
   Future<AESKey> getDEK() async {
     final dek = await _storage.read(key: dekStorageKey);
