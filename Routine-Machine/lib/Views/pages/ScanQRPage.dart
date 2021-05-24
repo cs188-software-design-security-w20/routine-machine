@@ -1,8 +1,13 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'dart:io';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:routine_machine/Views/components/custom_route.dart';
+import 'package:routine_machine/api/APIWrapper.dart';
+import './HomePage.dart';
 import './SetUserInfoPage.dart';
+
 import '../../constants/Constants.dart' as Constants;
 import '../../constants/Palette.dart' as Palette;
 
@@ -13,6 +18,9 @@ enum VerificationStatus {
 }
 
 class ScanQRPage extends StatefulWidget {
+  final User user;
+  final FlutterSecureStorage storage = FlutterSecureStorage();
+  ScanQRPage({this.user});
   @override
   _ScanQRPageState createState() => _ScanQRPageState();
 }
@@ -21,7 +29,15 @@ class _ScanQRPageState extends State<ScanQRPage> {
   VerificationStatus _verificationStatus = VerificationStatus.pending;
   Barcode result;
   QRViewController controller;
+  APIWrapper apiWrapper = APIWrapper();
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    apiWrapper.setUser(widget.user);
+  }
 
   @override
   void reassemble() {
@@ -107,6 +123,7 @@ class _ScanQRPageState extends State<ScanQRPage> {
   bool _validateQRCode(Barcode qrCode) {
     // TODO: validate that QRCode works
     String key = qrCode.code;
+    apiWrapper.cse.refreshOwnerPKPair();
     return true;
   }
 
@@ -119,7 +136,7 @@ class _ScanQRPageState extends State<ScanQRPage> {
             _verificationStatus = VerificationStatus.success;
             Navigator.pushReplacement(
               context,
-              FadePageRoute(builder: (context) => SetUserInfoPage()),
+              FadePageRoute(builder: (context) => HomePage(user: widget.user)),
             );
           } else {
             _verificationStatus = VerificationStatus.failed;
