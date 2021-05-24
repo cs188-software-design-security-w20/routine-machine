@@ -10,6 +10,7 @@ import '../../constants/Constants.dart' as Constants;
 import '../components/custom_route.dart';
 import 'package:routine_machine/Views/pages/HomePage.dart';
 import 'ScanQRPage.dart';
+import 'SetUserInfoPage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'dart:io' show Platform;
@@ -159,8 +160,11 @@ class _LoginPageState extends State<LoginPage> {
         afterHeroFontSize: 12,
       ),
       emailValidator: (value) {
-        if (!value.contains('@') || !value.endsWith('.com')) {
-          return "Email must contain '@' and end with '.com'";
+        if (!value.contains('@') ||
+            !value.endsWith('.com') &&
+                !value.endsWith('.edu') &&
+                !value.endsWith('.net')) {
+          return "Email must contain '@' and end with '.com/edu/net'";
         }
         return null;
       },
@@ -194,7 +198,7 @@ class _LoginPageState extends State<LoginPage> {
         print("On login success: ${this.user}");
         if (_signInType == SignInType.signUp) {
           Navigator.of(context).pushReplacement(FadePageRoute(
-            builder: (context) => HomePage(user: this.user),
+            builder: (context) => SetUserInfoPage(),
           ));
         } else if (_signInType == SignInType.logIn) {
           APIWrapper api = APIWrapper();

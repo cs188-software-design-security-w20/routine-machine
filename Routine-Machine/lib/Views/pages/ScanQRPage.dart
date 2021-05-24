@@ -6,6 +6,8 @@ import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:routine_machine/Views/components/custom_route.dart';
 import 'package:routine_machine/api/APIWrapper.dart';
 import './HomePage.dart';
+import './SetUserInfoPage.dart';
+
 import '../../constants/Constants.dart' as Constants;
 import '../../constants/Palette.dart' as Palette;
 
