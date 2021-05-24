@@ -132,6 +132,7 @@ class SetUserInfoPage extends StatelessWidget {
     String lastName = _lastNameController.text.trim();
 
     try {
+      print('SetUserInfoPage: Creating user...');
       api
           .createUser(
         firstName: firstName,
@@ -139,7 +140,7 @@ class SetUserInfoPage extends StatelessWidget {
         userName: username,
       )
           .then((value) {
-        print('Created user.');
+        print('Created user sucess!');
         Navigator.pushReplacement(
           context,
           FadePageRoute(builder: (context) => HomePage(user: this.user)),
