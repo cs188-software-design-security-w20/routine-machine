@@ -1,6 +1,5 @@
 import { Transaction } from 'sequelize';
 import type { SequelizeOptions } from 'sequelize-typescript';
-
 import env from './env-config';
 
 export type DBEnvironment = 'development' | 'test' | 'production';
@@ -18,7 +17,7 @@ const dbOptions: SequelizeOptionEnvironments = {
     port: env.db.port,
     dialect: 'postgres',
     isolationLevel: Transaction.ISOLATION_LEVELS.SERIALIZABLE,
-    logging: false
+    logging: false,
   },
   test: {
     username: env.db.user,
@@ -28,7 +27,7 @@ const dbOptions: SequelizeOptionEnvironments = {
     port: env.db.port,
     dialect: 'postgres',
     isolationLevel: Transaction.ISOLATION_LEVELS.SERIALIZABLE,
-    logging: false
+    logging: false,
   },
   production: {
     username: env.db.user,

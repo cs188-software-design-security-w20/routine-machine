@@ -9,6 +9,9 @@
 
 import { Sequelize } from 'sequelize-typescript';
 import path from 'path';
+import User from './models/user-model';
+import Follow from './models/follow-model';
+import PendingFollow from './models/pending-follow-model';
 
 import envConfig from './config/env-config';
 import dbConfig from './config/db-config';
@@ -25,7 +28,7 @@ function initDB(): Sequelize {
 
   const sequelizeOptions = dbConfig[environment];
   const sequelize = new Sequelize(sequelizeOptions);
-  sequelize.addModels([path.join(__dirname, '/models/*-model.ts')]);
+  sequelize.addModels([User, Follow, PendingFollow]);
   return sequelize;
 }
 
