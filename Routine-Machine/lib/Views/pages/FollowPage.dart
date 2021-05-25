@@ -1,76 +1,10 @@
 import 'package:flutter/material.dart';
-import 'dart:io';
+import 'package:routine_machine/api/APIWrapper.dart';
 import 'SearchResultPage.dart';
 import '../../constants/Constants.dart' as Constants;
 import '../subviews/FollowingTileList.dart';
 import '../subviews/FollowerTileList.dart';
 import '../../Models/UserProfile.dart';
-
-final List<UserProfile> sampleFollowingList = [
-  UserProfile(
-    firstName: 'Spencer',
-    lastName: 'Jin',
-    username: 'sj_sj_sj',
-  ),
-  UserProfile(
-    firstName: 'Erika',
-    lastName: 'Shen',
-    username: 'eggy',
-  ),
-  UserProfile(
-    firstName: 'Jody',
-    lastName: 'Lin',
-    username: 'jowody',
-  ),
-  UserProfile(
-    firstName: 'Spencer',
-    lastName: 'Jin',
-    username: 'sj_sj_sj',
-  ),
-  UserProfile(
-    firstName: 'Erika',
-    lastName: 'Shen',
-    username: 'eggy',
-  ),
-  UserProfile(
-    firstName: 'Jody',
-    lastName: 'Lin',
-    username: 'jowody',
-  ),
-  UserProfile(
-    firstName: 'Spencer',
-    lastName: 'Jin',
-    username: 'sj_sj_sj',
-  ),
-  UserProfile(
-    firstName: 'Erika',
-    lastName: 'Shen',
-    username: 'eggy',
-  ),
-  UserProfile(
-    firstName: 'Jody',
-    lastName: 'Lin',
-    username: 'jowody',
-  )
-];
-
-final List<UserProfile> sampleFollowerRequestList = [
-  UserProfile(
-    firstName: 'Carina',
-    lastName: 'Xiong',
-    username: 'carina_x',
-  ),
-  UserProfile(
-    firstName: 'Jack',
-    lastName: 'Zhao',
-    username: 'jjack_zz',
-  ),
-  UserProfile(
-    firstName: 'Jody',
-    lastName: 'Lin',
-    username: 'jowody',
-  ),
-];
 
 enum FollowPageType {
   followers,
@@ -78,6 +12,7 @@ enum FollowPageType {
 }
 
 class FollowPage extends StatefulWidget {
+  final APIWrapper api = APIWrapper();
   @override
   _FollowPageState createState() => _FollowPageState();
 }
@@ -107,17 +42,15 @@ class _FollowPageState extends State<FollowPage> {
   }
 
   Future<List<UserProfile>> _getFollowingList() {
-    return Future.delayed(new Duration(seconds: 2), () => sampleFollowingList);
+    return widget.api.getFollowing();
   }
 
   Future<List<UserProfile>> _getFollowerRequestList() {
-    return Future.delayed(
-        new Duration(seconds: 2), () => sampleFollowerRequestList);
+    return widget.api.getPendingFollowerRequests();
   }
 
   Future<List<UserProfile>> _getFollowerList() {
-    return Future.delayed(
-        new Duration(seconds: 2), () => sampleFollowerRequestList);
+    return widget.api.getFollowers();
   }
 
   void _switchToFollowers() {
