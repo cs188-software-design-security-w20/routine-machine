@@ -31,11 +31,11 @@ class UserProfile {
         publicKey = json['public_key'];
 
   Map<String, dynamic> toJson() => {
-        'userID': userID,
-        'username': username,
+        'id': userID,
+        'user_name': username,
         'profile': profile,
-        'firstName': firstName,
-        'lastName': lastName,
-        'publicKey': publicKey,
+        'first_name': firstName,
+        'last_name': lastName,
+        'public_key': publicKey,
       };
 }
