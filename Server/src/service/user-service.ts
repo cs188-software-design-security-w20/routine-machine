@@ -82,3 +82,10 @@ export const setProfile = async (id: string, profile: JSON) => {
     throw { message: `There is no user with user id: ${id}`, name: 'UserNotFoundError' };
   }
 };
+
+export const setUsername = async (id: string, user_name: string) => {
+  const res = await UserQuery.setUsername(id, user_name);
+  if (res[0] !== 1) {
+    throw { message: `There is no user with user id: ${id}`, name: 'UserNotFoundError' };
+  }
+};

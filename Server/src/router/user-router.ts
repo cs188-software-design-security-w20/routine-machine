@@ -52,6 +52,30 @@ userRouter.post('/profile', async (req, res) => {
   }
 });
 
+userRouter.get('/username', async (req, res) => {
+  try {
+    const { user_name } = req.query;
+    await UserService.getUserByName(user_name);
+    res.status(200).json(true);
+  } catch (error) {
+    if (error.name === 'UserNotFoundError') {
+      res.status(200).json(false);
+    } else {
+      res.status(400).send(error);
+    }
+  }
+});
+
+userRouter.post('/username', async (req, res) => {
+  try {
+    const { id, user_name } = req.body;
+    await UserService.setUsername(id, user_name);
+    res.status(200).json({ success: 'Username set successfully', status: 200 });
+  } catch (error) {
+    res.status(409).send(error);
+  }
+});
+
 /**
  * @descirption get the public key of the user
  * @request_body {id, profile}

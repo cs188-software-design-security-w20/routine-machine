@@ -68,6 +68,10 @@ class CSE {
   /// Changes the DEK and IV of the client for AES-CBC-256
   /// If the key does not exist, this is used to initialize the key
   Future<void> refreshOwnerDEK() async {
+    if (dekStorageKey == null) {
+      throw Exception(
+          'No UID set for key storage. Be sure to use "setUID" before other methods');
+    }
     final aesKey = await _generateDEK();
     await _storage.write(key: dekStorageKey, value: aesKey.key);
     await _storage.write(key: ivStorageKey, value: aesKey.iv);
@@ -76,11 +80,27 @@ class CSE {
   /// Changes the PK Pair of the client for RSA-4096
   /// If the key does not exist, this is used to initialize the key
   Future<void> refreshOwnerPKPair() async {
+    if (privateKeyStorageKey == null) {
+      throw Exception(
+          'No UID set for key storage. Be sure to use "setUID" before other methods');
+    }
     final keyPair = await _generateKeyPair();
     final publicKeyStr = keyPair.publicKey.toString();
     final privateKeyStr = keyPair.privateKey.toString();
     await _storage.write(key: publicKeyStorageKey, value: publicKeyStr);
     await _storage.write(key: privateKeyStorageKey, value: privateKeyStr);
+  }
+
+  /// Overrides the Private Key in storage
+  /// If creating a new user, use "refreshOwnerPKPair" instead
+  Future<void> setPrivateKey({String key}) async {
+    await _storage.write(key: privateKeyStorageKey, value: key);
+  }
+
+  /// Overrides the Public Key in storage
+  /// If creating a new user, use "refreshOwnerPKPair" instead
+  Future<void> setPublicKey({String key}) async {
+    await _storage.write(key: publicKeyStorageKey, value: key);
   }
 
   /// Get the DEK corresponding to the client
@@ -162,8 +182,6 @@ class CSE {
   Future<AESKey> decryptOtherDEK({EncryptedDEK encryptedDEK}) async {
     final privateKey = await getPrivateKey();
     return encryptedDEK.decrypt(usingPrivateKey: privateKey.toString());
-    final decryptedDEK = privateKey.decrypt(encryptedDEK.encrypted);
-    return AESKey(key: decryptedDEK, iv: encryptedDEK.iv);
   }
 
   Future<AESKey> _generateDEK() async {
