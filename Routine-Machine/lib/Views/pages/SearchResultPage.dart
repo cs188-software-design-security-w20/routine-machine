@@ -1,30 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:routine_machine/api/APIWrapper.dart';
 import '../../constants/Constants.dart' as Constants;
 import '../../constants/Palette.dart' as Palette;
-import '../subviews/FollowRequestTileList.dart';
+import '../components/FollowRequestTile.dart';
 import '../components/TopBackBar.dart';
 import '../../Models/UserProfile.dart';
 
-final List<UserProfile> sampleSearchResults = [
-  UserProfile(
-    firstName: 'Richard',
-    lastName: 'Tang',
-    username: 'rich_tang',
-  ),
-  UserProfile(
-    firstName: 'Joohyuk',
-    lastName: 'Nam',
-    username: 'nam_dosan',
-  ),
-  UserProfile(
-    firstName: 'Richard',
-    lastName: 'Tang',
-    username: 'rich_tang',
-  ),
-];
-
 class SearchResultPage extends StatefulWidget {
   final String searchText;
+  final APIWrapper api = APIWrapper();
   SearchResultPage({this.searchText});
   @override
   _SearchResultPageState createState() => _SearchResultPageState(searchText);
@@ -32,22 +16,21 @@ class SearchResultPage extends StatefulWidget {
 
 class _SearchResultPageState extends State<SearchResultPage> {
   TextEditingController searchController;
-  Future<List<UserProfile>> _searchResults;
+  Future<UserProfile> _searchResult;
 
   @override
   void initState() {
     super.initState();
-    _searchResults = _searchForUser(searchController.text);
+    _searchResult = _searchForUser(searchController.text);
   }
 
   _SearchResultPageState(String searchText) {
     searchController = TextEditingController(text: searchText);
   }
 
-  Future<List<UserProfile>> _searchForUser(String username) {
-    // TODO: update to call api wrapper
+  Future<UserProfile> _searchForUser(String username) {
     print('search for user $username...');
-    return Future.delayed(new Duration(seconds: 2), () => sampleSearchResults);
+    return widget.api.getUserProfile(username: username);
   }
 
   @override
@@ -75,7 +58,7 @@ class _SearchResultPageState extends State<SearchResultPage> {
                     icon: Icon(Icons.search_rounded),
                     onPressed: () {
                       setState(() {
-                        _searchResults = _searchForUser(searchController.text);
+                        _searchResult = _searchForUser(searchController.text);
                       });
                     },
                   ),
@@ -83,22 +66,23 @@ class _SearchResultPageState extends State<SearchResultPage> {
               ),
             ),
             FutureBuilder(
-              future: _searchResults,
-              builder: (BuildContext context,
-                  AsyncSnapshot<List<dynamic>> snapshot) {
+              future: _searchResult,
+              builder:
+                  (BuildContext context, AsyncSnapshot<UserProfile> snapshot) {
                 Widget searchContent;
                 if (snapshot.hasData) {
                   searchContent =
-                      snapshot.data.isEmpty // default message if no results
-                          ? Center(
-                              child: Text(
-                                'Sorry, the user "${searchController.text}" was not found',
-                                style: TextStyle(color: Colors.black),
-                              ),
-                            )
-                          : FollowRequestTileList(
-                              followRequestList: snapshot.data,
-                            );
+                      // TODO: figure out what to do when user not found
+                      // Center(
+                      //     child: Text(
+                      //       'Sorry, the user "${searchController.text}" was not found',
+                      //       style: TextStyle(color: Colors.black),
+                      //     ),
+                      //   )
+                      FollowRequestTile(
+                    userProfile: snapshot.data,
+                    color: Palette.purple,
+                  );
                 } else if (snapshot.hasError) {
                   searchContent = Text('Error loading username data');
                 } else {
@@ -113,9 +97,7 @@ class _SearchResultPageState extends State<SearchResultPage> {
                     ],
                   );
                 }
-                return Expanded(
-                  child: searchContent,
-                );
+                return searchContent;
               },
             ),
           ],

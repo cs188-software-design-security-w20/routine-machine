@@ -59,6 +59,7 @@ class _LoginPageState extends State<LoginPage> {
           this.user = user.user;
           print("Login: ${this.user}");
         });
+        _auth.setPersistence(Persistence.LOCAL);
       });
       return null;
     } catch (e) {
@@ -198,7 +199,7 @@ class _LoginPageState extends State<LoginPage> {
         print("On login success: ${this.user}");
         if (_signInType == SignInType.signUp) {
           Navigator.of(context).pushReplacement(FadePageRoute(
-            builder: (context) => SetUserInfoPage(),
+            builder: (context) => SetUserInfoPage(user: this.user),
           ));
         } else if (_signInType == SignInType.logIn) {
           APIWrapper api = APIWrapper();

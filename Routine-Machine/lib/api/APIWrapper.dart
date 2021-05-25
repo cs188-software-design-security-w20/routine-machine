@@ -8,7 +8,7 @@ import 'dart:convert' as Convert;
 
 class APIWrapper {
   Auth.User user;
-  String apiBaseURL = '143.198.129.146:8000';
+  String apiBaseURL = 'api.jackzzhao.com';
   Http.BaseClient client = new Http.Client();
   CSE cse = CSE();
 
@@ -22,7 +22,7 @@ class APIWrapper {
 
   void setUser(Auth.User user) {
     this.user = user;
-    this.cse.setUserID(userID: user.uid);
+    this.cse.setUID(user.uid);
   }
 
   void setAPIBaseURL({String baseURL}) {

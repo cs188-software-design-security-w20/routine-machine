@@ -123,6 +123,7 @@ class _ScanQRPageState extends State<ScanQRPage> {
   bool _validateQRCode(Barcode qrCode) {
     // TODO: validate that QRCode works
     String key = qrCode.code;
+    print(key);
     apiWrapper.cse.refreshOwnerPKPair();
     return true;
   }
