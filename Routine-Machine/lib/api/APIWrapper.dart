@@ -8,7 +8,7 @@ import 'dart:convert' as Convert;
 
 class APIWrapper {
   Auth.User user;
-  String apiBaseURL = '143.198.129.146:8000';
+  String apiBaseURL = '143.198.129.146';
   Http.BaseClient client = new Http.Client();
   CSE cse = CSE();
 
@@ -44,7 +44,7 @@ class APIWrapper {
     final headers = {
       HttpHeaders.authorizationHeader: await _getAuthHeader(),
     };
-    final url = Uri.http(apiBaseURL, '/user');
+    final url = Uri.https(apiBaseURL, '/user');
     final response = await client.post(url, headers: headers, body: {
       'id': user.uid,
       'user_name': userName,
@@ -66,7 +66,7 @@ class APIWrapper {
       HttpHeaders.authorizationHeader: await _getAuthHeader(),
       HttpHeaders.contentTypeHeader: 'application/json',
     };
-    final url = Uri.http(apiBaseURL, '/user/profile', query);
+    final url = Uri.https(apiBaseURL, '/user/profile', query);
     final response = await client.get(url, headers: headers);
     if (response.statusCode != 200) {
       final errorMsg = Convert.jsonDecode(response.body)['message'];
@@ -81,7 +81,7 @@ class APIWrapper {
     final headers = {
       HttpHeaders.authorizationHeader: await _getAuthHeader(),
     };
-    final url = Uri.http(apiBaseURL, '/user/profile');
+    final url = Uri.https(apiBaseURL, '/user/profile');
     final response = await client.post(url, headers: headers, body: {
       'id': user.uid,
       'profile': Convert.jsonEncode(userProfile),
@@ -97,7 +97,7 @@ class APIWrapper {
     final headers = {
       HttpHeaders.authorizationHeader: await _getAuthHeader(),
     };
-    final url = Uri.http(apiBaseURL, '/user/dek');
+    final url = Uri.https(apiBaseURL, '/user/dek');
     final encryptedDEK = await cse.encryptOwnerDEK();
     final response = await client.post(url, headers: headers, body: {
       'id': user.uid,
@@ -113,7 +113,7 @@ class APIWrapper {
       HttpHeaders.authorizationHeader: await _getAuthHeader(),
       HttpHeaders.contentTypeHeader: 'application/json',
     };
-    final url = Uri.http(apiBaseURL, '/habit_data', query);
+    final url = Uri.https(apiBaseURL, '/habit_data', query);
     final response = await client.get(url, headers: headers);
     if (response.statusCode != 200) {
       throw Exception('Failed to get own habit data');
@@ -146,7 +146,7 @@ class APIWrapper {
       HttpHeaders.authorizationHeader: await _getAuthHeader(),
       HttpHeaders.contentTypeHeader: 'application/json',
     };
-    final url = Uri.http(apiBaseURL, '/habit_data/following', query);
+    final url = Uri.https(apiBaseURL, '/habit_data/following', query);
     final response = await client.get(url, headers: headers);
     if (response.statusCode != 200) {
       throw Exception('Failed to get habit data from user ($targetUserID)');
@@ -180,7 +180,7 @@ class APIWrapper {
     final headers = {
       HttpHeaders.authorizationHeader: await _getAuthHeader(),
     };
-    final url = Uri.http(apiBaseURL, '/habit_data');
+    final url = Uri.https(apiBaseURL, '/habit_data');
     final response = await client.post(url, headers: headers, body: {
       'id': user.uid,
       'habit_data': encryptedHabitData,
@@ -194,7 +194,7 @@ class APIWrapper {
     final headers = {
       HttpHeaders.authorizationHeader: await _getAuthHeader(),
     };
-    final url = Uri.http(apiBaseURL, '/follow/requests');
+    final url = Uri.https(apiBaseURL, '/follow/requests');
     final response = await client.post(url, headers: headers, body: {
       'followee_id': targetUserID,
       'follower_id': user.uid,
@@ -221,7 +221,7 @@ class APIWrapper {
       HttpHeaders.authorizationHeader: await _getAuthHeader(),
       HttpHeaders.contentTypeHeader: 'application/json',
     };
-    final url = Uri.http(apiBaseURL, '/follow/followers/requests', query);
+    final url = Uri.https(apiBaseURL, '/follow/followers/requests', query);
     final response = await client.get(url, headers: headers);
     if (response.statusCode != 200) {
       throw Exception('Failed to get pending follower requests');
@@ -248,7 +248,7 @@ class APIWrapper {
       HttpHeaders.authorizationHeader: await _getAuthHeader(),
       HttpHeaders.contentTypeHeader: 'application/json',
     };
-    final url = Uri.http(apiBaseURL, '/follow/following/requests', query);
+    final url = Uri.https(apiBaseURL, '/follow/following/requests', query);
     final response = await client.get(url, headers: headers);
     if (response.statusCode != 200) {
       throw Exception('Failed to get pending following requests');
@@ -275,7 +275,7 @@ class APIWrapper {
       HttpHeaders.authorizationHeader: await _getAuthHeader(),
       HttpHeaders.contentTypeHeader: 'application/json',
     };
-    final url = Uri.http(apiBaseURL, '/follow/followers', query);
+    final url = Uri.https(apiBaseURL, '/follow/followers', query);
     final response = await client.get(url, headers: headers);
     if (response.statusCode != 200) {
       throw Exception('Failed to get followers');
@@ -302,7 +302,7 @@ class APIWrapper {
       HttpHeaders.authorizationHeader: await _getAuthHeader(),
       HttpHeaders.contentTypeHeader: 'application/json',
     };
-    final url = Uri.http(apiBaseURL, '/follow/following', query);
+    final url = Uri.https(apiBaseURL, '/follow/following', query);
     final response = await client.get(url, headers: headers);
     if (response.statusCode != 200) {
       throw Exception('Failed to get followed users');
@@ -333,7 +333,7 @@ class APIWrapper {
     final headers = {
       HttpHeaders.authorizationHeader: await _getAuthHeader(),
     };
-    final url = Uri.http(apiBaseURL, '/follow');
+    final url = Uri.https(apiBaseURL, '/follow');
     final response = await client.post(url, headers: headers, body: {
       'followee_id': user.uid,
       'follower_id': targetUserID,
@@ -349,7 +349,7 @@ class APIWrapper {
     final headers = {
       HttpHeaders.authorizationHeader: await _getAuthHeader(),
     };
-    final url = Uri.http(apiBaseURL, '/follow/requests');
+    final url = Uri.https(apiBaseURL, '/follow/requests');
     final response = await client.delete(url, headers: headers, body: {
       'followee_id': user.uid,
       'follower_id': targetUserID,
@@ -364,7 +364,7 @@ class APIWrapper {
     final headers = {
       HttpHeaders.authorizationHeader: await _getAuthHeader(),
     };
-    final url = Uri.http(apiBaseURL, '/follow');
+    final url = Uri.https(apiBaseURL, '/follow');
     final response = await client.delete(url, headers: headers, body: {
       'followee_id': user.uid,
       'follower_id': targetUserID,
@@ -378,7 +378,7 @@ class APIWrapper {
     final headers = {
       HttpHeaders.authorizationHeader: await _getAuthHeader(),
     };
-    final url = Uri.http(apiBaseURL, '/follow');
+    final url = Uri.https(apiBaseURL, '/follow');
     final response = await client.delete(url, headers: headers, body: {
       'followee_id': targetUserID,
       'follower_id': user.uid,
