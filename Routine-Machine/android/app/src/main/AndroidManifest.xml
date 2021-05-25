@@ -1,6 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.routine_machine">
+  <!-- TODO: UNSAFE!!! REMOVE userCleartextTraffic -->
    <application
+        android:usesCleartextTraffic="true" 
         android:label="routine_machine"
         android:icon="@mipmap/ic_launcher">
         <activity
