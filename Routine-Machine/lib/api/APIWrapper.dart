@@ -22,6 +22,7 @@ class APIWrapper {
 
   void setUser(Auth.User user) {
     this.user = user;
+    this.cse.setUserID(userID: user.uid);
   }
 
   void setAPIBaseURL({String baseURL}) {
