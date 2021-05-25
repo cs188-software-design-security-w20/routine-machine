@@ -96,184 +96,190 @@ class _HabitDetailPageState extends State<HabitDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        width: double.infinity,
-        decoration: Constants.kCardDecorationStyle,
-        child: SlidingUpPanel(
-          backdropEnabled: true,
-          maxHeight: 0.8 * MediaQuery.of(context).size.height,
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(34.0),
-            topRight: Radius.circular(34.0),
-          ),
-          boxShadow: [
-            BoxShadow(
-                color: Constants.kShadowColor,
-                offset: Offset(0, -12),
-                blurRadius: 30),
-          ],
-          // Swipe-up panel starts here
-          panel: Container(
-            padding: EdgeInsets.symmetric(horizontal: 32),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Center(
-                  child: Padding(
-                    padding: EdgeInsets.only(top: 16, bottom: 20),
-                    child: Container(
-                      width: 42.0,
-                      height: 4.0,
-                      decoration: BoxDecoration(
-                        color: Color(0xFFC5CBD6),
-                        borderRadius: BorderRadius.circular(2.0),
-                      ),
-                    ),
-                  ),
-                ),
-                Text(
-                  "Habit settings",
-                  style: Constants.kTitle1Style,
-                ),
-                // Add more settings here
-                Row(
-                  children: [
-                    Expanded(
-                      child: TextField(
-                        controller: _habitNameController,
-                        style: Constants.kBodyLabelStyle,
-                        onChanged: (text) {
-                          setState(() {
-                            data.title = text;
-                          });
-                        },
-                        decoration: InputDecoration(
-                          labelText: 'Habit name',
-                          suffixIcon: IconButton(
-                            icon: Icon(Icons.check_rounded),
-                            onPressed: () {
-                              FocusScopeNode currentFocus =
-                                  FocusScope.of(context);
-                              if (!currentFocus.hasPrimaryFocus) {
-                                currentFocus.unfocus();
-                              }
-                            },
-                          ),
+    return WillPopScope(
+      onWillPop: () async {
+        Navigator.pop(context, data);
+        return false;
+      },
+      child: Scaffold(
+        body: Container(
+          width: double.infinity,
+          decoration: Constants.kCardDecorationStyle,
+          child: SlidingUpPanel(
+            backdropEnabled: true,
+            maxHeight: 0.8 * MediaQuery.of(context).size.height,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(34.0),
+              topRight: Radius.circular(34.0),
+            ),
+            boxShadow: [
+              BoxShadow(
+                  color: Constants.kShadowColor,
+                  offset: Offset(0, -12),
+                  blurRadius: 30),
+            ],
+            // Swipe-up panel starts here
+            panel: Container(
+              padding: EdgeInsets.symmetric(horizontal: 32),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Center(
+                    child: Padding(
+                      padding: EdgeInsets.only(top: 16, bottom: 20),
+                      child: Container(
+                        width: 42.0,
+                        height: 4.0,
+                        decoration: BoxDecoration(
+                          color: Color(0xFFC5CBD6),
+                          borderRadius: BorderRadius.circular(2.0),
                         ),
                       ),
                     ),
-                  ],
-                ),
-                WidgetColorPicker(
-                  chosenColor: _getCardColor(data.color),
-                  onSelectColor: _setColor,
-                ),
-                Text('Frequency', style: Constants.kTitle2Style),
-                Padding(
-                  padding: EdgeInsets.symmetric(vertical: 8),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  ),
+                  Text(
+                    "Habit settings",
+                    style: Constants.kTitle1Style,
+                  ),
+                  // Add more settings here
+                  Row(
                     children: [
-                      Text('Set Goal', style: Constants.kBodyLabelStyle),
-                      Container(
-                        width: 80,
-                        height: 40,
+                      Expanded(
                         child: TextField(
-                          controller: _goalCountController,
-                          onChanged: (value) {
-                            _setGoalCount(value);
-                          },
-                          keyboardType: TextInputType.number,
-                          inputFormatters: [
-                            FilteringTextInputFormatter.digitsOnly
-                          ],
+                          controller: _habitNameController,
                           style: Constants.kBodyLabelStyle,
-                          textAlign: TextAlign.center,
-                          textAlignVertical:
-                              TextAlignVertical.center, // not working :(
+                          onChanged: (text) {
+                            setState(() {
+                              data.title = text;
+                            });
+                          },
                           decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(24),
+                            labelText: 'Habit name',
+                            suffixIcon: IconButton(
+                              icon: Icon(Icons.check_rounded),
+                              onPressed: () {
+                                FocusScopeNode currentFocus =
+                                    FocusScope.of(context);
+                                if (!currentFocus.hasPrimaryFocus) {
+                                  currentFocus.unfocus();
+                                }
+                              },
                             ),
-                            hintText: '0',
                           ),
                         ),
                       ),
                     ],
                   ),
-                ),
-                WidgetTypePicker(
-                  type: data.widgetType,
-                  onSelectType: _setWidgetType,
-                ),
-                Center(
-                  child: Padding(
-                    padding: EdgeInsets.all(32),
-                    child: OutlinedButton(
-                      onPressed: () {
-                        widget.removeWidget(widget.index);
-                        Navigator.pop(context, data);
-                      },
-                      child: Text(
-                        'Delete Habit',
-                        style: TextStyle(color: Palette.primary),
-                      ),
-                      style: OutlinedButton.styleFrom(
-                        side: BorderSide(
-                          color: Palette.primary,
-                          style: BorderStyle.solid,
+                  WidgetColorPicker(
+                    chosenColor: _getCardColor(data.color),
+                    onSelectColor: _setColor,
+                  ),
+                  Text('Frequency', style: Constants.kTitle2Style),
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 8),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('Set Goal', style: Constants.kBodyLabelStyle),
+                        Container(
+                          width: 80,
+                          height: 40,
+                          child: TextField(
+                            controller: _goalCountController,
+                            onChanged: (value) {
+                              _setGoalCount(value);
+                            },
+                            keyboardType: TextInputType.number,
+                            inputFormatters: [
+                              FilteringTextInputFormatter.digitsOnly
+                            ],
+                            style: Constants.kBodyLabelStyle,
+                            textAlign: TextAlign.center,
+                            textAlignVertical:
+                                TextAlignVertical.center, // not working :(
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(24),
+                              ),
+                              hintText: '0',
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  WidgetTypePicker(
+                    type: data.widgetType,
+                    onSelectType: _setWidgetType,
+                  ),
+                  Center(
+                    child: Padding(
+                      padding: EdgeInsets.all(32),
+                      child: OutlinedButton(
+                        onPressed: () {
+                          widget.removeWidget(widget.index);
+                          Navigator.pop(context, data);
+                        },
+                        child: Text(
+                          'Delete Habit',
+                          style: TextStyle(color: Palette.primary),
+                        ),
+                        style: OutlinedButton.styleFrom(
+                          side: BorderSide(
+                            color: Palette.primary,
+                            style: BorderStyle.solid,
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-          body: Container(
-            padding: EdgeInsets.symmetric(horizontal: 16),
-            child: Column(
-              children: [
-                TopBackBar(passBack: data),
-                Text(
-                  data.title,
-                  style: Constants.kLargeTitleStyle,
-                ),
-                SizedBox(
-                  height: 26,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    IconButton(
-                      icon: Icon(Icons.remove_circle_rounded),
-                      color: Palette.grey,
-                      iconSize: 36,
-                      onPressed: _decrementCount,
-                    ),
-                    RingProgressBar(
-                      currentCount: data.currentPeriodCounts,
-                      goalCount: data.periodicalGoal,
-                      habitType: data.widgetType,
-                      color: Color(data.color),
-                    ),
-                    IconButton(
-                      icon: Icon(Icons.add_circle_rounded),
-                      color: Palette.grey,
-                      iconSize: 36,
-                      onPressed: _incrementCount,
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 26,
-                ),
-                CheckInList(
-                  checkIns: data.checkins.reversed.toList(),
-                  color: Color(data.color),
-                )
-              ],
+            body: Container(
+              padding: EdgeInsets.symmetric(horizontal: 16),
+              child: Column(
+                children: [
+                  TopBackBar(passBack: data),
+                  Text(
+                    data.title,
+                    style: Constants.kLargeTitleStyle,
+                  ),
+                  SizedBox(
+                    height: 26,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      IconButton(
+                        icon: Icon(Icons.remove_circle_rounded),
+                        color: Palette.grey,
+                        iconSize: 36,
+                        onPressed: _decrementCount,
+                      ),
+                      RingProgressBar(
+                        currentCount: data.currentPeriodCounts,
+                        goalCount: data.periodicalGoal,
+                        habitType: data.widgetType,
+                        color: Color(data.color),
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.add_circle_rounded),
+                        color: Palette.grey,
+                        iconSize: 36,
+                        onPressed: _incrementCount,
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 26,
+                  ),
+                  CheckInList(
+                    checkIns: data.checkins.reversed.toList(),
+                    color: Color(data.color),
+                  )
+                ],
+              ),
             ),
           ),
         ),
