@@ -59,6 +59,7 @@ class _LoginPageState extends State<LoginPage> {
           this.user = user.user;
           print("Login: ${this.user}");
         });
+        _auth.setPersistence(Persistence.LOCAL);
       });
       return null;
     } catch (e) {
