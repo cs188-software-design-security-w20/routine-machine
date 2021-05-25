@@ -1,36 +1,14 @@
 import 'package:flutter/material.dart';
-import 'dart:io';
 import 'package:routine_machine/Views/subviews/FriendWidgetList.dart';
+import 'package:routine_machine/api/APIWrapper.dart';
 import '../../constants/Constants.dart';
 import '../components/TopBackBar.dart';
 import '../../Models/FriendStatus.dart';
 import '../../Models/UserProfile.dart';
 import '../../Models/WidgetData.dart';
 
-List<WidgetData> sampleWidgetData = [
-  WidgetData(
-    title: "Sample",
-    widgetType: "weekly",
-    color: 0xffffaabb,
-    createdTime: new DateTime.now(),
-    modifiedTime: new DateTime.now(),
-    currentPeriodCounts: 15,
-    periodicalGoal: 20,
-    checkins: [new DateTime.now(), new DateTime.now()],
-  ),
-  WidgetData(
-    title: "Pooop",
-    widgetType: "daily",
-    color: 0xFF7CD0FF,
-    createdTime: new DateTime.now(),
-    modifiedTime: new DateTime.now(),
-    currentPeriodCounts: 8,
-    periodicalGoal: 20,
-    checkins: [new DateTime.now(), new DateTime.now()],
-  ),
-];
-
 class FriendProfilePage extends StatefulWidget {
+  final APIWrapper api = APIWrapper();
   final UserProfile friendProfile;
   FriendStatus friendStatus; // TODO: figure out what to do with this variable
   final Color userColor;
@@ -51,8 +29,8 @@ class _FriendProfilePageState extends State<FriendProfilePage> {
   }
 
   Future<List<WidgetData>> _getFriendWidgetData() {
-    // TODO: replace this with actual APIWrapper call
-    return Future.delayed(new Duration(seconds: 2), () => sampleWidgetData);
+    return widget.api
+        .getFollowingHabitData(targetUserID: widget.friendProfile.userID);
   }
 
   @override

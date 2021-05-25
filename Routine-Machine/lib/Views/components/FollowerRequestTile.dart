@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:routine_machine/api/APIWrapper.dart';
 import './FollowTileInfo.dart';
 import '../../constants/Palette.dart' as Palette;
 import '../../Models/UserProfile.dart';
@@ -10,6 +11,7 @@ enum RequestStatus {
 }
 
 class FollowerRequestTile extends StatefulWidget {
+  final APIWrapper api = APIWrapper();
   final UserProfile userProfile;
   final Color color;
 
@@ -27,6 +29,10 @@ class _FollowerRequestTileState extends State<FollowerRequestTile> {
     setState(() {
       _status = RequestStatus.accepted;
     });
+    widget.api.approveFollowRequest(
+      targetUserID: widget.userProfile.userID,
+      targetUserPublicKey: widget.userProfile.publicKey,
+    );
     print('Accepted request!');
   }
 
@@ -35,6 +41,7 @@ class _FollowerRequestTileState extends State<FollowerRequestTile> {
     setState(() {
       _status = RequestStatus.rejected;
     });
+    widget.api.rejectFollowRequest(targetUserID: widget.userProfile.userID);
     print('Rejected request!');
   }
 

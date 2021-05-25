@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:routine_machine/api/APIWrapper.dart';
 import './FollowTileInfo.dart';
 import '../../constants/Palette.dart' as Palette;
 import '../../Models/UserProfile.dart';
@@ -9,6 +10,7 @@ enum FollowStatus {
 }
 
 class FollowRequestTile extends StatefulWidget {
+  final APIWrapper api = APIWrapper();
   final UserProfile userProfile;
   final Color color;
 
@@ -23,10 +25,10 @@ class _FollowRequestTileState extends State<FollowRequestTile> {
       FollowStatus.pending; // TODO: initialize with actual following status
 
   void _followUser() {
-    // TODO: call API Wrapper to send following request
     setState(() {
       _followStatus = FollowStatus.following;
     });
+    widget.api.sendFollowRequest(targetUserID: widget.userProfile.userID);
     print('follow user @${this.widget.userProfile.username}!');
   }
 
