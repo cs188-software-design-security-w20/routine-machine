@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:routine_machine/Models/UserProfile.dart';
 import 'package:routine_machine/Models/WidgetData.dart';
+import 'package:routine_machine/api/APIWrapper.dart';
 import '../subviews/WidgetList.dart';
 import '../components/ProfileBarView.dart';
 import '../../constants/Palette.dart' as Palette;
@@ -9,20 +10,27 @@ class MainDashboardPage extends StatefulWidget {
   final Future<List<WidgetData>> widgetList;
   final Function fetchWidgetData;
   final Function removeWidget;
-  MainDashboardPage({this.widgetList, this.fetchWidgetData, this.removeWidget});
+  final Function updateWidget;
+  final APIWrapper api = APIWrapper();
+  MainDashboardPage({
+    this.widgetList,
+    this.fetchWidgetData,
+    this.removeWidget,
+    this.updateWidget,
+  });
   @override
   _MainDashboardPageState createState() => _MainDashboardPageState();
 }
 
 class _MainDashboardPageState extends State<MainDashboardPage> {
   Future<UserProfile> userData;
-  Future<List<WidgetData>> widgetList;
+  // Future<List<WidgetData>> widgetList;
 
   @override
   void initState() {
     super.initState();
     userData = _fetchUserData();
-    widgetList = widget.widgetList;
+    // widgetList = widget.widgetList;
   }
 
   Future<UserProfile> _fetchUserData() {
@@ -38,7 +46,7 @@ class _MainDashboardPageState extends State<MainDashboardPage> {
     return SafeArea(
       child: RefreshIndicator(
         onRefresh: () async {
-          widget.fetchWidgetData();
+          // widget.fetchWidgetData();
         },
         child: Container(
           child: Column(
@@ -70,7 +78,7 @@ class _MainDashboardPageState extends State<MainDashboardPage> {
                 ),
               ),
               FutureBuilder(
-                future: widgetList,
+                future: widget.widgetList,
                 builder: (BuildContext context,
                     AsyncSnapshot<List<WidgetData>> snapshot) {
                   Widget dashboardContent;
@@ -78,6 +86,7 @@ class _MainDashboardPageState extends State<MainDashboardPage> {
                     dashboardContent = WidgetList(
                       widgetList: snapshot.data,
                       removeWidget: widget.removeWidget,
+                      updateWidget: widget.updateWidget,
                     );
                   } else if (snapshot.hasError) {
                     dashboardContent = Expanded(
@@ -108,5 +117,13 @@ class _MainDashboardPageState extends State<MainDashboardPage> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    widget.widgetList.then((widgetList) {
+      widget.api.setHabitData(habitData: widgetList);
+    });
   }
 }
