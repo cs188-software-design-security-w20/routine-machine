@@ -118,4 +118,12 @@ class _MainDashboardPageState extends State<MainDashboardPage> {
       ),
     );
   }
+
+  @override
+  void dispose() {
+    super.dispose();
+    widget.widgetList.then((widgetList) {
+      widget.api.setHabitData(habitData: widgetList);
+    });
+  }
 }

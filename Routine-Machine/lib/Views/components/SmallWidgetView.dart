@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:flutter/material.dart';
 import 'package:routine_machine/Models/WidgetData.dart';
 import 'RingProgressBar.dart';
@@ -94,11 +92,5 @@ class _SmallWidgetViewState extends State<SmallWidgetView> {
         ),
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    widget.updateWidget(widget.data, widget.index);
   }
 }

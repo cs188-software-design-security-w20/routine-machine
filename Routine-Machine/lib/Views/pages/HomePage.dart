@@ -92,11 +92,9 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _updateWidget(WidgetData data, int index) {
-    setState(() {
-      _mainDashboardWidgetData.then((widgetList) {
-        widgetList[index] = data;
-        widget.api.setHabitData(habitData: widgetList);
-      });
+    _mainDashboardWidgetData.then((widgetList) {
+      widgetList[index] = data;
+      widget.api.setHabitData(habitData: widgetList);
     });
   }
 
