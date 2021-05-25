@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:routine_machine/Views/components/MenuRow.dart';
 import 'package:routine_machine/Views/components/custom_route.dart';
+import 'package:routine_machine/api/APIWrapper.dart';
 import 'package:routine_machine/constants/Constants.dart';
 import '../components/TopBackBar.dart';
 import 'package:flutter_sfsymbols/flutter_sfsymbols.dart';
@@ -18,6 +19,7 @@ class AccountPage extends StatefulWidget {
 class _AccountPageState extends State<AccountPage> {
   Future<UserProfile> userProfile;
   TextEditingController _usernameController;
+  APIWrapper apiWrapper;
   final String qrKey = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
 
   @override
@@ -36,6 +38,7 @@ class _AccountPageState extends State<AccountPage> {
         lastName: "Lin",
       ),
     );
+    // return apiWrapper.getUserProfile()
   }
 
   void activeChangeUsernamePage(BuildContext context) {
@@ -88,11 +91,8 @@ class _AccountPageState extends State<AccountPage> {
                     },
                     keyboardType: TextInputType.text,
                     onFieldSubmitted: (username) async {
-                      setState(() {
-                        this.userProfile.then((data) => {
-                              data.username = username,
-                            });
-                      });
+                      apiWrapper
+                          .setUserProfile(userProfile: {"username": username});
                     })
               ],
             ),

@@ -2,9 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:routine_machine/Views/pages/HomePage.dart';
 
 import 'package:flutter/services.dart';
+import 'package:routine_machine/api/APIWrapper.dart';
 import 'Views/pages/LoginPage.dart';
 import 'Views/components/transition_route_observer.dart';
 import 'package:firebase_core/firebase_core.dart';
+
+import 'Views/pages/ScanQRPage.dart';
+import 'Views/pages/SetUserInfoPage.dart';
 
 // sample data to demo the check in list
 final sampleCheckIns = <DateTime>[
@@ -24,6 +28,7 @@ class RoutineMachine extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      // home: ScanQRPage(),
       home: LoginPage(),
       //sample login page
       title: 'Routine Machine',

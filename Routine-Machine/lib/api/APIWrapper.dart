@@ -8,7 +8,7 @@ import 'dart:convert' as Convert;
 
 class APIWrapper {
   Auth.User user;
-  String apiBaseURL = 'localhost:8000';
+  String apiBaseURL = '143.198.129.146:8000';
   Http.BaseClient client = new Http.Client();
   CSE cse = CSE();
 

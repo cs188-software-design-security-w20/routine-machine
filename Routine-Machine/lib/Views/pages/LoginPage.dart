@@ -4,28 +4,65 @@ import 'package:flutter/scheduler.dart' show timeDilation;
 import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:routine_machine/api/APIWrapper.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import '../../constants/Constants.dart' as Constants;
 import '../components/custom_route.dart';
 import 'package:routine_machine/Views/pages/HomePage.dart';
+import 'ScanQRPage.dart';
+import 'SetUserInfoPage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'dart:io' show Platform;
 
 FirebaseAuth _auth = FirebaseAuth.instance;
 final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-enum authProblems { UserNotFound, PasswordNotValid, NetworkError }
+enum authProblems {
+  UserNotFound,
+  PasswordNotValid,
+  NetworkError,
+  Unknown,
+}
+enum SignInType {
+  signUp,
+  logIn,
+}
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   static const routeName = '/auth';
+  final storage = new FlutterSecureStorage();
+  @override
+  _LoginPageState createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  APIWrapper apiWrapper;
+  User user;
+  String key;
   Duration get loginTime => Duration(milliseconds: timeDilation.ceil() * 2250);
+  SignInType _signInType = SignInType.logIn;
+
+  bool _keyExistsOnDevice() {
+    // TODO: implement this
+    return key != null; // set to true to bypass qr scanner page
+  }
+
   Future<String> _loginUser(LoginData loginData) async {
     try {
-      final User user = (await _auth.signInWithEmailAndPassword(
+      _auth
+          .signInWithEmailAndPassword(
         email: loginData.name,
         password: loginData.password,
-      ))
-          .user;
+      )
+          .then((user) {
+        setState(() {
+          this.user = user.user;
+          print("Login: ${this.user}");
+        });
+      });
+      return null;
     } catch (e) {
+      print('Error occured during login $e');
       authProblems errorType;
       if (Platform.isAndroid) {
         switch (e.message) {
@@ -40,6 +77,7 @@ class LoginPage extends StatelessWidget {
             break;
           // ...
           default:
+            errorType = authProblems.Unknown;
             print('Case ${e.message} is not yet implemented');
         }
       } else if (Platform.isIOS) {
@@ -52,6 +90,7 @@ class LoginPage extends StatelessWidget {
             break;
           // ...
           default:
+            errorType = authProblems.Unknown;
             print('Case ${e.message} is not yet implemented');
         }
       }
@@ -60,12 +99,16 @@ class LoginPage extends StatelessWidget {
   }
 
   Future<String> _registerUser(LoginData loginData) async {
-    final User user = (await _auth.createUserWithEmailAndPassword(
+    _auth
+        .createUserWithEmailAndPassword(
       email: loginData.name,
       password: loginData.password,
-    ))
-        .user;
-
+    )
+        .then((user) {
+      setState(() {
+        this.user = user.user;
+      });
+    });
     return null;
   }
 
@@ -117,8 +160,11 @@ class LoginPage extends StatelessWidget {
         afterHeroFontSize: 12,
       ),
       emailValidator: (value) {
-        if (!value.contains('@') || !value.endsWith('.com')) {
-          return "Email must contain '@' and end with '.com'";
+        if (!value.contains('@') ||
+            !value.endsWith('.com') &&
+                !value.endsWith('.edu') &&
+                !value.endsWith('.net')) {
+          return "Email must contain '@' and end with '.com/edu/net'";
         }
         return null;
       },
@@ -132,20 +178,47 @@ class LoginPage extends StatelessWidget {
         print('Login');
         print('Email: ${loginData.name}');
         print('Password: ${loginData.password}');
+        setState(() {
+          _signInType = SignInType.logIn;
+        });
         return _loginUser(loginData);
       },
       onSignup: (loginData) async {
         print('Sign Up');
         print('Email: ${loginData.name}');
         print('Password: ${loginData.password}');
+        setState(() {
+          _signInType = SignInType.signUp;
+        });
         return _registerUser(loginData);
       },
       onSubmitAnimationCompleted: () {
         // no error found, login success
         // redirect to home page
-        Navigator.of(context).pushReplacement(FadePageRoute(
-          builder: (context) => HomePage(),
-        ));
+        print("On login success: ${this.user}");
+        if (_signInType == SignInType.signUp) {
+          Navigator.of(context).pushReplacement(FadePageRoute(
+            builder: (context) => SetUserInfoPage(),
+          ));
+        } else if (_signInType == SignInType.logIn) {
+          APIWrapper api = APIWrapper();
+          api.setUser(this.user);
+          api.cse.hasKeyPair().then((value) => {
+                print("hasKeyPair: ${this.user}"),
+                if (value)
+                  {
+                    // TODO: implement this function above
+                    Navigator.of(context).pushReplacement(FadePageRoute(
+                        builder: (context) => HomePage(user: this.user))),
+                  }
+                else
+                  {
+                    // go to scan page
+                    Navigator.of(context).pushReplacement(FadePageRoute(
+                        builder: (context) => ScanQRPage(user: this.user))),
+                  }
+              });
+        }
       },
       onRecoverPassword: null,
       showDebugButtons: false,
