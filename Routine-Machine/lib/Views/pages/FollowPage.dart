@@ -26,8 +26,6 @@ class _FollowPageState extends State<FollowPage> {
   Future<List<UserProfile>> _followerRequestList;
   Future<List<UserProfile>> _followerList;
 
-  Future<List<List<UserProfile>>> _allLists;
-
   @override
   void initState() {
     super.initState();
