@@ -26,6 +26,8 @@ class _FollowPageState extends State<FollowPage> {
   Future<List<UserProfile>> _followerRequestList;
   Future<List<UserProfile>> _followerList;
 
+  Future<List<List<UserProfile>>> _allLists;
+
   @override
   void initState() {
     super.initState();
@@ -51,6 +53,14 @@ class _FollowPageState extends State<FollowPage> {
 
   Future<List<UserProfile>> _getFollowerList() {
     return widget.api.getFollowers();
+  }
+
+  void _refreshFollowerList() {
+    setState(() {
+      _followerList = _getFollowerList();
+      _followerRequestList = _getFollowerRequestList();
+    });
+    print('Refresh follower list!');
   }
 
   void _switchToFollowers() {
@@ -157,6 +167,7 @@ class _FollowPageState extends State<FollowPage> {
                           child: FollowerTileList(
                             followerRequestList: snapshot.data[1],
                             followerList: snapshot.data[2],
+                            refreshFollowerList: _refreshFollowerList,
                           ),
                         );
                 } else if (snapshot.hasError) {

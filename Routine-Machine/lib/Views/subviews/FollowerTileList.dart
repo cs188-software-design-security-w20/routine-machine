@@ -7,10 +7,12 @@ import 'package:flutter/cupertino.dart';
 class FollowerTileList extends StatelessWidget {
   final List followerRequestList;
   final List followerList;
+  final Function refreshFollowerList;
 
   List<dynamic> combinedFollowerList;
 
-  FollowerTileList({this.followerRequestList, this.followerList}) {
+  FollowerTileList(
+      {this.followerRequestList, this.followerList, this.refreshFollowerList}) {
     combinedFollowerList = followerRequestList + followerList;
   }
 
@@ -29,6 +31,7 @@ class FollowerTileList extends StatelessWidget {
                   ? FollowerRequestTile(
                       userProfile: userProfile,
                       color: Palette.yellow,
+                      refreshFollowerList: refreshFollowerList,
                     )
                   : FollowerTile(
                       followerProfile: userProfile,
