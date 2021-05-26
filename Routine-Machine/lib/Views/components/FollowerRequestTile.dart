@@ -47,7 +47,13 @@ class _FollowerRequestTileState extends State<FollowerRequestTile> {
     setState(() {
       _status = RequestStatus.rejected;
     });
-    widget.api.rejectFollowRequest(targetUserID: widget.userProfile.userID);
+    widget.api
+        .rejectFollowRequest(targetUserID: widget.userProfile.userID)
+        .then((value) {
+      Future.delayed(Duration(seconds: 1), () {
+        widget.refreshFollowerList();
+      });
+    });
     print('Rejected request!');
   }
 
