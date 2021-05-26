@@ -16,7 +16,7 @@ class FollowerTileList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return this.followerRequestList.isEmpty
+    return this.combinedFollowerList.isEmpty
         ? Text(
             'You currently have no pending requests or followers:)') // default message if not following anyone
         : ListView.separated(
