@@ -14,6 +14,7 @@ import 'SetUserInfoPage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'dart:io' show Platform;
+import 'package:the_apple_sign_in/the_apple_sign_in.dart';
 
 FirebaseAuth _auth = FirebaseAuth.instance;
 final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -51,9 +52,9 @@ class _LoginPageState extends State<LoginPage> {
     try {
       _auth
           .signInWithEmailAndPassword(
-          email: loginData.name,
-          password: loginData.password,
-        )
+        email: loginData.name,
+        password: loginData.password,
+      )
           .then((user) {
         setState(() {
           this.user = user.user;
@@ -121,23 +122,7 @@ class _LoginPageState extends State<LoginPage> {
       logo: 'assets/images/rmlogo.png',
       logoTag: Constants.logoTag,
       titleTag: Constants.titleTag,
-      loginProviders: Platform.isIOS
-          ? [
-              LoginProvider(
-                icon: FontAwesomeIcons.apple,
-                callback: () async {
-                  final credential = await SignInWithApple.getAppleIDCredential(
-                    scopes: [
-                      AppleIDAuthorizationScopes.email,
-                      AppleIDAuthorizationScopes.fullName,
-                    ],
-                  );
-                  print("Credential");
-                  print(credential);
-                },
-              ),
-            ]
-          : [],
+      loginProviders: [],
       messages: LoginMessages(
         usernameHint: 'Email',
         passwordHint: 'Password',
