@@ -51,9 +51,9 @@ class _LoginPageState extends State<LoginPage> {
     try {
       _auth
           .signInWithEmailAndPassword(
-        email: loginData.name,
-        password: loginData.password,
-      )
+          email: loginData.name,
+          password: loginData.password,
+        )
           .then((user) {
         setState(() {
           this.user = user.user;
@@ -61,6 +61,7 @@ class _LoginPageState extends State<LoginPage> {
         });
         _auth.setPersistence(Persistence.LOCAL);
       });
+      print("Auth completed");
       return null;
     } catch (e) {
       print('Error occured during login $e');
@@ -131,6 +132,7 @@ class _LoginPageState extends State<LoginPage> {
                       AppleIDAuthorizationScopes.fullName,
                     ],
                   );
+                  print("Credential");
                   print(credential);
                 },
               ),
