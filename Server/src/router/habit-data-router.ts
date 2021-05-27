@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { setHabitData } from '../query/user-query';
 import * as HabitDataService from '../service/habit-data-service';
+import { requireEqual } from '../util/validate-id';
 
 const habitDataRouter = Router();
 
@@ -12,6 +13,7 @@ const habitDataRouter = Router();
 habitDataRouter.get('/', async (req, res) => {
   try {
     const { id } = req.query;
+    await requireEqual(id, res.locals.userData.user_id);
     const habitDataDEKPair = await HabitDataService.getUserHabitDataDEKPair(id);
     res.status(200).json(habitDataDEKPair);
   } catch (error) {
@@ -27,6 +29,7 @@ habitDataRouter.get('/', async (req, res) => {
 habitDataRouter.post('/', async (req, res) => {
   try {
     const { id, habit_data } = req.body;
+    await requireEqual(id, res.locals.userData.user_id);
     await setHabitData(id, habit_data);
     res.json({ success: `Habit data for ${id} successfully updated`, status: 200 });
   } catch (error) {
@@ -44,6 +47,7 @@ habitDataRouter.post('/', async (req, res) => {
 habitDataRouter.get('/following/', async (req, res) => {
   try {
     const { followee_id, follower_id } = req.query;
+    await requireEqual(follower_id, res.locals.userData.user_id);
     const followingHabitDataDEKPair = await HabitDataService
       .getFollowingHabitDataDEKPair(followee_id, follower_id);
     res.status(200).json(followingHabitDataDEKPair);

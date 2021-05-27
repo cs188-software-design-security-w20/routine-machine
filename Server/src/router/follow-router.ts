@@ -2,6 +2,7 @@ import { Router } from 'express';
 
 import type { follower_dek_pair } from '../service/follow-service';
 import * as FollowService from '../service/follow-service';
+import { requireEqual, requireOneEqual } from '../util/validate-id';
 
 const followRouter = Router();
 
@@ -12,6 +13,7 @@ const followRouter = Router();
 followRouter.post('/requests', async (req, res) => {
   try {
     const { followee_id, follower_id } = req.body;
+    await requireEqual(follower_id, res.locals.userData.user_id);
     await FollowService.addPendingFollow(followee_id, follower_id);
     res.json({ success: 'Pending Follow request created successfully', status: 200 });
   } catch (error) {
@@ -26,6 +28,7 @@ followRouter.post('/requests', async (req, res) => {
 followRouter.delete('/requests', async (req, res) => {
   try {
     const { followee_id, follower_id } = req.body;
+    await requireOneEqual(followee_id, follower_id, res.locals.userData.user_id);
     await FollowService.removePendingFollow(followee_id, follower_id);
     res.json({ success: 'Pending Follow request removed successfully', status: 200 });
   } catch (error) {
@@ -40,6 +43,7 @@ followRouter.delete('/requests', async (req, res) => {
 followRouter.post('/', async (req, res) => {
   try {
     const { followee_id, follower_id, dek } = req.body;
+    await requireEqual(followee_id, res.locals.userData.user_id);
     await FollowService.addFollow(followee_id, follower_id, dek);
     await FollowService.removePendingFollow(followee_id, follower_id);
     res.json({ success: 'Follow created successfully', status: 200 });
@@ -55,6 +59,7 @@ followRouter.post('/', async (req, res) => {
 followRouter.delete('/', async (req, res) => {
   try {
     const { followee_id, follower_id } = req.body;
+    await requireOneEqual(followee_id, follower_id, res.locals.userData.user_id);
     await FollowService.removeFollow(followee_id, follower_id);
     res.json({ success: 'Follow removed successfully', status: 200 });
   } catch (error) {
@@ -70,6 +75,7 @@ followRouter.delete('/', async (req, res) => {
 followRouter.get('/following/requests', async (req, res) => {
   try {
     const { follower_id } = req.query;
+    await requireEqual(follower_id, res.locals.userData.user_id);
     const pending_follows = await FollowService.getSentPendingRequestList(follower_id);
     res.status(200).json(pending_follows);
   } catch (error) {
@@ -85,6 +91,7 @@ followRouter.get('/following/requests', async (req, res) => {
 followRouter.get('/following', async (req, res) => {
   try {
     const { follower_id } = req.query;
+    await requireEqual(follower_id, res.locals.userData.user_id);
     const follows = await FollowService.getFollowingList(follower_id);
     res.status(200).json(follows);
   } catch (error) {
@@ -100,6 +107,7 @@ followRouter.get('/following', async (req, res) => {
 followRouter.get('/followers/requests', async (req, res) => {
   try {
     const { followee_id } = req.query;
+    await requireEqual(followee_id, res.locals.userData.user_id);
     const pending_follows = await FollowService.getPendingRequestList(followee_id);
     res.status(200).json(pending_follows);
   } catch (error) {
@@ -115,6 +123,7 @@ followRouter.get('/followers/requests', async (req, res) => {
 followRouter.get('/followers', async (req, res) => {
   try {
     const { followee_id } = req.query;
+    await requireEqual(followee_id, res.locals.userData.user_id);
     const follows = await FollowService.getFollowerList(followee_id);
     res.status(200).json(follows);
   } catch (error) {
@@ -130,6 +139,7 @@ followRouter.get('/followers', async (req, res) => {
 followRouter.get('/followers/pk', async (req, res) => {
   try {
     const { followee_id } = req.query;
+    await requireEqual(followee_id, res.locals.userData.user_id);
     const follower_pks = await FollowService.getFollowerPKs(followee_id);
     res.status(200).json(follower_pks);
   } catch (error) {
@@ -144,6 +154,7 @@ followRouter.get('/followers/pk', async (req, res) => {
 followRouter.post('/followers/dek', async (req, res) => {
   try {
     const { followee_id, follower_dek_pairs } = req.body;
+    await requireEqual(followee_id, res.locals.userData.user_id);
     const fdps: follower_dek_pair[] = follower_dek_pairs
       .map((f: { follower_id: string; dek: string; }) => ({ ...f }));
     await FollowService.updateFollowerDEKs(followee_id, fdps);
