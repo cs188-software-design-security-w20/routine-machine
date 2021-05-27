@@ -14,7 +14,6 @@ var options = {
 };
 
 async function main() {
-	console.log(__dirname + '/ssl/key.pem');
   try {
     const sequelize = initDB();
     await sequelize.drop();
