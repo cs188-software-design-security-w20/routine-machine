@@ -6,6 +6,7 @@ import '../components/TopBackBar.dart';
 import '../../Models/FriendStatus.dart';
 import '../../Models/UserProfile.dart';
 import '../../Models/WidgetData.dart';
+import '.././../constants/Constants.dart' as Constants;
 
 class FriendProfilePage extends StatefulWidget {
   final APIWrapper api = APIWrapper();
@@ -85,11 +86,20 @@ class _FriendProfilePageState extends State<FriendProfilePage> {
                         ),
                       );
                     } else if (snapshot.hasError) {
-                      friendDataContent =
-                          Center(child: Text('Error loading follower data'));
+                      friendDataContent = Center(
+                        child: Text(
+                          'Unable to view habit data.\nSend a follow request to see their habits :)',
+                          style: Constants.kBodyLabelStyle,
+                          textAlign: TextAlign.center,
+                        ),
+                      );
                     } else {
-                      friendDataContent =
-                          Center(child: Text('Loading friend\'s data...'));
+                      friendDataContent = Center(
+                        child: Text(
+                          'Loading friend\'s data...',
+                          style: Constants.kBodyLabelStyle,
+                        ),
+                      );
                     }
                     return friendDataContent;
                   }),

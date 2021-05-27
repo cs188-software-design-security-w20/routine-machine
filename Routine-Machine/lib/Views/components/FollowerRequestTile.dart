@@ -14,8 +14,9 @@ class FollowerRequestTile extends StatefulWidget {
   final APIWrapper api = APIWrapper();
   final UserProfile userProfile;
   final Color color;
+  final Function refreshFollowerList;
 
-  FollowerRequestTile({this.userProfile, this.color});
+  FollowerRequestTile({this.userProfile, this.color, this.refreshFollowerList});
 
   @override
   _FollowerRequestTileState createState() => _FollowerRequestTileState();
@@ -25,14 +26,19 @@ class _FollowerRequestTileState extends State<FollowerRequestTile> {
   RequestStatus _status = RequestStatus.pending;
 
   _acceptRequest() {
-    // TODO: properly implement this
     setState(() {
       _status = RequestStatus.accepted;
     });
-    widget.api.approveFollowRequest(
+    widget.api
+        .approveFollowRequest(
       targetUserID: widget.userProfile.userID,
       targetUserPublicKey: widget.userProfile.publicKey,
-    );
+    )
+        .then((value) {
+      Future.delayed(Duration(seconds: 1), () {
+        widget.refreshFollowerList();
+      });
+    });
     print('Accepted request!');
   }
 
@@ -41,7 +47,13 @@ class _FollowerRequestTileState extends State<FollowerRequestTile> {
     setState(() {
       _status = RequestStatus.rejected;
     });
-    widget.api.rejectFollowRequest(targetUserID: widget.userProfile.userID);
+    widget.api
+        .rejectFollowRequest(targetUserID: widget.userProfile.userID)
+        .then((value) {
+      Future.delayed(Duration(seconds: 1), () {
+        widget.refreshFollowerList();
+      });
+    });
     print('Rejected request!');
   }
 
