@@ -142,7 +142,7 @@ class _LoginPageState extends State<LoginPage> {
         // confirmPasswordHint: 'Confirm',
         loginButton: 'Log In',
         signupButton: 'Sign Up',
-        forgotPasswordButton: 'Forgot password?',
+        // forgotPasswordButton: 'Forgot password?',
         // recoverPasswordButton: 'HELP ME',
         goBackButton: 'Back to Log In',
         confirmPasswordError: 'Not match!',
