@@ -41,6 +41,22 @@ userRouter.get('/profile', async (req, res) => {
 });
 
 /**
+ * @descirption get a profile of a user by name
+ * @request_params user_name
+ * @response_body {id, user_name, first_name, last_name, profile}
+ */
+userRouter.get('/profile/id', async (req, res) => {
+  try {
+    const { id } = req.query;
+    await requireEqual(id, res.locals.userData.user_id);
+    const user = await UserService.getUserById(id);
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(404).send(error);
+  }
+});
+
+/**
  * @descirption set the profile of the user
  * @request_body {id, profile}
  */
