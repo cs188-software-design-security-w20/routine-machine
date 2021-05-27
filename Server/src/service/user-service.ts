@@ -29,7 +29,7 @@ export const getUserByName = async (user_name: any) => {
   throw { message: 'type of user_name is not string', name: 'TypeError' };
 };
 
-export const getUserById = async (id: string) => {
+export const getUserById = async (id: any) => {
   const res = await UserQuery.getUserById(id);
   return {
     id: res?.id,
