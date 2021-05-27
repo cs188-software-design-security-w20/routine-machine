@@ -17,7 +17,7 @@ export interface EnvConfig {
   firebaseProjectID: string;
 }
 
-const defaultServerPort = 8000;
+const defaultServerPort = 443;
 const defaultDBPort = 5432;
 
 const {

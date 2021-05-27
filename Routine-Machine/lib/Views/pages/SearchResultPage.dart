@@ -71,20 +71,17 @@ class _SearchResultPageState extends State<SearchResultPage> {
                   (BuildContext context, AsyncSnapshot<UserProfile> snapshot) {
                 Widget searchContent;
                 if (snapshot.hasData) {
-                  searchContent =
-                      // TODO: figure out what to do when user not found
-                      // Center(
-                      //     child: Text(
-                      //       'Sorry, the user "${searchController.text}" was not found',
-                      //       style: TextStyle(color: Colors.black),
-                      //     ),
-                      //   )
-                      FollowRequestTile(
+                  searchContent = FollowRequestTile(
                     userProfile: snapshot.data,
                     color: Palette.purple,
                   );
                 } else if (snapshot.hasError) {
-                  searchContent = Text('Error loading username data');
+                  searchContent = Center(
+                    child: Text(
+                      'Sorry, user with username "${searchController.text}" was not found',
+                      style: TextStyle(color: Colors.black),
+                    ),
+                  );
                 } else {
                   searchContent = Column(
                     mainAxisAlignment: MainAxisAlignment.center,

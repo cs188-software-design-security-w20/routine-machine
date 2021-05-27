@@ -53,6 +53,14 @@ class _FollowPageState extends State<FollowPage> {
     return widget.api.getFollowers();
   }
 
+  void _refreshFollowerList() {
+    setState(() {
+      _followerList = _getFollowerList();
+      _followerRequestList = _getFollowerRequestList();
+    });
+    print('Refresh follower list!');
+  }
+
   void _switchToFollowers() {
     if (_page != FollowPageType.followers) {
       setState(() {
@@ -157,6 +165,7 @@ class _FollowPageState extends State<FollowPage> {
                           child: FollowerTileList(
                             followerRequestList: snapshot.data[1],
                             followerList: snapshot.data[2],
+                            refreshFollowerList: _refreshFollowerList,
                           ),
                         );
                 } else if (snapshot.hasError) {

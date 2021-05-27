@@ -6,15 +6,14 @@ const https = require('https');
 const fs = require('fs');
 const { serverPort } = env;
 
-let key = fs.readFileSync(__dirname + '/ssl/key.pem');
-let cert = fs.readFileSync(__dirname + '/ssl/cert.pem');
+let key = fs.readFileSync('/root/ssl/key.pem');
+let cert = fs.readFileSync('/root/ssl/cert.pem');
 var options = {
     key: key,
     cert: cert,
 };
 
 async function main() {
-	console.log(__dirname + '/ssl/key.pem');
   try {
     const sequelize = initDB();
     await sequelize.drop();

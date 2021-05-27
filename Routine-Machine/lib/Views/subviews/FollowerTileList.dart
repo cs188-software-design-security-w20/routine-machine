@@ -7,16 +7,18 @@ import 'package:flutter/cupertino.dart';
 class FollowerTileList extends StatelessWidget {
   final List followerRequestList;
   final List followerList;
+  final Function refreshFollowerList;
 
   List<dynamic> combinedFollowerList;
 
-  FollowerTileList({this.followerRequestList, this.followerList}) {
+  FollowerTileList(
+      {this.followerRequestList, this.followerList, this.refreshFollowerList}) {
     combinedFollowerList = followerRequestList + followerList;
   }
 
   @override
   Widget build(BuildContext context) {
-    return this.followerRequestList.isEmpty
+    return this.combinedFollowerList.isEmpty
         ? Text(
             'You currently have no pending requests or followers:)') // default message if not following anyone
         : ListView.separated(
@@ -29,6 +31,7 @@ class FollowerTileList extends StatelessWidget {
                   ? FollowerRequestTile(
                       userProfile: userProfile,
                       color: Palette.yellow,
+                      refreshFollowerList: refreshFollowerList,
                     )
                   : FollowerTile(
                       followerProfile: userProfile,

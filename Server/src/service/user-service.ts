@@ -29,7 +29,7 @@ export const getUserByName = async (user_name: any) => {
   throw { message: 'type of user_name is not string', name: 'TypeError' };
 };
 
-export const getUserById = async (id: string) => {
+export const getUserById = async (id: any) => {
   const res = await UserQuery.getUserById(id);
   return {
     id: res?.id,
@@ -85,6 +85,20 @@ export const setProfile = async (id: string, profile: JSON) => {
 
 export const setUsername = async (id: string, user_name: string) => {
   const res = await UserQuery.setUsername(id, user_name);
+  if (res[0] !== 1) {
+    throw { message: `There is no user with user id: ${id}`, name: 'UserNotFoundError' };
+  }
+};
+
+export const setFirstname = async (id: string, first_name: string) => {
+  const res = await UserQuery.setFirstname(id, first_name);
+  if (res[0] !== 1) {
+    throw { message: `There is no user with user id: ${id}`, name: 'UserNotFoundError' };
+  }
+};
+
+export const setLastname = async (id: string, last_name: string) => {
+  const res = await UserQuery.setLastname(id, last_name);
   if (res[0] !== 1) {
     throw { message: `There is no user with user id: ${id}`, name: 'UserNotFoundError' };
   }

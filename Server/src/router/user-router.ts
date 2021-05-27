@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 import { Router } from 'express';
 import * as UserService from '../service/user-service';
+import { requireEqual } from '../util/validate-id';
 
 const userRouter = Router();
 
@@ -13,6 +14,7 @@ userRouter.post('/', async (req, res) => {
     const {
       id, user_name, public_key, first_name, last_name, dek,
     } = req.body;
+    await requireEqual(id, res.locals.userData.user_id);
     await UserService.createUser({
       id, user_name, public_key, first_name, last_name,
     });
@@ -39,12 +41,29 @@ userRouter.get('/profile', async (req, res) => {
 });
 
 /**
+ * @descirption get a profile of a user by name
+ * @request_params user_name
+ * @response_body {id, user_name, first_name, last_name, profile}
+ */
+userRouter.get('/profile/id', async (req, res) => {
+  try {
+    const { id } = req.query;
+    await requireEqual(id, res.locals.userData.user_id);
+    const user = await UserService.getUserById(id);
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(404).send(error);
+  }
+});
+
+/**
  * @descirption set the profile of the user
  * @request_body {id, profile}
  */
 userRouter.post('/profile', async (req, res) => {
   try {
     const { id, profile } = req.body;
+    await requireEqual(id, res.locals.userData.user_id);
     await UserService.setProfile(id, profile);
     res.status(200).json({ success: 'User Profile set successfully', status: 200 });
   } catch (error) {
@@ -69,8 +88,31 @@ userRouter.get('/username', async (req, res) => {
 userRouter.post('/username', async (req, res) => {
   try {
     const { id, user_name } = req.body;
+    await requireEqual(id, res.locals.userData.user_id);
     await UserService.setUsername(id, user_name);
     res.status(200).json({ success: 'Username set successfully', status: 200 });
+  } catch (error) {
+    res.status(409).send(error);
+  }
+});
+
+userRouter.post('/firstName', async (req, res) => {
+  try {
+    const { id, first_name } = req.body;
+    await requireEqual(id, res.locals.userData.user_id);
+    await UserService.setFirstname(id, first_name);
+    res.status(200).json({ success: 'First Name set successfully', status: 200 });
+  } catch (error) {
+    res.status(409).send(error);
+  }
+});
+
+userRouter.post('/lastName', async (req, res) => {
+  try {
+    const { id, last_name } = req.body;
+    await requireEqual(id, res.locals.userData.user_id);
+    await UserService.setLastname(id, last_name);
+    res.status(200).json({ success: 'Last Name set successfully', status: 200 });
   } catch (error) {
     res.status(409).send(error);
   }
@@ -98,6 +140,7 @@ userRouter.get('/public_key', async (req, res) => {
 userRouter.post('/dek', async (req, res) => {
   try {
     const { id, dek } = req.body;
+    await requireEqual(id, res.locals.userData.user_id);
     await UserService.setDEK(id, dek);
     res.status(200).json({ success: 'User dek set successfully', status: 200 });
   } catch (error) {
@@ -113,6 +156,7 @@ userRouter.post('/dek', async (req, res) => {
 userRouter.get('/dek', async (req, res) => {
   try {
     const { id } = req.query;
+    await requireEqual(id, res.locals.userData.user_id);
     const dek = await UserService.getDEK(id);
     res.status(200).json(dek);
   } catch (error) {
