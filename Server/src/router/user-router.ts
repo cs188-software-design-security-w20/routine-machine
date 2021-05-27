@@ -80,6 +80,28 @@ userRouter.post('/username', async (req, res) => {
   }
 });
 
+userRouter.post('/firstName', async (req, res) => {
+  try {
+    const { id, first_name } = req.body;
+    await requireEqual(id, res.locals.userData.user_id);
+    await UserService.setFirstname(id, first_name);
+    res.status(200).json({ success: 'First Name set successfully', status: 200 });
+  } catch (error) {
+    res.status(409).send(error);
+  }
+});
+
+userRouter.post('/lastName', async (req, res) => {
+  try {
+    const { id, last_name } = req.body;
+    await requireEqual(id, res.locals.userData.user_id);
+    await UserService.setLastname(id, last_name);
+    res.status(200).json({ success: 'Last Name set successfully', status: 200 });
+  } catch (error) {
+    res.status(409).send(error);
+  }
+});
+
 /**
  * @descirption get the public key of the user
  * @request_body {id, profile}

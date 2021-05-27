@@ -33,3 +33,11 @@ export const setProfile = (id: string, profile: JSON) => User.update({
 export const setUsername = (id: string, user_name: string) => User.update({
   user_name,
 }, { where: { id } });
+
+export const setFirstname = (id: string, first_name: string) => User.update({
+  first_name,
+}, { where: { id } });
+
+export const setLastname = (id: string, last_name: string) => User.update({
+  last_name,
+}, { where: { id } });

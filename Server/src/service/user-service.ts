@@ -89,3 +89,17 @@ export const setUsername = async (id: string, user_name: string) => {
     throw { message: `There is no user with user id: ${id}`, name: 'UserNotFoundError' };
   }
 };
+
+export const setFirstname = async (id: string, first_name: string) => {
+  const res = await UserQuery.setFirstname(id, first_name);
+  if (res[0] !== 1) {
+    throw { message: `There is no user with user id: ${id}`, name: 'UserNotFoundError' };
+  }
+};
+
+export const setLastname = async (id: string, last_name: string) => {
+  const res = await UserQuery.setLastname(id, last_name);
+  if (res[0] !== 1) {
+    throw { message: `There is no user with user id: ${id}`, name: 'UserNotFoundError' };
+  }
+};
