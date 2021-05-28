@@ -12,6 +12,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'LoginPage.dart';
 
 class AccountPage extends StatefulWidget {
+  final User user;
   @override
   _AccountPageState createState() => _AccountPageState();
 }
