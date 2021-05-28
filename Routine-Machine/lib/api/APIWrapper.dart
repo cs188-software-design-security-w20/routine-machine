@@ -38,6 +38,15 @@ class APIWrapper {
     return 'Bearer $authToken';
   }
 
+  Future<void> overrideKeyPair({String privateKey, String publicKey}) async {
+    if (privateKey != null) {
+      await cse.setPrivateKey(key: privateKey);
+    }
+    if (publicKey != null) {
+      await cse.setPublicKey(key: publicKey);
+    }
+  }
+
   Future<void> createUser(
       {String firstName, String lastName, String userName}) async {
     await cse.refreshOwnerDEK();
@@ -125,6 +134,29 @@ class APIWrapper {
       final errorMsg = Convert.jsonDecode(response.body)['message'];
       final formattedError = errorMsg != null ? '($errorMsg)' : '';
       throw Exception('Failed to set user profile $formattedError');
+    }
+  }
+
+  Future<bool> validateDevicePrivateKey() async {
+    final headers = {
+      HttpHeaders.authorizationHeader: await _getAuthHeader(),
+    };
+    final url = Uri.https(apiBaseURL, '/challenge');
+    final response = await client.get(url, headers: headers);
+    if (response.statusCode != 200) {
+      throw Exception('Failed to get private key challenge');
+    }
+    final json = Convert.jsonDecode(response.body);
+    print(response.body);
+    final challengeString = json['challengeString'] as String;
+    final encryptedString = json['encryptedString'] as String;
+    try {
+      final decryptedString =
+          await cse.decryptChallengeString(encrypted: encryptedString);
+      print(decryptedString);
+      return decryptedString == challengeString;
+    } catch (e) {
+      return false;
     }
   }
 
