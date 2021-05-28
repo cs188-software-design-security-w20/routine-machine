@@ -13,12 +13,18 @@ challengeRouter.get('/', async (req, res) => {
   const id = res.locals.userData.user_id;
   try {
     const { public_key } = await getPK(id);
-    const challengeString = randomString(); // randomly generated string
+    const challengeString = randomString();
     const encryptedString = crypto.publicEncrypt(
-      public_key,
+      {
+        key: `-----BEGIN PUBLIC KEY-----\n${public_key}\n-----END PUBLIC KEY-----\n`,
+        padding: crypto.constants.RSA_PKCS1_PADDING,
+      },
       Buffer.from(challengeString),
     );
-    res.status(200).json({ challengeString, encryptedString });
+    res.status(200).json({
+      challengeString,
+      encryptedString: encryptedString.toString('base64'),
+    });
   } catch (err) {
     res.status(500).send(err);
   }
