@@ -102,6 +102,34 @@ class APIWrapper {
     }
   }
 
+  Future<void> setFirstName({String firstName}) async {
+    final headers = {
+      HttpHeaders.authorizationHeader: await _getAuthHeader(),
+    };
+    final url = Uri.https(apiBaseURL, '/user/firstName');
+    final response = await client.post(url, headers: headers, body: {
+      'id': user.uid,
+      'first_name': firstName,
+    });
+    if (response.statusCode != 200) {
+      throw Exception('Failed to set first name');
+    }
+  }
+
+  Future<void> setLastName({String lastName}) async {
+    final headers = {
+      HttpHeaders.authorizationHeader: await _getAuthHeader(),
+    };
+    final url = Uri.https(apiBaseURL, '/user/lastName');
+    final response = await client.post(url, headers: headers, body: {
+      'id': user.uid,
+      'last_name': lastName,
+    });
+    if (response.statusCode != 200) {
+      throw Exception('Failed to set last name');
+    }
+  }
+
   Future<UserProfile> getUserProfile({String username}) async {
     final query = {
       'user_name': username,
