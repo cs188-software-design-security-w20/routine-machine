@@ -13,6 +13,7 @@ import 'LoginPage.dart';
 
 class AccountPage extends StatefulWidget {
   final User user;
+  AccountPage({this.user});
   @override
   _AccountPageState createState() => _AccountPageState();
 }
@@ -26,19 +27,12 @@ class _AccountPageState extends State<AccountPage> {
   @override
   void initState() {
     super.initState();
+    apiWrapper.setUser(widget.user);
     userProfile = _fetchUserData();
   }
 
   Future<UserProfile> _fetchUserData() {
-    return Future.delayed(
-      const Duration(seconds: 1),
-      () => UserProfile(
-        userID: "1lkalsdjf019",
-        username: "jodyLin",
-        firstName: "Jody",
-        lastName: "Lin",
-      ),
-    );
+    this.apiWrapper.getUserProfile(username: widget.user);
     // return apiWrapper.getUserProfile()
   }
 
