@@ -30,6 +30,7 @@ class _SearchResultPageState extends State<SearchResultPage> {
 
   Future<UserProfile> _searchForUser(String username) {
     print('search for user $username...');
+
     return widget.api.getUserProfile(username: username);
   }
 

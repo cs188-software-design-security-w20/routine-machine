@@ -93,16 +93,20 @@ class _HomePageState extends State<HomePage> {
 
   void _updateWidget(WidgetData data, int index) {
     _mainDashboardWidgetData.then((widgetList) {
+      APIWrapper apiWrapper = new APIWrapper();
+      apiWrapper.setUser(widget.user);
       widgetList[index] = data;
-      widget.api.setHabitData(habitData: widgetList);
+      apiWrapper.setHabitData(habitData: widgetList);
     });
   }
 
   void _removeWidget(int index) {
     setState(() {
       _mainDashboardWidgetData.then((widgetList) {
+        APIWrapper apiWrapper = new APIWrapper();
+        apiWrapper.setUser(widget.user);
         widgetList.removeAt(index);
-        widget.api.setHabitData(habitData: widgetList);
+        apiWrapper.setHabitData(habitData: widgetList);
       });
     });
   }
@@ -194,7 +198,9 @@ class _HomePageState extends State<HomePage> {
                     checkins: [],
                   ),
                 );
-                widget.api.setHabitData(habitData: widgetList);
+                APIWrapper apiWrapper = new APIWrapper();
+                apiWrapper.setUser(widget.user);
+                apiWrapper.setHabitData(habitData: widgetList);
               });
             });
           },
