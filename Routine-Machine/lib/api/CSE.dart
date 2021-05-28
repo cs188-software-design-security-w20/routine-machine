@@ -184,6 +184,11 @@ class CSE {
     return encryptedDEK.decrypt(usingPrivateKey: privateKey.toString());
   }
 
+  Future<String> decryptChallengeString({String encrypted}) async {
+    final privateKey = await getPrivateKey();
+    return privateKey.decrypt(encrypted);
+  }
+
   Future<AESKey> _generateDEK() async {
     final cryptKey = Steel.CryptKey();
     final dek = cryptKey.genFortuna(len: 32);

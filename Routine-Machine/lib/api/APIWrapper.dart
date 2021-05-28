@@ -128,6 +128,29 @@ class APIWrapper {
     }
   }
 
+  Future<bool> validateDevicePrivateKey() async {
+    final headers = {
+      HttpHeaders.authorizationHeader: await _getAuthHeader(),
+    };
+    final url = Uri.https(apiBaseURL, '/challenge');
+    final response = await client.get(url, headers: headers);
+    if (response.statusCode != 200) {
+      throw Exception('Failed to get private key challenge');
+    }
+    final json = Convert.jsonDecode(response.body);
+    print(response.body);
+    final challengeString = json['challengeString'] as String;
+    final encryptedString = json['encryptedString'] as String;
+    try {
+      final decryptedString =
+          await cse.decryptChallengeString(encrypted: encryptedString);
+      print(decryptedString);
+      return decryptedString == challengeString;
+    } catch (e) {
+      return false;
+    }
+  }
+
   Future<void> _setOwnDEK() async {
     final headers = {
       HttpHeaders.authorizationHeader: await _getAuthHeader(),
