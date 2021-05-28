@@ -38,6 +38,15 @@ class APIWrapper {
     return 'Bearer $authToken';
   }
 
+  Future<void> overrideKeyPair({String privateKey, String publicKey}) async {
+    if (privateKey != null) {
+      await cse.setPrivateKey(key: privateKey);
+    }
+    if (publicKey != null) {
+      await cse.setPublicKey(key: publicKey);
+    }
+  }
+
   Future<void> createUser(
       {String firstName, String lastName, String userName}) async {
     await cse.refreshOwnerDEK();
