@@ -68,7 +68,7 @@ export const setDEK = async (id: string, dek: string) => {
 export const getPK = async (id: any) => {
   const res = await UserQuery.getUserById(id);
   if (res === null) {
-    throw { message: `There is no user with user id: ${id}`, name: 'UserNotFoundError' };
+    throw { message: 'There is no user with user id', name: 'UserNotFoundError' };
   }
   return {
     id: res?.id,
