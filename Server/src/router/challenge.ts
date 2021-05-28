@@ -1,9 +1,27 @@
 import { Router } from 'express';
+import crypto from 'crypto';
+import { getPK } from '../service/user-service';
 
 const challengeRouter = Router();
 
-challengeRouter.get('/', (req, res) => {
-  res.send('Y6Q52IlJTBSljwDpV87R7SBBFTTdllySeX3lK2vB7k8.FldA24w4Z9cOStZ-PvdUB3KobGeV-DTQm-V90-PIwlY');
+const randomString = (size = 64) => crypto
+  .randomBytes(size)
+  .toString('base64')
+  .slice(0, size);
+
+challengeRouter.get('/', async (req, res) => {
+  const id = res.locals.userData.user_id;
+  try {
+    const { public_key } = await getPK(id);
+    const challengeString = randomString(); // randomly generated string
+    const encryptedString = crypto.publicEncrypt(
+      public_key,
+      Buffer.from(challengeString),
+    );
+    res.status(200).json({ challengeString, encryptedString });
+  } catch (err) {
+    res.status(500).send(err);
+  }
 });
 
 export default challengeRouter;

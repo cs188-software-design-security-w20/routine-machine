@@ -7,6 +7,7 @@ import userRouter from './router/user-router';
 import followRouter from './router/follow-router';
 import habitDataRouter from './router/habit-data-router';
 import challengeRouter from './router/challenge';
+
 const app = express();
 app.use(cors());
 app.use(morgan('short'));
@@ -15,6 +16,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/user', authenticate, userRouter);
 app.use('/follow', authenticate, followRouter);
 app.use('/habit_data', authenticate, habitDataRouter);
+app.use('/challenge', authenticate, challengeRouter);
 //app.use('/user', userRouter);
 //app.use('/follow', followRouter);
 //app.use('/habit_data', habitDataRouter);
