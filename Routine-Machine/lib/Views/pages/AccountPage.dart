@@ -32,8 +32,7 @@ class _AccountPageState extends State<AccountPage> {
   }
 
   Future<UserProfile> _fetchUserData() {
-    this.apiWrapper.getUserProfile(username: widget.user);
-    // return apiWrapper.getUserProfile()
+    return this.apiWrapper.queryUserProfile();
   }
 
   void activeChangeUsernamePage(BuildContext context) {
@@ -86,8 +85,7 @@ class _AccountPageState extends State<AccountPage> {
                     },
                     keyboardType: TextInputType.text,
                     onFieldSubmitted: (username) async {
-                      apiWrapper
-                          .setUserProfile(userProfile: {"username": username});
+                      apiWrapper.setUserName(username: username);
                     })
               ],
             ),
