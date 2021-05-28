@@ -1,4 +1,4 @@
-# Team buibuibui
+# Team biubiubiu
 ## Routine Machine - A Habit Tracker
 
 ### Installation
