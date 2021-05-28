@@ -191,12 +191,20 @@ class _AccountPageState extends State<AccountPage> {
   }
 
   Future<void> logOut(BuildContext context) async {
-    await FirebaseAuth.instance.signOut();
-    print('log out!');
-    Navigator.pushReplacement(
-      context,
-      FadePageRoute(builder: (context) => LoginPage()),
-    );
+    try {
+      await FirebaseAuth.instance.signOut();
+      print('log out!');
+      Navigator.pushReplacement(
+        context,
+        FadePageRoute(builder: (context) => LoginPage()),
+      );
+    } catch (e) {
+      print(e);
+      Navigator.pushReplacement(
+        context,
+        FadePageRoute(builder: (context) => LoginPage()),
+      );
+    }
   }
 
   @override
