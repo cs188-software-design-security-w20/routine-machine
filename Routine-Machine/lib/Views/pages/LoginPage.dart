@@ -48,54 +48,68 @@ class _LoginPageState extends State<LoginPage> {
 
   Future<String> _loginUser(LoginData loginData) async {
     try {
-      _auth
+      await _auth
           .signInWithEmailAndPassword(
         email: loginData.name,
         password: loginData.password,
       )
           .then((user) {
+        var m = user;
         setState(() {
           this.user = user.user;
           print("Login: ${this.user}");
         });
         _auth.setPersistence(Persistence.LOCAL);
+        print("Auth completed");
+        return null;
       });
-      print("Auth completed");
-      return null;
     } catch (e) {
       print('Error occured during login $e');
       authProblems errorType;
+      String errorMessage;
       if (Platform.isAndroid) {
         switch (e.message) {
           case 'There is no user record corresponding to this identifier. The user may have been deleted.':
             errorType = authProblems.UserNotFound;
+            errorMessage =
+                "There is no user record corresponding to this identifier.";
             break;
           case 'The password is invalid or the user does not have a password.':
             errorType = authProblems.PasswordNotValid;
+            errorMessage =
+                "The password is invalid or the user does not have a password.";
             break;
           case 'A network error (such as timeout, interrupted connection or unreachable host) has occurred.':
             errorType = authProblems.NetworkError;
+            errorMessage =
+                "A network error (such as timeout, interrupted connection or unreachable host) has occurred.";
             break;
           // ...
           default:
             errorType = authProblems.Unknown;
+            errorMessage = "Error found, please try again.";
             print('Case ${e.message} is not yet implemented');
         }
       } else if (Platform.isIOS) {
         switch (e.code) {
           case 'user-not-found':
             errorType = authProblems.UserNotFound;
+            errorMessage =
+                "There is no user record corresponding to this identifier.";
             break;
           case 'wrong-password':
             errorType = authProblems.PasswordNotValid;
+            errorMessage =
+                "The password is invalid or the user does not have a password.";
             break;
           // ...
           default:
             errorType = authProblems.Unknown;
+            errorMessage = "Error found, please try again.";
             print('Case ${e.message} is not yet implemented');
         }
       }
-      return 'Error: $errorType';
+      return 'Error: $errorMessage';
     }
   }
 
@@ -117,9 +131,10 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return FlutterLogin(
       title: 'Routine Machine',
-      logo: 'assets/images/rmlogo.png',
+      logo: 'assets/images/rmlogo-new.png',
       logoTag: Constants.logoTag,
       titleTag: Constants.titleTag,
+      hideForgotPasswordButton: true,
       loginProviders: [],
       messages: LoginMessages(
         usernameHint: 'Email',
@@ -141,6 +156,7 @@ class _LoginPageState extends State<LoginPage> {
         titleStyle: TextStyle(
           color: Color(0xffB057F5),
           fontFamily: 'SF Pro Rounded',
+          letterSpacing: 4,
         ),
         beforeHeroFontSize: 22,
         afterHeroFontSize: 12,
