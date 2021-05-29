@@ -184,8 +184,8 @@ class CSE {
     return encryptedDEK.decrypt(usingPrivateKey: privateKey.toString());
   }
 
-  Future<String> decryptChallengeString({String encrypted}) async {
-    final privateKey = await getPrivateKey();
+  Future<String> decryptChallengeString(
+      {String encrypted, Crypton.RSAPrivateKey privateKey}) async {
     return privateKey.decrypt(encrypted);
   }
 
