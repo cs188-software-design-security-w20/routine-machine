@@ -8,7 +8,7 @@ import 'dart:convert' as Convert;
 
 class APIWrapper {
   Auth.User user;
-  String apiBaseURL = 'api.jackzzhao.com';
+  String apiBaseURL = 'routine-machine-1.herokuapp.com';
   Http.BaseClient client = new Http.Client();
   CSE cse = CSE();
 
