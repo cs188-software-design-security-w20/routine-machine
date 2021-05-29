@@ -26,9 +26,7 @@ export const setDEK = (
   followee_id: string,
   follower_id: string,
   dek: string,
-) => Follow.update({
-  dek,
-}, { where: { followee_id, follower_id } });
+) => Follow.upsert({ followee_id, follower_id, dek });
 
 export const getDEK = (followee_id: string, follower_id: string) => Follow.findOne({
   attributes: ['dek'],
