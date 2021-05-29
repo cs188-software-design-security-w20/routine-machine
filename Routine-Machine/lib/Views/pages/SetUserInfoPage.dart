@@ -6,6 +6,7 @@ import './HomePage.dart';
 import '../../constants/Constants.dart' as Constants;
 import '../../constants/Palette.dart' as Palette;
 import '../../api/APIWrapper.dart';
+import 'package:flutter/cupertino.dart';
 
 class SetUserInfoPage extends StatelessWidget {
   final TextEditingController _usernameController = TextEditingController();
@@ -13,6 +14,23 @@ class SetUserInfoPage extends StatelessWidget {
   final TextEditingController _lastNameController = TextEditingController();
   Auth.User user;
   SetUserInfoPage({this.user});
+
+  void showAlert(BuildContext context, String message) {
+    showCupertinoDialog(
+      context: context,
+      builder: (_) => CupertinoAlertDialog(
+        title: Text("Error"),
+        content: Text(message),
+        actions: [
+          CupertinoButton(
+              child: Text('Close'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              })
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -126,29 +144,41 @@ class SetUserInfoPage extends StatelessWidget {
   void _onSubmitHandler(BuildContext context) {
     APIWrapper api = APIWrapper();
     api.setUser(this.user);
-    // TODO: call the create user profile stuff here
-    String username = _usernameController.text.trim();
+
+    String username = _usernameController.text.trim().toLowerCase();
     String firstName = _firstNameController.text.trim();
     String lastName = _lastNameController.text.trim();
 
     try {
       print('SetUserInfoPage: Creating user...');
-      api
-          .createUser(
-        firstName: firstName,
-        lastName: lastName,
-        userName: username,
-      )
-          .then((value) {
-        print('Created user sucess!');
-        Navigator.pushReplacement(
-          context,
-          FadePageRoute(builder: (context) => HomePage(user: this.user)),
-        );
-      });
+      api.isUsernameTaken(username: username).then((value) => {
+            if (value)
+              {
+                print("username taken"),
+                showAlert(context,
+                    "A user with username: ${username} already exists."),
+              }
+            else
+              {
+                api
+                    .createUser(
+                  firstName: firstName,
+                  lastName: lastName,
+                  userName: username,
+                )
+                    .then((value) {
+                  print('Created user sucess!');
+                  Navigator.pushReplacement(
+                    context,
+                    FadePageRoute(
+                        builder: (context) => HomePage(user: this.user)),
+                  );
+                }),
+              }
+          });
     } catch (e) {
       print('Error creating user: $e');
-      // TODO: put alert box
+      showAlert(context, e.toString());
     }
   }
 }

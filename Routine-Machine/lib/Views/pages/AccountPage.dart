@@ -14,6 +14,7 @@ import 'package:routine_machine/constants/Palette.dart' as Palette;
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'LoginPage.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:routine_machine/constants/Constants.dart' as Constants;
 
 class AccountPage extends StatefulWidget {
@@ -47,6 +48,23 @@ class _AccountPageState extends State<AccountPage> {
   Future<UserProfile> _fetchUserData() {
     print("fetching userdata for ${widget.user.uid}");
     return this.apiWrapper.queryUserProfile();
+  }
+
+  void showUserNameTakenAlert(BuildContext context, String username) {
+    showCupertinoDialog(
+      context: context,
+      builder: (_) => CupertinoAlertDialog(
+        title: Text("oops"),
+        content: Text("A user with username: ${username} already exists."),
+        actions: [
+          CupertinoButton(
+              child: Text('Close'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              })
+        ],
+      ),
+    );
   }
 
   void activeChangeUsernamePage(BuildContext context) {
@@ -113,7 +131,22 @@ class _AccountPageState extends State<AccountPage> {
                       TextButton(
                         onPressed: () async {
                           String username = _usernameController.text.trim();
-                          apiWrapper.setUserName(username: username);
+                          apiWrapper
+                              .isUsernameTaken(username: username)
+                              .then((isTaken) => {
+                                    if (isTaken)
+                                      {
+                                        print("username is taken"),
+                                        showUserNameTakenAlert(
+                                            context, username),
+                                      }
+                                    else
+                                      {
+                                        apiWrapper.setUserName(
+                                            username: username),
+                                        Navigator.pop(context),
+                                      }
+                                  });
                         },
                         child: Row(
                           children: [
