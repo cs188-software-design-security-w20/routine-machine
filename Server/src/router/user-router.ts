@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { Router } from 'express';
 import * as UserService from '../service/user-service';
 import { requireEqual } from '../util/validate-id';

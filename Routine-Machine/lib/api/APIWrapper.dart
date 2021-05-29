@@ -5,6 +5,7 @@ import 'package:routine_machine/api/CSE.dart';
 import 'package:routine_machine/Models/WidgetData.dart';
 import 'package:routine_machine/Models/UserProfile.dart';
 import 'dart:convert' as Convert;
+import 'package:crypton/crypton.dart' as Crypton;
 
 class APIWrapper {
   Auth.User user;
@@ -63,7 +64,7 @@ class APIWrapper {
       'user_name': userName,
       'first_name': firstName,
       'last_name': lastName,
-      'public_key': publicKey.toString(),
+      'public_key': publicKey.toPEM(),
       'dek': encryptedDEK.toString(),
     });
     if (response.statusCode != 200) {
@@ -133,33 +134,12 @@ class APIWrapper {
   Future<UserProfile> getUserProfile({String username}) async {
     final query = {
       'user_name': username,
-      // 'id': user.uid,
     };
     final headers = {
       HttpHeaders.authorizationHeader: await _getAuthHeader(),
       HttpHeaders.contentTypeHeader: 'application/json',
     };
     final url = Uri.https(apiBaseURL, '/user/profile', query);
-    final response = await client.get(url, headers: headers);
-    if (response.statusCode != 200) {
-      final errorMsg = Convert.jsonDecode(response.body)['message'];
-      final formattedError = errorMsg != null ? '($errorMsg)' : '';
-      throw Exception('Failed to get user profile $formattedError');
-    }
-    final json = Convert.jsonDecode(response.body);
-    return UserProfile.fromJson(json);
-  }
-
-  Future<UserProfile> queryUserProfile(/*{String username}*/) async {
-    final query = {
-      // 'user_name': username,
-      'id': user.uid,
-    };
-    final headers = {
-      HttpHeaders.authorizationHeader: await _getAuthHeader(),
-      HttpHeaders.contentTypeHeader: 'application/json',
-    };
-    final url = Uri.https(apiBaseURL, '/user/profile/id', query);
     final response = await client.get(url, headers: headers);
     if (response.statusCode != 200) {
       final errorMsg = Convert.jsonDecode(response.body)['message'];
@@ -438,11 +418,13 @@ class APIWrapper {
   }
 
   Future<void> approveFollowRequest(
-      {String targetUserID, String targetUserPublicKey}) async {
+      {String targetUserID, String targetUserPublicKeyPem}) async {
     EncryptedDEK encryptedDEK;
+    final targetUserPublicKey =
+        Crypton.RSAPublicKey.fromPEM(targetUserPublicKeyPem);
     if (await cse.hasDEK()) {
-      encryptedDEK =
-          await cse.encryptOwnerDEK(usingPublicKey: targetUserPublicKey);
+      encryptedDEK = await cse.encryptOwnerDEK(
+          usingPublicKey: targetUserPublicKey.toString());
     } else {
       encryptedDEK = EncryptedDEK(encrypted: '', iv: '');
     }

@@ -56,6 +56,7 @@ class _SmallWidgetViewState extends State<SmallWidgetView> {
     setState(() {
       widget.data = updatedData;
     });
+    widget.updateWidget(updatedData, widget.index);
   }
 
   @override

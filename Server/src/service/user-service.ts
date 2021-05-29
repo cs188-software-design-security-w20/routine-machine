@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 /* eslint-disable @typescript-eslint/no-throw-literal */
 import * as UserQuery from '../query/user-query';
 import type { UserSchema } from '../models/user-model';

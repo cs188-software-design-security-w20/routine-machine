@@ -12,49 +12,6 @@ import 'MainDashboardPage.dart';
 import 'AccountPage.dart';
 import '../../constants/Palette.dart' as Palette;
 
-List<WidgetData> samples = [
-  new WidgetData(
-    title: "Drink Water",
-    widgetType: "daily",
-    color: 0xFF7CD0FF,
-    createdTime: new DateTime.now(),
-    modifiedTime: new DateTime.now(),
-    currentPeriodCounts: 1,
-    periodicalGoal: 6,
-    checkins: [new DateTime.now()],
-  ),
-  WidgetData(
-    title: "Exercise",
-    widgetType: "weekly",
-    color: 0xFFFFDF6B,
-    createdTime: new DateTime.now(),
-    modifiedTime: new DateTime.now(),
-    currentPeriodCounts: 2,
-    periodicalGoal: 4,
-    checkins: [new DateTime.now(), new DateTime.now()],
-  ),
-  WidgetData(
-    title: "Read the News",
-    widgetType: "monthly",
-    color: 0xFFFF93BA,
-    createdTime: new DateTime.now(),
-    modifiedTime: new DateTime.now(),
-    currentPeriodCounts: 1,
-    periodicalGoal: 20,
-    checkins: [new DateTime.now()],
-  ),
-  WidgetData(
-    title: "Exercise",
-    widgetType: "weekly",
-    color: 0xFFFFDF6B,
-    createdTime: new DateTime.now(),
-    modifiedTime: new DateTime.now(),
-    currentPeriodCounts: 2,
-    periodicalGoal: 4,
-    checkins: [new DateTime.now(), new DateTime.now()],
-  ),
-];
-
 class HomePage extends StatefulWidget {
   final User user;
   final FlutterSecureStorage storage = FlutterSecureStorage();
@@ -94,20 +51,16 @@ class _HomePageState extends State<HomePage> {
 
   void _updateWidget(WidgetData data, int index) {
     _mainDashboardWidgetData.then((widgetList) {
-      APIWrapper apiWrapper = new APIWrapper();
-      apiWrapper.setUser(widget.user);
       widgetList[index] = data;
-      apiWrapper.setHabitData(habitData: widgetList);
+      widget.api.setHabitData(habitData: widgetList);
     });
   }
 
   void _removeWidget(int index) {
     setState(() {
       _mainDashboardWidgetData.then((widgetList) {
-        APIWrapper apiWrapper = new APIWrapper();
-        apiWrapper.setUser(widget.user);
         widgetList.removeAt(index);
-        apiWrapper.setHabitData(habitData: widgetList);
+        widget.api.setHabitData(habitData: widgetList);
       });
     });
   }
@@ -145,6 +98,9 @@ class _HomePageState extends State<HomePage> {
   @override
   void dispose() {
     _controller.dispose();
+    _mainDashboardWidgetData.then((widgetList) {
+      widget.api.setHabitData(habitData: widgetList);
+    });
     super.dispose();
   }
 
@@ -202,9 +158,7 @@ class _HomePageState extends State<HomePage> {
                     checkins: [],
                   ),
                 );
-                APIWrapper apiWrapper = new APIWrapper();
-                apiWrapper.setUser(widget.user);
-                apiWrapper.setHabitData(habitData: widgetList);
+                widget.api.setHabitData(habitData: widgetList);
               });
             });
           },
@@ -214,6 +168,11 @@ class _HomePageState extends State<HomePage> {
   }
 
   void onPageChanged(int page) {
+    _mainDashboardWidgetData.then((widgetList) {
+      widget.api.setHabitData(habitData: widgetList);
+      print('updated habit data!');
+    });
+
     setState(() {
       this._page = page;
     });
