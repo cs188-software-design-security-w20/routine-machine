@@ -32,7 +32,6 @@ class _MainDashboardPageState extends State<MainDashboardPage> {
   void initState() {
     super.initState();
     userData = _fetchUserData();
-    // widgetList = widget.widgetList;
   }
 
   Future<UserProfile> _fetchUserData() {
@@ -120,8 +119,5 @@ class _MainDashboardPageState extends State<MainDashboardPage> {
   @override
   void dispose() {
     super.dispose();
-    widget.widgetList.then((widgetList) {
-      widget.api.setHabitData(habitData: widgetList);
-    });
   }
 }

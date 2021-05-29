@@ -21,7 +21,7 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   Future<List<WidgetData>> _mainDashboardWidgetData;
   Future<UserProfile> _mainUserProfileData;
   bool triedLogIn = false;
@@ -32,6 +32,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
 
     widget.storage.read(key: "key").then((value) => {
           this.key = value,
@@ -98,6 +99,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void dispose() {
     _controller.dispose();
+    WidgetsBinding.instance.removeObserver(this);
     _mainDashboardWidgetData.then((widgetList) {
       widget.api.setHabitData(habitData: widgetList);
     });
@@ -180,5 +182,23 @@ class _HomePageState extends State<HomePage> {
 
   void buttonTapped(int page) {
     this._controller.jumpToPage(page);
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+
+    switch (state) {
+      case AppLifecycleState.inactive: // app not focused
+      case AppLifecycleState.detached: // app closed
+      case AppLifecycleState.paused: // app in background
+        _mainDashboardWidgetData.then((widgetList) {
+          widget.api.setHabitData(habitData: widgetList);
+        });
+        break;
+      default:
+        // do nothing
+        break;
+    }
   }
 }
