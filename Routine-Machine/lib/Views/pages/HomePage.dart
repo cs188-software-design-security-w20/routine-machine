@@ -66,7 +66,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   Future<List<WidgetData>> _mainDashboardWidgetData;
-  // Future<UserProfile> _mainUserProfileData;
+  Future<UserProfile> _mainUserProfileData;
   bool triedLogIn = false;
   String key = "";
   int _page = 0;
@@ -88,6 +88,7 @@ class _HomePageState extends State<HomePage> {
     apiWrapper.setUser(widget.user);
     setState(() {
       _mainDashboardWidgetData = apiWrapper.getHabitData();
+      _mainUserProfileData = apiWrapper.queryUserProfile();
     });
   }
 
@@ -156,6 +157,7 @@ class _HomePageState extends State<HomePage> {
       children: [
         MainDashboardPage(
           widgetList: _mainDashboardWidgetData,
+          userProfile: _mainUserProfileData,
           fetchWidgetData: _fetchWidgetData,
           removeWidget: _removeWidget,
           updateWidget: _updateWidget,
