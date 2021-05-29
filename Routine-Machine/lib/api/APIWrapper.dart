@@ -95,7 +95,7 @@ class APIWrapper {
     final url = Uri.https(apiBaseURL, '/user/username');
     final response = await client.post(url, headers: headers, body: {
       'id': user.uid,
-      'user_name': username,
+      'user_name': username.toLowerCase(),
     });
     if (response.statusCode != 200) {
       throw Exception('Failed to set username');
