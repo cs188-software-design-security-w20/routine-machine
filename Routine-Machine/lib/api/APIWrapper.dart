@@ -8,7 +8,7 @@ import 'dart:convert' as Convert;
 
 class APIWrapper {
   Auth.User user;
-  String apiBaseURL = 'api.jackzzhao.com';
+  String apiBaseURL = 'routine-machine-1.herokuapp.com';
   Http.BaseClient client = new Http.Client();
   CSE cse = CSE();
 
@@ -95,7 +95,7 @@ class APIWrapper {
     final url = Uri.https(apiBaseURL, '/user/username');
     final response = await client.post(url, headers: headers, body: {
       'id': user.uid,
-      'user_name': username,
+      'user_name': username.toLowerCase(),
     });
     if (response.statusCode != 200) {
       throw Exception('Failed to set username');
@@ -139,6 +139,26 @@ class APIWrapper {
       HttpHeaders.contentTypeHeader: 'application/json',
     };
     final url = Uri.https(apiBaseURL, '/user/profile', query);
+    final response = await client.get(url, headers: headers);
+    if (response.statusCode != 200) {
+      final errorMsg = Convert.jsonDecode(response.body)['message'];
+      final formattedError = errorMsg != null ? '($errorMsg)' : '';
+      throw Exception('Failed to get user profile $formattedError');
+    }
+    final json = Convert.jsonDecode(response.body);
+    return UserProfile.fromJson(json);
+  }
+
+  Future<UserProfile> queryUserProfile(/*{String username}*/) async {
+    final query = {
+      // 'user_name': username,
+      'id': user.uid,
+    };
+    final headers = {
+      HttpHeaders.authorizationHeader: await _getAuthHeader(),
+      HttpHeaders.contentTypeHeader: 'application/json',
+    };
+    final url = Uri.https(apiBaseURL, '/user/profile/id', query);
     final response = await client.get(url, headers: headers);
     if (response.statusCode != 200) {
       final errorMsg = Convert.jsonDecode(response.body)['message'];
@@ -420,8 +440,8 @@ class APIWrapper {
       {String targetUserID, String targetUserPublicKey}) async {
     EncryptedDEK encryptedDEK;
     if (await cse.hasDEK()) {
-      encryptedDEK =
-          await cse.encryptOwnerDEK(usingPublicKey: targetUserPublicKey);
+      encryptedDEK = await cse.encryptOwnerDEK(
+          usingPublicKey: targetUserPublicKey.toString());
     } else {
       encryptedDEK = EncryptedDEK(encrypted: '', iv: '');
     }

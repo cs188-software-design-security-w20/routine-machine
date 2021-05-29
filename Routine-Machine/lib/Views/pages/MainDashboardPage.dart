@@ -8,12 +8,14 @@ import '../../constants/Palette.dart' as Palette;
 
 class MainDashboardPage extends StatefulWidget {
   final Future<List<WidgetData>> widgetList;
+  final Future<UserProfile> userProfile;
   final Function fetchWidgetData;
   final Function removeWidget;
   final Function updateWidget;
   final APIWrapper api = APIWrapper();
   MainDashboardPage({
     this.widgetList,
+    this.userProfile,
     this.fetchWidgetData,
     this.removeWidget,
     this.updateWidget,
@@ -34,11 +36,7 @@ class _MainDashboardPageState extends State<MainDashboardPage> {
   }
 
   Future<UserProfile> _fetchUserData() {
-    return Future<UserProfile>.delayed(
-      const Duration(seconds: 1),
-      () => UserProfile(
-          userID: "jodylin", username: "jodyLin", firstName: "Jody Lin"),
-    );
+    return widget.userProfile;
   }
 
   @override
