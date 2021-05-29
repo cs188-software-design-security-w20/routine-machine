@@ -64,7 +64,7 @@ class APIWrapper {
       'user_name': userName,
       'first_name': firstName,
       'last_name': lastName,
-      'public_key': publicKey.toString(),
+      'public_key': publicKey.toPEM(),
       'dek': encryptedDEK.toString(),
     });
     if (response.statusCode != 200) {
@@ -419,11 +419,13 @@ class APIWrapper {
   }
 
   Future<void> approveFollowRequest(
-      {String targetUserID, String targetUserPublicKey}) async {
+      {String targetUserID, String targetUserPublicKeyPem}) async {
     EncryptedDEK encryptedDEK;
+    final targetUserPublicKey =
+        Crypton.RSAPublicKey.fromPEM(targetUserPublicKeyPem);
     if (await cse.hasDEK()) {
-      encryptedDEK =
-          await cse.encryptOwnerDEK(usingPublicKey: targetUserPublicKey);
+      encryptedDEK = await cse.encryptOwnerDEK(
+          usingPublicKey: targetUserPublicKey.toString());
     } else {
       encryptedDEK = EncryptedDEK(encrypted: '', iv: '');
     }

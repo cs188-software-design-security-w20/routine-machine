@@ -26,6 +26,7 @@ challengeRouter.get('/', async (req, res) => {
       encryptedString: encryptedString.toString('base64'),
     });
   } catch (err) {
+    console.log(err);
     res.status(500).send(err);
   }
 });
