@@ -13,10 +13,11 @@ enum FollowStatus {
 
 class FollowRequestTile extends StatefulWidget {
   final APIWrapper api = APIWrapper();
+  final String searchUserName;
   final UserProfile userProfile;
   final Color color;
 
-  FollowRequestTile({this.userProfile, this.color});
+  FollowRequestTile({this.searchUserName, this.userProfile, this.color});
 
   @override
   _FollowRequestTileState createState() => _FollowRequestTileState();

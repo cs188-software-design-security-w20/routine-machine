@@ -15,6 +15,7 @@ class FollowRequestTileList extends StatelessWidget {
       separatorBuilder: (BuildContext context, int index) => Divider(),
       itemBuilder: (context, index) {
         return FollowRequestTile(
+          searchUserName: "",
           userProfile: followRequestList[index],
           color: Palette.purple,
         );

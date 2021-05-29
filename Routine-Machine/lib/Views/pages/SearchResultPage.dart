@@ -72,6 +72,7 @@ class _SearchResultPageState extends State<SearchResultPage> {
                 Widget searchContent;
                 if (snapshot.hasData) {
                   searchContent = FollowRequestTile(
+                    searchUserName: searchController.text,
                     userProfile: snapshot.data,
                     color: Palette.purple,
                   );
