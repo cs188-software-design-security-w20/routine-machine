@@ -215,21 +215,44 @@ class _HabitDetailPageState extends State<HabitDetailPage> {
                   Center(
                     child: Padding(
                       padding: EdgeInsets.all(32),
-                      child: OutlinedButton(
-                        onPressed: () {
-                          widget.removeWidget(widget.index);
-                          Navigator.pop(context, data);
-                        },
-                        child: Text(
-                          'Delete Habit',
-                          style: TextStyle(color: Palette.primary),
-                        ),
-                        style: OutlinedButton.styleFrom(
-                          side: BorderSide(
-                            color: Palette.primary,
-                            style: BorderStyle.solid,
+                      child: Row(
+                        children: [
+                          OutlinedButton(
+                            onPressed: () {
+                              // widget.removeWidget(widget.index);
+                              Navigator.pop(context, data);
+                            },
+                            child: Text(
+                              'Save',
+                              style: TextStyle(color: Palette.primary),
+                            ),
+                            style: OutlinedButton.styleFrom(
+                              side: BorderSide(
+                                color: Palette.primary,
+                                style: BorderStyle.solid,
+                              ),
+                            ),
                           ),
-                        ),
+                          SizedBox(
+                            width: 36,
+                          ),
+                          OutlinedButton(
+                            onPressed: () {
+                              widget.removeWidget(widget.index);
+                              Navigator.pop(context, data);
+                            },
+                            child: Text(
+                              'Delete',
+                              style: TextStyle(color: Palette.primary),
+                            ),
+                            style: OutlinedButton.styleFrom(
+                              side: BorderSide(
+                                color: Palette.primary,
+                                style: BorderStyle.solid,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ),
