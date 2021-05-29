@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:routine_machine/api/APIWrapper.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import '../../constants/Constants.dart' as Constants;
 import '../components/custom_route.dart';
 import 'package:routine_machine/Views/pages/HomePage.dart';
@@ -13,6 +14,7 @@ import 'SetUserInfoPage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'dart:io' show Platform;
+import 'package:the_apple_sign_in/the_apple_sign_in.dart';
 
 FirebaseAuth _auth = FirebaseAuth.instance;
 final GlobalKey<FormState> _formKey = GlobalKey<FormState>();

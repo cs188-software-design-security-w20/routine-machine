@@ -12,8 +12,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'LoginPage.dart';
 
 class AccountPage extends StatefulWidget {
-  final User user;
-  AccountPage({this.user});
   @override
   _AccountPageState createState() => _AccountPageState();
 }
@@ -27,12 +25,20 @@ class _AccountPageState extends State<AccountPage> {
   @override
   void initState() {
     super.initState();
-    apiWrapper.setUser(widget.user);
     userProfile = _fetchUserData();
   }
 
   Future<UserProfile> _fetchUserData() {
-    return this.apiWrapper.queryUserProfile();
+    return Future.delayed(
+      const Duration(seconds: 1),
+      () => UserProfile(
+        userID: "1lkalsdjf019",
+        username: "jodyLin",
+        firstName: "Jody",
+        lastName: "Lin",
+      ),
+    );
+    // return apiWrapper.getUserProfile()
   }
 
   void activeChangeUsernamePage(BuildContext context) {
@@ -85,7 +91,8 @@ class _AccountPageState extends State<AccountPage> {
                     },
                     keyboardType: TextInputType.text,
                     onFieldSubmitted: (username) async {
-                      apiWrapper.setUserName(username: username);
+                      apiWrapper
+                          .setUserProfile(userProfile: {"username": username});
                     })
               ],
             ),
