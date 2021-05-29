@@ -75,35 +75,45 @@ class _FollowRequestTileState extends State<FollowRequestTile> {
                   (BuildContext context, AsyncSnapshot<FollowStatus> snapshot) {
                 Widget statusWidget;
                 if (snapshot.hasData) {
-                  statusWidget = snapshot.data == FollowStatus.none
-                      ? TextButton(
-                          onPressed: _followUser,
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 16),
-                            child: Text('Follow'),
-                          ),
-                          style: ButtonStyle(
-                            foregroundColor:
-                                MaterialStateProperty.all(Colors.white),
-                            backgroundColor:
-                                MaterialStateProperty.all(Palette.primary),
-                            shape: MaterialStateProperty.all<
-                                RoundedRectangleBorder>(
-                              RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(18.0),
-                              ),
-                            ),
+                  statusWidget = widget.searchUserName ==
+                          widget.userProfile.username
+                      ? Text(
+                          "me",
+                          style: TextStyle(
+                            color: Colors.grey,
+                            fontFamily: "SF Pro Text",
+                            fontSize: 16.0,
                           ),
                         )
-                      : snapshot.data == FollowStatus.pending
-                          ? Text(
-                              'requested',
-                              style: Constants.kBodyLabelStyle,
+                      : snapshot.data == FollowStatus.none
+                          ? TextButton(
+                              onPressed: _followUser,
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 16),
+                                child: Text('Follow'),
+                              ),
+                              style: ButtonStyle(
+                                foregroundColor:
+                                    MaterialStateProperty.all(Colors.white),
+                                backgroundColor:
+                                    MaterialStateProperty.all(Palette.primary),
+                                shape: MaterialStateProperty.all<
+                                    RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(18.0),
+                                  ),
+                                ),
+                              ),
                             )
-                          : Text(
-                              'following',
-                              style: Constants.kBodyLabelStyle,
-                            );
+                          : snapshot.data == FollowStatus.pending
+                              ? Text(
+                                  'requested',
+                                  style: Constants.kBodyLabelStyle,
+                                )
+                              : Text(
+                                  'following',
+                                  style: Constants.kBodyLabelStyle,
+                                );
                 } else if (snapshot.hasError) {
                   statusWidget = Text(
                     'error',
