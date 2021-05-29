@@ -134,6 +134,9 @@ class _FollowPageState extends State<FollowPage> {
                     },
                   ),
                 ),
+                onSubmitted: (_) async {
+                  await _searchForUser(context, searchController.text);
+                },
               ),
             ),
             Expanded(

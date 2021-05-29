@@ -1,4 +1,8 @@
+// import 'dart:html';
+
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:routine_machine/Views/components/MenuRow.dart';
 import 'package:routine_machine/Views/components/custom_route.dart';
 import 'package:routine_machine/api/APIWrapper.dart';
@@ -10,6 +14,7 @@ import 'package:routine_machine/constants/Palette.dart' as Palette;
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'LoginPage.dart';
+import 'package:routine_machine/constants/Constants.dart' as Constants;
 
 class AccountPage extends StatefulWidget {
   AccountPage({this.user});
@@ -22,16 +27,22 @@ class AccountPage extends StatefulWidget {
 
 class _AccountPageState extends State<AccountPage> {
   APIWrapper apiWrapper = new APIWrapper();
-  final String qrKey = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
+  String qrKey;
   Future<UserProfile> userProfile;
 
-  // TextEditingController _usernameController;
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _firstNameController = TextEditingController();
+  final TextEditingController _lastNameController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
     apiWrapper.setUser(widget.user);
     userProfile = _fetchUserData();
+    apiWrapper.cse.getPrivateKey().then((value) => {
+          qrKey = value.toString(),
+          print("Private key generated: ${qrKey}"),
+        });
   }
 
   Future<UserProfile> _fetchUserData() {
@@ -77,22 +88,54 @@ class _AccountPageState extends State<AccountPage> {
                   },
                 ),
                 TextFormField(
-                    decoration: InputDecoration(
-                      labelText: "enter new username",
-                      fillColor: Colors.white,
-                      border: new OutlineInputBorder(
-                        borderRadius: new BorderRadius.circular(25.0),
-                        borderSide: new BorderSide(),
-                      ),
+                  decoration: InputDecoration(
+                    hintText: "new user name",
+                    fillColor: Colors.white,
+                    border: new OutlineInputBorder(
+                      borderRadius: new BorderRadius.circular(25.0),
+                      borderSide: new BorderSide(),
                     ),
-                    validator: (val) {
-                      // TODO: Validate if username is available here
-                      return null;
-                    },
-                    keyboardType: TextInputType.text,
-                    onFieldSubmitted: (name) async {
-                      apiWrapper.setUserName(username: name);
-                    }),
+                  ),
+                  keyboardType: TextInputType.text,
+                  style: Constants.kBodyLabelStyle,
+                  controller: _usernameController,
+                  inputFormatters: [
+                    FilteringTextInputFormatter.allow(RegExp("[_\$a-zA-Z0-9]"))
+                  ],
+                ),
+                SizedBox(
+                  height: 36,
+                ),
+                Padding(
+                  padding: EdgeInsets.all(8),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      TextButton(
+                        onPressed: () async {
+                          String username = _usernameController.text.trim();
+                          apiWrapper.setUserName(username: username);
+                        },
+                        child: Row(
+                          children: [
+                            Text(
+                              'Save',
+                              style: TextStyle(
+                                color: Palette.primary,
+                                fontFamily: 'SF Pro Text',
+                                fontSize: 22,
+                              ),
+                            ),
+                            Icon(
+                              Icons.arrow_forward_rounded,
+                              color: Palette.primary,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ],
             ),
           ),
@@ -131,48 +174,79 @@ class _AccountPageState extends State<AccountPage> {
                         if (snapshot.hasError) {
                           return Text('Error: ${snapshot.error}');
                         } else {
-                          return Text("${snapshot.data.firstName}");
+                          return Text(
+                              "${snapshot.data.firstName} ${snapshot.data.lastName}");
                         }
                     }
                   },
                 ),
                 TextFormField(
-                    decoration: InputDecoration(
-                      labelText: "enter first name",
-                      fillColor: Colors.white,
-                      border: new OutlineInputBorder(
-                        borderRadius: new BorderRadius.circular(25.0),
-                        borderSide: new BorderSide(),
-                      ),
+                  decoration: InputDecoration(
+                    hintText: "first name",
+                    fillColor: Colors.white,
+                    border: new OutlineInputBorder(
+                      borderRadius: new BorderRadius.circular(25.0),
+                      borderSide: new BorderSide(),
                     ),
-                    validator: (val) {
-                      // TODO: Validate if username is available here
-                      return null;
-                    },
-                    keyboardType: TextInputType.text,
-                    onFieldSubmitted: (firstname) async {
-                      apiWrapper.setFirstName(firstName: firstname);
-                    }),
+                  ),
+                  keyboardType: TextInputType.text,
+                  style: Constants.kBodyLabelStyle,
+                  controller: _firstNameController,
+                  inputFormatters: [
+                    FilteringTextInputFormatter.allow(RegExp("[_\$a-zA-Z0-9]"))
+                  ],
+                ),
                 SizedBox(
                   height: 36,
                 ),
                 TextFormField(
-                    decoration: InputDecoration(
-                      labelText: "enter last name",
-                      fillColor: Colors.white,
-                      border: new OutlineInputBorder(
-                        borderRadius: new BorderRadius.circular(25.0),
-                        borderSide: new BorderSide(),
-                      ),
+                  decoration: InputDecoration(
+                    hintText: "last name",
+                    fillColor: Colors.white,
+                    border: new OutlineInputBorder(
+                      borderRadius: new BorderRadius.circular(25.0),
+                      borderSide: new BorderSide(),
                     ),
-                    validator: (val) {
-                      // TODO: Validate if username is available here
-                      return null;
-                    },
-                    keyboardType: TextInputType.text,
-                    onFieldSubmitted: (lastname) async {
-                      apiWrapper.setLastName(lastName: lastname);
-                    })
+                  ),
+                  keyboardType: TextInputType.text,
+                  style: Constants.kBodyLabelStyle,
+                  controller: _lastNameController,
+                  inputFormatters: [
+                    FilteringTextInputFormatter.allow(RegExp("[_\$a-zA-Z0-9]"))
+                  ],
+                ),
+                Padding(
+                  padding: EdgeInsets.all(8),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      TextButton(
+                        onPressed: () async {
+                          String firstName = _firstNameController.text.trim();
+                          String lastName = _lastNameController.text.trim();
+                          apiWrapper.setFirstName(firstName: firstName);
+                          apiWrapper.setLastName(lastName: lastName);
+                        },
+                        child: Row(
+                          children: [
+                            Text(
+                              'Save',
+                              style: TextStyle(
+                                color: Palette.primary,
+                                fontFamily: 'SF Pro Text',
+                                fontSize: 22,
+                              ),
+                            ),
+                            Icon(
+                              Icons.arrow_forward_rounded,
+                              color: Palette.primary,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ],
             ),
           ),
@@ -237,10 +311,29 @@ class _AccountPageState extends State<AccountPage> {
                       ],
                     ),
                     child: Center(
-                      child: QrImage(
-                        data: this.qrKey,
-                        size: 0.5 * MediaQuery.of(context).size.width,
+                      child: FutureBuilder(
+                        future: apiWrapper.cse.getPrivateKey(),
+                        builder: (BuildContext context,
+                            AsyncSnapshot<dynamic> snapshot) {
+                          if (snapshot.hasData) {
+                            print(
+                                "Has data: ${snapshot.data.toString().length}");
+                            String displayThis = snapshot.data.toString();
+                            return QrImage(
+                              data: displayThis,
+                              size: 1 * MediaQuery.of(context).size.width,
+                            );
+                          } else if (snapshot.hasError) {
+                            return Text("You have an error: ${snapshot.error}");
+                          } else {
+                            return Text("Loading...");
+                          }
+                        },
                       ),
+                      // child: QrImage(
+                      //   data: this.qrKey,
+                      //   size: 0.5 * MediaQuery.of(context).size.width,
+                      // ),
                     ),
                   ),
                   SizedBox(
@@ -273,7 +366,7 @@ class _AccountPageState extends State<AccountPage> {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: FutureBuilder(
-                future: userProfile,
+                future: _fetchUserData(),
                 builder: (BuildContext context,
                     AsyncSnapshot<UserProfile> snapshot) {
                   Widget accountContent;
@@ -308,6 +401,7 @@ class _AccountPageState extends State<AccountPage> {
                         SizedBox(height: 35),
                         Column(
                           children: [
+                            // children: [
                             MenuRow(
                               icon: new Icon(
                                 SFSymbols.at,
@@ -325,7 +419,7 @@ class _AccountPageState extends State<AccountPage> {
                                 color: Colors.green,
                               ),
                               title: "Change Name",
-                              action: () => {},
+                              action: () => activeChangeNamePage(context),
                             ),
                             SizedBox(height: 16),
                             MenuRow(
@@ -336,31 +430,31 @@ class _AccountPageState extends State<AccountPage> {
                               title: "View credentials",
                               action: () => activeQRCodePage(context),
                             ),
-                            SizedBox(height: 16),
-                            MenuRow(
-                              icon: new Icon(
-                                SFSymbols.alarm,
-                                size: 32,
-                                color: Colors.blue,
-                              ),
-                              title: "Notifications",
-                              action: () => activeNotificationPage(context),
-                            ),
-                            SizedBox(height: 16),
-                            GestureDetector(
-                              onTap: () => logOut(context),
-                              child: Row(
-                                children: [
-                                  Spacer(),
-                                  Text("Logout"),
-                                  SizedBox(width: 6),
-                                  new Icon(
-                                    Icons.exit_to_app,
-                                    color: Colors.red,
-                                  ),
-                                ],
-                              ),
-                            ),
+                            //   SizedBox(height: 16),
+                            //   MenuRow(
+                            //     icon: new Icon(
+                            //       SFSymbols.alarm,
+                            //       size: 32,
+                            //       color: Colors.blue,
+                            //     ),
+                            //     title: "Notifications",
+                            //     action: () => activeNotificationPage(context),
+                            //   ),
+                            //   SizedBox(height: 16),
+                            //   GestureDetector(
+                            //     onTap: () => logOut(context),
+                            //     child: Row(
+                            //       children: [
+                            //         Spacer(),
+                            //         Text("Logout"),
+                            //         SizedBox(width: 6),
+                            //         new Icon(
+                            //           Icons.exit_to_app,
+                            //           color: Colors.red,
+                            //         ),
+                            //       ],
+                            //     ),
+                            //   ),
                           ],
                         ),
                       ],
