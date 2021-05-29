@@ -5,7 +5,6 @@ import 'package:routine_machine/api/CSE.dart';
 import 'package:routine_machine/Models/WidgetData.dart';
 import 'package:routine_machine/Models/UserProfile.dart';
 import 'dart:convert' as Convert;
-import 'package:crypton/crypton.dart' as Crypton;
 
 class APIWrapper {
   Auth.User user;
@@ -55,7 +54,7 @@ class APIWrapper {
       'user_name': userName,
       'first_name': firstName,
       'last_name': lastName,
-      'public_key': publicKey.toPEM(),
+      'public_key': publicKey.toString(),
       'dek': encryptedDEK.toString(),
     });
     if (response.statusCode != 200) {
@@ -358,10 +357,8 @@ class APIWrapper {
   }
 
   Future<void> approveFollowRequest(
-      {String targetUserID, String targetUserPublicKeyPem}) async {
+      {String targetUserID, String targetUserPublicKey}) async {
     EncryptedDEK encryptedDEK;
-    final targetUserPublicKey =
-        Crypton.RSAPublicKey.fromPEM(targetUserPublicKeyPem);
     if (await cse.hasDEK()) {
       encryptedDEK = await cse.encryptOwnerDEK(
           usingPublicKey: targetUserPublicKey.toString());
