@@ -138,11 +138,16 @@ class _ScanQRPageState extends State<ScanQRPage> {
             if (validCode) {
               print('valid code!!!');
               _verificationStatus = VerificationStatus.success;
-              Navigator.pushReplacement(
-                context,
-                FadePageRoute(
-                    builder: (context) => HomePage(user: widget.user)),
-              );
+              apiWrapper.cse.setPrivateKey(key: scanData.code).then((result) {
+                Navigator.pushReplacement(
+                  context,
+                  FadePageRoute(
+                      builder: (context) => HomePage(user: widget.user)),
+                ).catchError((error) {
+                  print('Error setting private key: $error');
+                  _verificationStatus = VerificationStatus.failed;
+                });
+              });
             } else {
               _verificationStatus = VerificationStatus.failed;
             }

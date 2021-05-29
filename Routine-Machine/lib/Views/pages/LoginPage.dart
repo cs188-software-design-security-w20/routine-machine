@@ -191,10 +191,8 @@ class _LoginPageState extends State<LoginPage> {
           api.setUser(this.user);
           api.cse.hasKeyPair().then((value) => {
                 print("hasKeyPair: ${this.user}"),
-                if (false)
+                if (value)
                   {
-                    // if (value)
-
                     // TODO: implement this function above
                     Navigator.of(context).pushReplacement(FadePageRoute(
                         builder: (context) => HomePage(user: this.user))),

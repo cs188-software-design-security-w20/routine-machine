@@ -32,7 +32,7 @@ class _FollowerRequestTileState extends State<FollowerRequestTile> {
     widget.api
         .approveFollowRequest(
       targetUserID: widget.userProfile.userID,
-      targetUserPublicKey: widget.userProfile.publicKey,
+      targetUserPublicKeyPem: widget.userProfile.publicKey,
     )
         .then((value) {
       Future.delayed(Duration(seconds: 1), () {
