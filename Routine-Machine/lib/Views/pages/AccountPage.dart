@@ -365,107 +365,113 @@ class _AccountPageState extends State<AccountPage> {
         child: Center(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: FutureBuilder(
-                future: _fetchUserData(),
-                builder: (BuildContext context,
-                    AsyncSnapshot<UserProfile> snapshot) {
-                  Widget accountContent;
-                  if (snapshot.hasData) {
-                    accountContent = Column(
-                      children: [
-                        Row(
+            child: Column(
+              children: [
+                FutureBuilder(
+                    future: _fetchUserData(),
+                    builder: (BuildContext context,
+                        AsyncSnapshot<UserProfile> snapshot) {
+                      Widget accountContent;
+                      if (snapshot.hasData) {
+                        accountContent = Column(
                           children: [
-                            Text(
-                              "Options",
-                              style: kLargeTitleStyle,
+                            Row(
+                              children: [
+                                Text(
+                                  "Options",
+                                  style: kLargeTitleStyle,
+                                ),
+                                Spacer(),
+                              ],
                             ),
-                            Spacer(),
+                            SizedBox(
+                              height: 30,
+                            ),
+                            CircleAvatar(
+                              backgroundColor: Palette.primary,
+                              radius: 50,
+                              child: Text(
+                                snapshot.data.firstName[0].toUpperCase(),
+                                style: TextStyle(
+                                  fontSize: 46.0,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w500,
+                                  fontFamily: "SF Pro Text",
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: 35),
+                            Column(
+                              children: [
+                                // children: [
+                                MenuRow(
+                                  icon: new Icon(
+                                    SFSymbols.at,
+                                    size: 32,
+                                    color: Colors.grey,
+                                  ),
+                                  title: "Change username",
+                                  action: () =>
+                                      activeChangeUsernamePage(context),
+                                ),
+                                SizedBox(height: 16),
+                                MenuRow(
+                                  icon: new Icon(
+                                    Icons.face,
+                                    size: 26,
+                                    color: Colors.green,
+                                  ),
+                                  title: "Change Name",
+                                  action: () => activeChangeNamePage(context),
+                                ),
+                                SizedBox(height: 16),
+                                MenuRow(
+                                  icon: new Icon(
+                                    SFSymbols.qrcode,
+                                    size: 32,
+                                  ),
+                                  title: "View credentials",
+                                  action: () => activeQRCodePage(context),
+                                ),
+                                //   SizedBox(height: 16),
+                                //   MenuRow(
+                                //     icon: new Icon(
+                                //       SFSymbols.alarm,
+                                //       size: 32,
+                                //       color: Colors.blue,
+                                //     ),
+                                //     title: "Notifications",
+                                //     action: () => activeNotificationPage(context),
+                                //   ),
+                                //   SizedBox(height: 16),
+                              ],
+                            ),
                           ],
-                        ),
-                        SizedBox(
-                          height: 30,
-                        ),
-                        CircleAvatar(
-                          backgroundColor: Palette.primary,
-                          radius: 50,
-                          child: Text(
-                            snapshot.data.firstName[0].toUpperCase(),
-                            style: TextStyle(
-                              fontSize: 46.0,
-                              color: Colors.white,
-                              fontWeight: FontWeight.w500,
-                              fontFamily: "SF Pro Text",
-                            ),
-                          ),
-                        ),
-                        SizedBox(height: 35),
-                        Column(
-                          children: [
-                            // children: [
-                            MenuRow(
-                              icon: new Icon(
-                                SFSymbols.at,
-                                size: 32,
-                                color: Colors.grey,
-                              ),
-                              title: "Change username",
-                              action: () => activeChangeUsernamePage(context),
-                            ),
-                            SizedBox(height: 16),
-                            MenuRow(
-                              icon: new Icon(
-                                Icons.face,
-                                size: 26,
-                                color: Colors.green,
-                              ),
-                              title: "Change Name",
-                              action: () => activeChangeNamePage(context),
-                            ),
-                            SizedBox(height: 16),
-                            MenuRow(
-                              icon: new Icon(
-                                SFSymbols.qrcode,
-                                size: 32,
-                              ),
-                              title: "View credentials",
-                              action: () => activeQRCodePage(context),
-                            ),
-                            //   SizedBox(height: 16),
-                            //   MenuRow(
-                            //     icon: new Icon(
-                            //       SFSymbols.alarm,
-                            //       size: 32,
-                            //       color: Colors.blue,
-                            //     ),
-                            //     title: "Notifications",
-                            //     action: () => activeNotificationPage(context),
-                            //   ),
-                            //   SizedBox(height: 16),
-                            //   GestureDetector(
-                            //     onTap: () => logOut(context),
-                            //     child: Row(
-                            //       children: [
-                            //         Spacer(),
-                            //         Text("Logout"),
-                            //         SizedBox(width: 6),
-                            //         new Icon(
-                            //           Icons.exit_to_app,
-                            //           color: Colors.red,
-                            //         ),
-                            //       ],
-                            //     ),
-                            //   ),
-                          ],
-                        ),
-                      ],
-                    );
-                  } else if (snapshot.hasError) {
-                    accountContent = Text('Error loading user account data');
-                  } else {
-                    accountContent = Text('Loading user profile...');
-                  }
-                  return accountContent;
-                }),
+                        );
+                      } else if (snapshot.hasError) {
+                        accountContent =
+                            Text('Error loading user account data');
+                      } else {
+                        accountContent = Text('Loading user profile...');
+                      }
+                      return accountContent;
+                    }),
+                GestureDetector(
+                  onTap: () => logOut(context),
+                  child: Row(
+                    children: [
+                      Spacer(),
+                      Text("Logout"),
+                      SizedBox(width: 6),
+                      new Icon(
+                        Icons.exit_to_app,
+                        color: Colors.red,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
