@@ -12,17 +12,20 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'LoginPage.dart';
 
 class AccountPage extends StatefulWidget {
-  final User user;
   AccountPage({this.user});
+
+  final User user;
+
   @override
   _AccountPageState createState() => _AccountPageState();
 }
 
 class _AccountPageState extends State<AccountPage> {
-  Future<UserProfile> userProfile;
-  TextEditingController _usernameController;
-  APIWrapper apiWrapper;
+  APIWrapper apiWrapper = new APIWrapper();
   final String qrKey = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
+  Future<UserProfile> userProfile;
+
+  // TextEditingController _usernameController;
 
   @override
   void initState() {
@@ -32,6 +35,7 @@ class _AccountPageState extends State<AccountPage> {
   }
 
   Future<UserProfile> _fetchUserData() {
+    print("fetching userdata for ${widget.user.uid}");
     return this.apiWrapper.queryUserProfile();
   }
 
@@ -65,14 +69,16 @@ class _AccountPageState extends State<AccountPage> {
                         if (snapshot.hasError) {
                           return Text('Error: ${snapshot.error}');
                         } else {
-                          return Text("@${snapshot.data.username}");
+                          return Text(
+                            "@${snapshot.data.username}",
+                          );
                         }
                     }
                   },
                 ),
                 TextFormField(
                     decoration: InputDecoration(
-                      labelText: "enter username",
+                      labelText: "enter new username",
                       fillColor: Colors.white,
                       border: new OutlineInputBorder(
                         borderRadius: new BorderRadius.circular(25.0),
@@ -84,9 +90,9 @@ class _AccountPageState extends State<AccountPage> {
                       return null;
                     },
                     keyboardType: TextInputType.text,
-                    onFieldSubmitted: (username) async {
-                      apiWrapper.setUserName(username: username);
-                    })
+                    onFieldSubmitted: (name) async {
+                      apiWrapper.setUserName(username: name);
+                    }),
               ],
             ),
           ),
@@ -103,7 +109,73 @@ class _AccountPageState extends State<AccountPage> {
         builder: (context) => Scaffold(
           backgroundColor: Colors.white,
           appBar: TopBackBar(),
-          body: Text("Change name"),
+          body: Container(
+            padding: EdgeInsets.symmetric(horizontal: 16),
+            child: Column(
+              children: [
+                Text(
+                  "Change name",
+                  style: kTitle1Style,
+                ),
+                SizedBox(
+                  height: 36,
+                ),
+                FutureBuilder<UserProfile>(
+                  future: _fetchUserData(),
+                  builder: (BuildContext context,
+                      AsyncSnapshot<UserProfile> snapshot) {
+                    switch (snapshot.connectionState) {
+                      case ConnectionState.waiting:
+                        return Text("Loading...");
+                      default:
+                        if (snapshot.hasError) {
+                          return Text('Error: ${snapshot.error}');
+                        } else {
+                          return Text("${snapshot.data.firstName}");
+                        }
+                    }
+                  },
+                ),
+                TextFormField(
+                    decoration: InputDecoration(
+                      labelText: "enter first name",
+                      fillColor: Colors.white,
+                      border: new OutlineInputBorder(
+                        borderRadius: new BorderRadius.circular(25.0),
+                        borderSide: new BorderSide(),
+                      ),
+                    ),
+                    validator: (val) {
+                      // TODO: Validate if username is available here
+                      return null;
+                    },
+                    keyboardType: TextInputType.text,
+                    onFieldSubmitted: (firstname) async {
+                      apiWrapper.setFirstName(firstName: firstname);
+                    }),
+                SizedBox(
+                  height: 36,
+                ),
+                TextFormField(
+                    decoration: InputDecoration(
+                      labelText: "enter last name",
+                      fillColor: Colors.white,
+                      border: new OutlineInputBorder(
+                        borderRadius: new BorderRadius.circular(25.0),
+                        borderSide: new BorderSide(),
+                      ),
+                    ),
+                    validator: (val) {
+                      // TODO: Validate if username is available here
+                      return null;
+                    },
+                    keyboardType: TextInputType.text,
+                    onFieldSubmitted: (lastname) async {
+                      apiWrapper.setLastName(lastName: lastname);
+                    })
+              ],
+            ),
+          ),
         ),
       ),
     );
@@ -253,7 +325,7 @@ class _AccountPageState extends State<AccountPage> {
                                 color: Colors.green,
                               ),
                               title: "Change Name",
-                              action: () => activeChangeNamePage(context),
+                              action: () => {},
                             ),
                             SizedBox(height: 16),
                             MenuRow(

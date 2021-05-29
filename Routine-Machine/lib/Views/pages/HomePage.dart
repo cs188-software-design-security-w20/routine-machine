@@ -161,7 +161,9 @@ class _HomePageState extends State<HomePage> {
           updateWidget: _updateWidget,
         ),
         FollowPage(),
-        AccountPage(),
+        AccountPage(
+          user: widget.user,
+        ),
       ],
     );
   }
