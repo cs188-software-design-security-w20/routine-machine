@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_auth/firebase_auth.dart' as Auth;
+import 'package:routine_machine/Views/components/TopBackBar.dart';
 import 'package:routine_machine/Views/components/custom_route.dart';
 import './HomePage.dart';
 import '../../constants/Constants.dart' as Constants;

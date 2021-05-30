@@ -13,6 +13,7 @@ import 'SetUserInfoPage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'dart:io' show Platform;
+import 'package:flutter/cupertino.dart';
 
 FirebaseAuth _auth = FirebaseAuth.instance;
 final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -114,6 +115,8 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Future<String> _registerUser(LoginData loginData) async {
+    String returnError = null;
+    // try {
     _auth
         .createUserWithEmailAndPassword(
       email: loginData.name,
@@ -122,9 +125,21 @@ class _LoginPageState extends State<LoginPage> {
         .then((user) {
       setState(() {
         this.user = user.user;
+        // print("[Register] Set user: ${user.user}");
       });
+    }).onError((error, stackTrace) {
+      print("Caught error 1: ${error.toString()}");
+      // showAlert(context, error.toString());
     });
     return null;
+    // } on FirebaseAuthException catch (e) {
+    //   print("Caught error 1: ${e.toString()}");
+    //   returnError = 'Error: ${e.toString()}';
+    // } on FirebaseException catch (e) {
+    //   print("Caught error 2: ${e.toString()}");
+    //   returnError = 'Error: ${e.toString()}';
+    // }
+    // return returnError;
   }
 
   @override
@@ -183,7 +198,9 @@ class _LoginPageState extends State<LoginPage> {
         setState(() {
           _signInType = SignInType.logIn;
         });
-        return _loginUser(loginData);
+        var ret = _loginUser(loginData);
+        print("Return login: ${ret}");
+        return ret;
       },
       onSignup: (loginData) async {
         print('Sign Up');
@@ -192,14 +209,16 @@ class _LoginPageState extends State<LoginPage> {
         setState(() {
           _signInType = SignInType.signUp;
         });
-        return _registerUser(loginData);
+        var ret = _registerUser(loginData);
+        print("Return signup: ${ret}");
+        return ret;
       },
       onSubmitAnimationCompleted: () {
         // no error found, login success
         // redirect to home page
         print("On login success: ${this.user}");
         if (_signInType == SignInType.signUp) {
-          Navigator.of(context).pushReplacement(FadePageRoute(
+          Navigator.of(context).push(FadePageRoute(
             builder: (context) => SetUserInfoPage(user: this.user),
           ));
         } else if (_signInType == SignInType.logIn) {
@@ -224,6 +243,23 @@ class _LoginPageState extends State<LoginPage> {
       },
       onRecoverPassword: null,
       showDebugButtons: false,
+    );
+  }
+
+  void showAlert(BuildContext context, String message) {
+    showCupertinoDialog(
+      context: context,
+      builder: (_) => CupertinoAlertDialog(
+        title: Text("Error"),
+        content: Text(message),
+        actions: [
+          CupertinoButton(
+              child: Text('Close'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              })
+        ],
+      ),
     );
   }
 }
