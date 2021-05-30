@@ -5,6 +5,7 @@ import 'package:routine_machine/api/CSE.dart';
 import 'package:routine_machine/Models/WidgetData.dart';
 import 'package:routine_machine/Models/UserProfile.dart';
 import 'dart:convert' as Convert;
+import 'package:crypton/crypton.dart' as Crypton;
 
 class APIWrapper {
   Auth.User user;
