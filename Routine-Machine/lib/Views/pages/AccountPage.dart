@@ -16,6 +16,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'LoginPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:routine_machine/constants/Constants.dart' as Constants;
+import 'dart:math';
 
 class AccountPage extends StatefulWidget {
   AccountPage({this.user});
@@ -31,9 +32,12 @@ class _AccountPageState extends State<AccountPage> {
   String qrKey;
   Future<UserProfile> userProfile;
 
-  final TextEditingController _usernameController = TextEditingController();
+  final _chars =
+      'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
+  Random _rnd = Random();
+  final TextEditingController _usernameController = TextEditingController();
 
   @override
   void initState() {
@@ -300,6 +304,15 @@ class _AccountPageState extends State<AccountPage> {
     );
   }
 
+  Future<String> generateQrCodeData() async {
+    final privateKey = await apiWrapper.cse.getPrivateKey();
+    final publicKey = await apiWrapper.cse.getPublicKey();
+    final secret = getRandomString(10);
+    final encrypted = await publicKey.encrypt(secret);
+
+    return "${privateKey.toString()} ${secret} ${encrypted}";
+  }
+
   void activeQRCodePage(BuildContext context) {
     // TODO: make this its own page file
     Navigator.push(
@@ -329,8 +342,8 @@ class _AccountPageState extends State<AccountPage> {
                     height: 35,
                   ),
                   Container(
-                    width: MediaQuery.of(context).size.width * 0.7,
-                    height: MediaQuery.of(context).size.width * 0.7,
+                    width: MediaQuery.of(context).size.width * 0.85,
+                    height: MediaQuery.of(context).size.width * 0.85,
                     // color: Colors.white,
                     decoration: BoxDecoration(
                       color: Colors.white,
@@ -344,17 +357,14 @@ class _AccountPageState extends State<AccountPage> {
                     ),
                     child: Center(
                       child: FutureBuilder(
-                        future: apiWrapper.cse.getPrivateKey(),
+                        future: generateQrCodeData(),
                         builder: (BuildContext context,
                             AsyncSnapshot<dynamic> snapshot) {
                           if (snapshot.hasData) {
-                            print(
-                                "Has data: ${snapshot.data.toString().length}");
-                            String displayThis = snapshot.data.toString();
+                            print("Parsed: ${snapshot.data.split(' ')}");
                             return QrImage(
-                              data: displayThis,
-                              size: 0.7 * MediaQuery.of(context).size.width,
-                            );
+                                data: snapshot.data,
+                                size: 0.8 * MediaQuery.of(context).size.width);
                           } else if (snapshot.hasError) {
                             return Text("You have an error: ${snapshot.error}");
                           } else {
@@ -375,6 +385,9 @@ class _AccountPageState extends State<AccountPage> {
       ),
     );
   }
+
+  String getRandomString(int length) => String.fromCharCodes(Iterable.generate(
+      length, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
 
   Future<void> logOut(BuildContext context) async {
     try {

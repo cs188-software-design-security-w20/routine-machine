@@ -1,13 +1,14 @@
+// import 'dart:html';
+import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'dart:io';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:routine_machine/Views/components/custom_route.dart';
 import 'package:routine_machine/api/APIWrapper.dart';
 import './HomePage.dart';
 import './SetUserInfoPage.dart';
-
+import 'package:crypton/crypton.dart' as Crypton;
 import '../../constants/Constants.dart' as Constants;
 import '../../constants/Palette.dart' as Palette;
 
@@ -121,10 +122,19 @@ class _ScanQRPageState extends State<ScanQRPage> {
   Future<bool> _validateQRCode(Barcode qrCode) async {
     // TODO: validate that QRCode works
     String key = qrCode.code;
-    print("PRIVATE KEY: $key");
-    bool validKey = await apiWrapper.validateDevicePrivateKey(scannedKey: key);
-    // bool validKey = await Future.delayed(Duration(seconds: 1), () => true);
-    return validKey;
+    print("Scanned: ${key}");
+    List<String> entries = key.split(' ');
+    if (entries.length != 3) {
+      return false;
+    } else {
+      String privateKeyString = entries[0];
+      String challenge = entries[1];
+      String encrypted = entries[2];
+      String decrypted = await apiWrapper.cse.decryptChallengeString(
+          encrypted: encrypted,
+          privateKey: Crypton.RSAPrivateKey.fromString(privateKeyString));
+      return decrypted == challenge;
+    }
   }
 
   void _onQRViewCreated(QRViewController controller) {

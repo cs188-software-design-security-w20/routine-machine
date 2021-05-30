@@ -10,6 +10,7 @@ import 'package:crypton/crypton.dart' as Crypton;
 class APIWrapper {
   Auth.User user;
   String apiBaseURL = 'routine-machine-1.herokuapp.com';
+  // String apiBaseURL = 'api.jackzzhao.com';
   Http.BaseClient client = new Http.Client();
   CSE cse = CSE();
 
@@ -196,16 +197,22 @@ class APIWrapper {
       throw Exception('Failed to get private key challenge');
     }
     final json = Convert.jsonDecode(response.body);
+    print("\n\n\nScanned Key: ${scannedKey}");
+    print("[VALIDATE] Resp body:");
     print(response.body);
     final challengeString = json['challengeString'] as String;
     final encryptedString = json['encryptedString'] as String;
+    Crypton.RSAPrivateKey privateKey =
+        Crypton.RSAPrivateKey.fromString(scannedKey);
+    print("Private key restored: ${privateKey.toString()}");
     try {
-      final privateKey = Crypton.RSAPrivateKey.fromString(scannedKey);
       final decryptedString = await cse.decryptChallengeString(
           encrypted: encryptedString, privateKey: privateKey);
-      print(decryptedString);
+
+      print("Decrypted String: ${decryptedString}");
       return decryptedString == challengeString;
     } catch (e) {
+      print("Error: ${e.toString()}");
       return false;
     }
   }
