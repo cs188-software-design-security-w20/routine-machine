@@ -214,8 +214,9 @@ class _HabitDetailPageState extends State<HabitDetailPage> {
                   ),
                   Center(
                     child: Padding(
-                      padding: EdgeInsets.all(32),
+                      padding: EdgeInsets.symmetric(vertical: 32),
                       child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           OutlinedButton(
                             onPressed: () {

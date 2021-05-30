@@ -86,24 +86,6 @@ class _AccountPageState extends State<AccountPage> {
                 SizedBox(
                   height: 36,
                 ),
-                // FutureBuilder<UserProfile>(
-                //   future: _fetchUserData(),
-                //   builder: (BuildContext context,
-                //       AsyncSnapshot<UserProfile> snapshot) {
-                //     switch (snapshot.connectionState) {
-                //       case ConnectionState.waiting:
-                //         return Text("Loading...");
-                //       default:
-                //         if (snapshot.hasError) {
-                //           return Text('Error: ${snapshot.error}');
-                //         } else {
-                //           return Text(
-                //             "@${snapshot.data.username}",
-                //           );
-                //         }
-                //     }
-                //   },
-                // ),
                 TextFormField(
                   decoration: InputDecoration(
                     hintText: "enter new username",
@@ -195,23 +177,6 @@ class _AccountPageState extends State<AccountPage> {
                 SizedBox(
                   height: 36,
                 ),
-                // FutureBuilder<UserProfile>(
-                //   future: _fetchUserData(),
-                //   builder: (BuildContext context,
-                //       AsyncSnapshot<UserProfile> snapshot) {
-                //     switch (snapshot.connectionState) {
-                //       case ConnectionState.waiting:
-                //         return Text("Loading...");
-                //       default:
-                //         if (snapshot.hasError) {
-                //           return Text('Error: ${snapshot.error}');
-                //         } else {
-                //           return Text(
-                //               "${snapshot.data.firstName} ${snapshot.data.lastName}");
-                //         }
-                //     }
-                //   },
-                // ),
                 TextFormField(
                   decoration: InputDecoration(
                     hintText: "first name",
@@ -421,7 +386,7 @@ class _AccountPageState extends State<AccountPage> {
                               ],
                             ),
                             SizedBox(
-                              height: 30,
+                              height: 23,
                             ),
                             CircleAvatar(
                               backgroundColor: Palette.primary,
@@ -436,7 +401,7 @@ class _AccountPageState extends State<AccountPage> {
                                 ),
                               ),
                             ),
-                            SizedBox(height: 25),
+                            SizedBox(height: 20),
                             Column(
                               children: [
                                 Text(
