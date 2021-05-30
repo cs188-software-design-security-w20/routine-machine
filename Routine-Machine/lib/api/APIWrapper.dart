@@ -9,7 +9,8 @@ import 'package:crypton/crypton.dart' as Crypton;
 
 class APIWrapper {
   Auth.User user;
-  String apiBaseURL = 'routine-machine-1.herokuapp.com';
+  // String apiBaseURL = 'routine-machine-1.herokuapp.com';
+  String apiBaseURL = 'api.jackzzhao.com';
   Http.BaseClient client = new Http.Client();
   CSE cse = CSE();
 
@@ -150,7 +151,7 @@ class APIWrapper {
     return UserProfile.fromJson(json);
   }
 
-  Future<UserProfile> queryUserProfile(/*{String username}*/) async {
+  Future<UserProfile> queryUserProfile() async {
     final query = {
       // 'user_name': username,
       'id': user.uid,
@@ -187,28 +188,17 @@ class APIWrapper {
   }
 
   Future<bool> validateDevicePrivateKey({String scannedKey}) async {
-    final headers = {
-      HttpHeaders.authorizationHeader: await _getAuthHeader(),
-    };
-    final url = Uri.https(apiBaseURL, '/challenge');
-    final response = await client.get(url, headers: headers);
-    if (response.statusCode != 200) {
-      print(response.body);
-      throw Exception('Failed to get private key challenge');
-    }
-    final json = Convert.jsonDecode(response.body);
-    print(response.body);
-    final challengeString = json['challengeString'] as String;
-    final encryptedString = json['encryptedString'] as String;
-    try {
-      final privateKey = Crypton.RSAPrivateKey.fromString(scannedKey);
-      final decryptedString = await cse.decryptChallengeString(
-          encrypted: encryptedString, privateKey: privateKey);
-      print(decryptedString);
-      return decryptedString == challengeString;
-    } catch (e) {
-      return false;
-    }
+    UserProfile user = await queryUserProfile();
+    print("Validator: User: ${user}");
+    Crypton.RSAPublicKey publicKey =
+        Crypton.RSAPublicKey.fromString(user.publicKey);
+    String secret = "hello, routineMachine";
+    String encrypted = publicKey.encrypt(secret);
+    Crypton.RSAPrivateKey privateKey =
+        Crypton.RSAPrivateKey.fromString(scannedKey);
+    String decrypted = privateKey.decrypt(encrypted);
+    print("Decrypted: ${decrypted}\nSecret: ${secret}");
+    return decrypted == secret;
   }
 
   Future<void> _setOwnDEK() async {

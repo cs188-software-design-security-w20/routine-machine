@@ -1,8 +1,10 @@
+import 'package:crypton/crypton.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'dart:io';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
+import 'package:routine_machine/Models/UserProfile.dart';
 import 'package:routine_machine/Views/components/custom_route.dart';
 import 'package:routine_machine/api/APIWrapper.dart';
 import './HomePage.dart';
@@ -37,6 +39,7 @@ class _ScanQRPageState extends State<ScanQRPage> {
     // TODO: implement initState
     super.initState();
     apiWrapper.setUser(widget.user);
+    print("User: ${widget.user.toString()}");
   }
 
   @override
@@ -121,7 +124,7 @@ class _ScanQRPageState extends State<ScanQRPage> {
   Future<bool> _validateQRCode(Barcode qrCode) async {
     // TODO: validate that QRCode works
     String key = qrCode.code;
-    print("PRIVATE KEY: $key");
+    print("SCANNED PRIVATE KEY: $key");
     bool validKey = await apiWrapper.validateDevicePrivateKey(scannedKey: key);
     // bool validKey = await Future.delayed(Duration(seconds: 1), () => true);
     return validKey;
@@ -132,20 +135,25 @@ class _ScanQRPageState extends State<ScanQRPage> {
     controller.scannedDataStream.listen((scanData) {
       setState(() {
         if (scanData.format == BarcodeFormat.qrcode) {
-          _validateQRCode(scanData).then((validCode) {
+          _validateQRCode(scanData).then((validCode) async {
             if (validCode) {
               print('valid code!!!');
+
               _verificationStatus = VerificationStatus.success;
-              apiWrapper.cse.setPrivateKey(key: scanData.code).then((result) {
+              try {
+                UserProfile user = await apiWrapper.queryUserProfile();
+                await apiWrapper.overrideKeyPair(
+                    privateKey: scanData.code, publicKey: user.publicKey);
+                await apiWrapper.updateDEKFromServer();
                 Navigator.pushReplacement(
                   context,
                   FadePageRoute(
                       builder: (context) => HomePage(user: widget.user)),
-                ).catchError((error) {
-                  print('Error setting private key: $error');
-                  _verificationStatus = VerificationStatus.failed;
-                });
-              });
+                );
+              } catch (e) {
+                print(e.toString());
+                _verificationStatus = VerificationStatus.failed;
+              }
             } else {
               _verificationStatus = VerificationStatus.failed;
             }
