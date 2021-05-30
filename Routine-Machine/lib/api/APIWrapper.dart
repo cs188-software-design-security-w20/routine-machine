@@ -223,6 +223,32 @@ class APIWrapper {
     });
   }
 
+  Future<void> updateDEKFromServer() async {
+    final hasPKPair = await cse.hasKeyPair();
+    if (!hasPKPair) {
+      throw Exception(
+          'Asymmetric key must be set before updating DEK from server');
+    }
+    final query = {
+      'id': user.uid,
+    };
+    final headers = {
+      HttpHeaders.authorizationHeader: await _getAuthHeader(),
+      HttpHeaders.contentTypeHeader: 'application/json',
+    };
+    final url = Uri.https(apiBaseURL, '/user/dek', query);
+    final response = await client.get(url, headers: headers);
+    if (response.statusCode != 200) {
+      throw Exception('Failed to get own dek');
+    }
+    final json = Convert.jsonDecode(response.body);
+    final encryptedDek = json['dek'];
+    if (encryptedDek == null) {
+      throw Exception('DEK request returned no value');
+    }
+    await cse.setDEK(encryptedDek: encryptedDek);
+  }
+
   Future<List<WidgetData>> getHabitData() async {
     final query = {
       'id': user.uid,
