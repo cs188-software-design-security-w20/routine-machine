@@ -4,7 +4,6 @@ import 'dart:math';
 import 'package:crypto/crypto.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-// import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 class AuthenticationProvider with ChangeNotifier {
   final FirebaseAuth _firebaseAuth;
@@ -33,7 +32,6 @@ class AuthenticationProvider with ChangeNotifier {
     final digest = sha256.convert(bytes);
     return digest.toString();
   }
-
   // Future<User> signInWithApple() async {
   //   // To prevent replay attacks with the credential returned from Apple, we
   //   // include a nonce in the credential request. When signing in in with

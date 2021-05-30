@@ -185,7 +185,7 @@ class APIWrapper {
     }
   }
 
-  Future<bool> validateDevicePrivateKey() async {
+  Future<bool> validateDevicePrivateKey({String scannedKey}) async {
     final headers = {
       HttpHeaders.authorizationHeader: await _getAuthHeader(),
     };
@@ -199,8 +199,9 @@ class APIWrapper {
     final challengeString = json['challengeString'] as String;
     final encryptedString = json['encryptedString'] as String;
     try {
-      final decryptedString =
-          await cse.decryptChallengeString(encrypted: encryptedString);
+      final privateKey = Crypton.RSAPrivateKey.fromString(scannedKey);
+      final decryptedString = await cse.decryptChallengeString(
+          encrypted: encryptedString, privateKey: privateKey);
       print(decryptedString);
       return decryptedString == challengeString;
     } catch (e) {
