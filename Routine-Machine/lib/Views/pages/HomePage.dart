@@ -138,6 +138,9 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         onTap: (index) {
           print(index);
           buttonTapped(index);
+          if (index == 0) {
+            _fetchWidgetData();
+          }
         },
       ),
       floatingActionButton: Visibility(
