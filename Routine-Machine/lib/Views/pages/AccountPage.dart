@@ -14,6 +14,7 @@ import 'package:routine_machine/constants/Palette.dart' as Palette;
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'LoginPage.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:routine_machine/constants/Constants.dart' as Constants;
 
 class AccountPage extends StatefulWidget {
@@ -49,6 +50,23 @@ class _AccountPageState extends State<AccountPage> {
     return this.apiWrapper.queryUserProfile();
   }
 
+  void showUserNameTakenAlert(BuildContext context, String username) {
+    showCupertinoDialog(
+      context: context,
+      builder: (_) => CupertinoAlertDialog(
+        title: Text("oops"),
+        content: Text("A user with username: ${username} already exists."),
+        actions: [
+          CupertinoButton(
+              child: Text('Close'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              })
+        ],
+      ),
+    );
+  }
+
   void activeChangeUsernamePage(BuildContext context) {
     // TODO: make this its own page file
     Navigator.push(
@@ -58,7 +76,7 @@ class _AccountPageState extends State<AccountPage> {
           backgroundColor: Colors.white,
           appBar: TopBackBar(),
           body: Container(
-            padding: EdgeInsets.symmetric(horizontal: 16),
+            padding: EdgeInsets.symmetric(horizontal: 26),
             child: Column(
               children: [
                 Text(
@@ -68,27 +86,27 @@ class _AccountPageState extends State<AccountPage> {
                 SizedBox(
                   height: 36,
                 ),
-                FutureBuilder<UserProfile>(
-                  future: _fetchUserData(),
-                  builder: (BuildContext context,
-                      AsyncSnapshot<UserProfile> snapshot) {
-                    switch (snapshot.connectionState) {
-                      case ConnectionState.waiting:
-                        return Text("Loading...");
-                      default:
-                        if (snapshot.hasError) {
-                          return Text('Error: ${snapshot.error}');
-                        } else {
-                          return Text(
-                            "@${snapshot.data.username}",
-                          );
-                        }
-                    }
-                  },
-                ),
+                // FutureBuilder<UserProfile>(
+                //   future: _fetchUserData(),
+                //   builder: (BuildContext context,
+                //       AsyncSnapshot<UserProfile> snapshot) {
+                //     switch (snapshot.connectionState) {
+                //       case ConnectionState.waiting:
+                //         return Text("Loading...");
+                //       default:
+                //         if (snapshot.hasError) {
+                //           return Text('Error: ${snapshot.error}');
+                //         } else {
+                //           return Text(
+                //             "@${snapshot.data.username}",
+                //           );
+                //         }
+                //     }
+                //   },
+                // ),
                 TextFormField(
                   decoration: InputDecoration(
-                    hintText: "new user name",
+                    hintText: "enter new username",
                     fillColor: Colors.white,
                     border: new OutlineInputBorder(
                       borderRadius: new BorderRadius.circular(25.0),
@@ -113,7 +131,22 @@ class _AccountPageState extends State<AccountPage> {
                       TextButton(
                         onPressed: () async {
                           String username = _usernameController.text.trim();
-                          apiWrapper.setUserName(username: username);
+                          apiWrapper
+                              .isUsernameTaken(username: username)
+                              .then((isTaken) => {
+                                    if (isTaken)
+                                      {
+                                        print("username is taken"),
+                                        showUserNameTakenAlert(
+                                            context, username),
+                                      }
+                                    else
+                                      {
+                                        apiWrapper.setUserName(
+                                            username: username),
+                                        Navigator.pop(context),
+                                      }
+                                  });
                         },
                         child: Row(
                           children: [
@@ -152,7 +185,7 @@ class _AccountPageState extends State<AccountPage> {
           backgroundColor: Colors.white,
           appBar: TopBackBar(),
           body: Container(
-            padding: EdgeInsets.symmetric(horizontal: 16),
+            padding: EdgeInsets.symmetric(horizontal: 26),
             child: Column(
               children: [
                 Text(
@@ -162,23 +195,23 @@ class _AccountPageState extends State<AccountPage> {
                 SizedBox(
                   height: 36,
                 ),
-                FutureBuilder<UserProfile>(
-                  future: _fetchUserData(),
-                  builder: (BuildContext context,
-                      AsyncSnapshot<UserProfile> snapshot) {
-                    switch (snapshot.connectionState) {
-                      case ConnectionState.waiting:
-                        return Text("Loading...");
-                      default:
-                        if (snapshot.hasError) {
-                          return Text('Error: ${snapshot.error}');
-                        } else {
-                          return Text(
-                              "${snapshot.data.firstName} ${snapshot.data.lastName}");
-                        }
-                    }
-                  },
-                ),
+                // FutureBuilder<UserProfile>(
+                //   future: _fetchUserData(),
+                //   builder: (BuildContext context,
+                //       AsyncSnapshot<UserProfile> snapshot) {
+                //     switch (snapshot.connectionState) {
+                //       case ConnectionState.waiting:
+                //         return Text("Loading...");
+                //       default:
+                //         if (snapshot.hasError) {
+                //           return Text('Error: ${snapshot.error}');
+                //         } else {
+                //           return Text(
+                //               "${snapshot.data.firstName} ${snapshot.data.lastName}");
+                //         }
+                //     }
+                //   },
+                // ),
                 TextFormField(
                   decoration: InputDecoration(
                     hintText: "first name",
@@ -320,7 +353,7 @@ class _AccountPageState extends State<AccountPage> {
                             String displayThis = snapshot.data.toString();
                             return QrImage(
                               data: displayThis,
-                              size: 1 * MediaQuery.of(context).size.width,
+                              size: 0.7 * MediaQuery.of(context).size.width,
                             );
                           } else if (snapshot.hasError) {
                             return Text("You have an error: ${snapshot.error}");
@@ -329,10 +362,6 @@ class _AccountPageState extends State<AccountPage> {
                           }
                         },
                       ),
-                      // child: QrImage(
-                      //   data: this.qrKey,
-                      //   size: 0.5 * MediaQuery.of(context).size.width,
-                      // ),
                     ),
                   ),
                   SizedBox(
@@ -407,7 +436,22 @@ class _AccountPageState extends State<AccountPage> {
                                 ),
                               ),
                             ),
-                            SizedBox(height: 35),
+                            SizedBox(height: 25),
+                            Column(
+                              children: [
+                                Text(
+                                  '${snapshot.data.firstName} ${snapshot.data.lastName}',
+                                  style: kTitle1Style,
+                                ),
+                                Text(
+                                  "@${snapshot.data.username}",
+                                  style: kBigCaptionLabelStyle,
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 25,
+                            ),
                             Column(
                               children: [
                                 // children: [
@@ -440,17 +484,6 @@ class _AccountPageState extends State<AccountPage> {
                                   title: "View credentials",
                                   action: () => activeQRCodePage(context),
                                 ),
-                                //   SizedBox(height: 16),
-                                //   MenuRow(
-                                //     icon: new Icon(
-                                //       SFSymbols.alarm,
-                                //       size: 32,
-                                //       color: Colors.blue,
-                                //     ),
-                                //     title: "Notifications",
-                                //     action: () => activeNotificationPage(context),
-                                //   ),
-                                //   SizedBox(height: 16),
                               ],
                             ),
                           ],
@@ -463,16 +496,23 @@ class _AccountPageState extends State<AccountPage> {
                       }
                       return accountContent;
                     }),
+                SizedBox(
+                  height: 26,
+                ),
                 GestureDetector(
                   onTap: () => logOut(context),
                   child: Row(
                     children: [
                       Spacer(),
-                      Text("Logout"),
+                      Text(
+                        "Logout",
+                        style: kBodyLabelStyle,
+                      ),
                       SizedBox(width: 6),
                       new Icon(
                         Icons.exit_to_app,
                         color: Colors.red,
+                        size: 24,
                       ),
                     ],
                   ),

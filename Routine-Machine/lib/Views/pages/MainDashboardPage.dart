@@ -67,7 +67,7 @@ class _MainDashboardPageState extends State<MainDashboardPage> {
                       );
                     } else {
                       profileBarContent = ProfileBarView(
-                        user: UserProfile(firstName: "Loading..."),
+                        user: UserProfile(firstName: "...", lastName: ""),
                       );
                     }
                     return profileBarContent;

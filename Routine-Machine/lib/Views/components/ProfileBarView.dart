@@ -26,7 +26,7 @@ class ProfileBarView extends StatelessWidget {
               ),
               children: [
                 TextSpan(
-                  text: '${this.user.firstName}',
+                  text: '${this.user.firstName} ${this.user.lastName}',
                   style: TextStyle(
                     fontFamily: 'SF Pro Text',
                     color: Colors.black,

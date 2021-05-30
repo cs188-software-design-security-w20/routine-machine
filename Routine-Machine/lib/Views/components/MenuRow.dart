@@ -58,7 +58,7 @@ class _MenuRowState extends State<MenuRow> {
                 Container(
                   child: Text(
                     widget.title,
-                    style: kTitle2Style,
+                    style: kTitle2RegularStyle,
                   ),
                 ),
               ],

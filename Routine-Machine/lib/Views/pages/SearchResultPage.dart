@@ -37,6 +37,7 @@ class _SearchResultPageState extends State<SearchResultPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: TopBackBar(),
+      backgroundColor: Colors.white,
       body: Container(
         padding: EdgeInsets.symmetric(horizontal: 16),
         child: Column(
@@ -72,6 +73,7 @@ class _SearchResultPageState extends State<SearchResultPage> {
                 Widget searchContent;
                 if (snapshot.hasData) {
                   searchContent = FollowRequestTile(
+                    searchUserName: searchController.text,
                     userProfile: snapshot.data,
                     color: Palette.purple,
                   );

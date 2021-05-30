@@ -81,7 +81,8 @@ class _FollowPageState extends State<FollowPage> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => SearchResultPage(searchText: userName),
+        builder: (context) =>
+            SearchResultPage(searchText: userName.trim().toLowerCase()),
       ),
     );
   }
@@ -140,49 +141,51 @@ class _FollowPageState extends State<FollowPage> {
               ),
             ),
             Expanded(
-                child: FutureBuilder(
-              future: Future.wait(
-                  [_followingList, _followerRequestList, _followerList]),
-              builder: (BuildContext context,
-                  AsyncSnapshot<List<dynamic>> snapshot) {
-                Widget followContent;
-                if (snapshot.hasData) {
-                  followContent = _page == FollowPageType.following
-                      ? RefreshIndicator(
-                          onRefresh: () async {
-                            setState(() {
-                              _followingList = _getFollowingList();
-                            });
-                          },
-                          child: FollowingTileList(
-                            followingList: snapshot.data[0],
-                          ),
-                        )
-                      : RefreshIndicator(
-                          onRefresh: () async {
-                            setState(() {
-                              _followerRequestList = _getFollowerRequestList();
-                              _followerList = _getFollowerList();
-                            });
-                          },
-                          child: FollowerTileList(
-                            followerRequestList: snapshot.data[1],
-                            followerList: snapshot.data[2],
-                            refreshFollowerList: _refreshFollowerList,
-                          ),
-                        );
-                } else if (snapshot.hasError) {
-                  followContent = Center(
-                    child: Text('Error loading follow data'),
-                  );
-                } else {
-                  followContent = Center(
-                    child: Text('loading follow data...'),
-                  );
-                }
-                return followContent;
-              },
-            )),
+              child: FutureBuilder(
+                future: Future.wait(
+                    [_followingList, _followerRequestList, _followerList]),
+                builder: (BuildContext context,
+                    AsyncSnapshot<List<dynamic>> snapshot) {
+                  Widget followContent;
+                  if (snapshot.hasData) {
+                    followContent = _page == FollowPageType.following
+                        ? RefreshIndicator(
+                            onRefresh: () async {
+                              setState(() {
+                                _followingList = _getFollowingList();
+                              });
+                            },
+                            child: FollowingTileList(
+                              followingList: snapshot.data[0],
+                            ),
+                          )
+                        : RefreshIndicator(
+                            onRefresh: () async {
+                              setState(() {
+                                _followerRequestList =
+                                    _getFollowerRequestList();
+                                _followerList = _getFollowerList();
+                              });
+                            },
+                            child: FollowerTileList(
+                              followerRequestList: snapshot.data[1],
+                              followerList: snapshot.data[2],
+                              refreshFollowerList: _refreshFollowerList,
+                            ),
+                          );
+                  } else if (snapshot.hasError) {
+                    followContent = Center(
+                      child: Text('Error loading follow data'),
+                    );
+                  } else {
+                    followContent = Center(
+                      child: Text('loading follow data...'),
+                    );
+                  }
+                  return followContent;
+                },
+              ),
+            ),
           ],
         ),
       ),

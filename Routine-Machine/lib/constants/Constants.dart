@@ -56,6 +56,15 @@ var kTitle2Style = TextStyle(
   fontFamily: 'SF Pro Text',
   decoration: TextDecoration.none,
 );
+
+var kTitle2RegularStyle = TextStyle(
+  fontSize: 20.0,
+  fontWeight: FontWeight.normal,
+  color: kPrimaryLabelColor,
+  fontFamily: 'SF Pro Text',
+  decoration: TextDecoration.none,
+);
+
 var kHeadlineLabelStyle = TextStyle(
   fontSize: 17.0,
   fontWeight: FontWeight.w800,
@@ -108,6 +117,13 @@ var kCardSubtitleStyle = TextStyle(
 );
 var kCaptionLabelStyle = TextStyle(
   fontSize: 12.0,
+  color: kSecondaryLabelColor,
+  fontFamily: 'SF Pro Text',
+  decoration: TextDecoration.none,
+);
+
+var kBigCaptionLabelStyle = TextStyle(
+  fontSize: 16.0,
   color: kSecondaryLabelColor,
   fontFamily: 'SF Pro Text',
   decoration: TextDecoration.none,
