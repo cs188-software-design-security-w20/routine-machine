@@ -56,6 +56,15 @@ var kTitle2Style = TextStyle(
   fontFamily: 'SF Pro Text',
   decoration: TextDecoration.none,
 );
+
+var kTitle2RegularStyle = TextStyle(
+  fontSize: 20.0,
+  fontWeight: FontWeight.normal,
+  color: kPrimaryLabelColor,
+  fontFamily: 'SF Pro Text',
+  decoration: TextDecoration.none,
+);
+
 var kHeadlineLabelStyle = TextStyle(
   fontSize: 17.0,
   fontWeight: FontWeight.w800,
