@@ -110,36 +110,39 @@ class _LoginPageState extends State<LoginPage> {
             print('Case ${e.message} is not yet implemented');
         }
       }
-      return 'Error: $errorMessage';
+      return '$errorMessage';
     }
   }
 
   Future<String> _registerUser(LoginData loginData) async {
-    String returnError = null;
-    // try {
-    _auth
-        .createUserWithEmailAndPassword(
-      email: loginData.name,
-      password: loginData.password,
-    )
-        .then((user) {
-      setState(() {
-        this.user = user.user;
-        // print("[Register] Set user: ${user.user}");
+
+    String errorMessage;
+    try {
+      await _auth
+          .createUserWithEmailAndPassword(
+        email: loginData.name,
+        password: loginData.password,
+      )
+          .then((user) {
+        setState(() {
+          this.user = user.user;
+        });
       });
-    }).onError((error, stackTrace) {
-      print("Caught error 1: ${error.toString()}");
-      // showAlert(context, error.toString());
-    });
-    return null;
-    // } on FirebaseAuthException catch (e) {
-    //   print("Caught error 1: ${e.toString()}");
-    //   returnError = 'Error: ${e.toString()}';
-    // } on FirebaseException catch (e) {
-    //   print("Caught error 2: ${e.toString()}");
-    //   returnError = 'Error: ${e.toString()}';
-    // }
-    // return returnError;
+      return null;
+    } catch (e) {
+      switch (e.code) {
+        case 'email-already-in-use':
+          errorMessage =
+              "The email address is already in use by another account.";
+          break;
+        case 'invalid-email':
+          errorMessage = "The email address is invalid!";
+          break;
+        default:
+          errorMessage = "$e.message";
+      }
+      return "$errorMessage";
+    }
   }
 
   @override

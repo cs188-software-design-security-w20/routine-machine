@@ -118,12 +118,13 @@ class _ScanQRPageState extends State<ScanQRPage> {
     );
   }
 
-  bool _validateQRCode(Barcode qrCode) {
+  Future<bool> _validateQRCode(Barcode qrCode) async {
     // TODO: validate that QRCode works
     String key = qrCode.code;
-    print(key);
-    apiWrapper.cse.refreshOwnerPKPair();
-    return true;
+    print("PRIVATE KEY: $key");
+    bool validKey = await apiWrapper.validateDevicePrivateKey(scannedKey: key);
+    // bool validKey = await Future.delayed(Duration(seconds: 1), () => true);
+    return validKey;
   }
 
   void _onQRViewCreated(QRViewController controller) {
@@ -131,15 +132,24 @@ class _ScanQRPageState extends State<ScanQRPage> {
     controller.scannedDataStream.listen((scanData) {
       setState(() {
         if (scanData.format == BarcodeFormat.qrcode) {
-          if (_validateQRCode(scanData)) {
-            _verificationStatus = VerificationStatus.success;
-            Navigator.pushReplacement(
-              context,
-              FadePageRoute(builder: (context) => HomePage(user: widget.user)),
-            );
-          } else {
-            _verificationStatus = VerificationStatus.failed;
-          }
+          _validateQRCode(scanData).then((validCode) {
+            if (validCode) {
+              print('valid code!!!');
+              _verificationStatus = VerificationStatus.success;
+              apiWrapper.cse.setPrivateKey(key: scanData.code).then((result) {
+                Navigator.pushReplacement(
+                  context,
+                  FadePageRoute(
+                      builder: (context) => HomePage(user: widget.user)),
+                ).catchError((error) {
+                  print('Error setting private key: $error');
+                  _verificationStatus = VerificationStatus.failed;
+                });
+              });
+            } else {
+              _verificationStatus = VerificationStatus.failed;
+            }
+          });
         }
       });
     });
