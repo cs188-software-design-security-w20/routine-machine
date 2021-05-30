@@ -197,6 +197,6 @@ class CSE {
   }
 
   Future<Crypton.RSAKeypair> _generateKeyPair() async {
-    return Crypton.RSAKeypair.fromRandom(keySize: 512);
+    return Crypton.RSAKeypair.fromRandom(keySize: 1024);
   }
 }

@@ -193,6 +193,7 @@ class APIWrapper {
     final url = Uri.https(apiBaseURL, '/challenge');
     final response = await client.get(url, headers: headers);
     if (response.statusCode != 200) {
+      print(response.body);
       throw Exception('Failed to get private key challenge');
     }
     final json = Convert.jsonDecode(response.body);
