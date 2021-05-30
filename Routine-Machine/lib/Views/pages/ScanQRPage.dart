@@ -50,10 +50,7 @@ class _ScanQRPageState extends State<ScanQRPage> {
 
   @override
   Widget build(BuildContext context) {
-    var scanArea = (MediaQuery.of(context).size.width < 400 ||
-            MediaQuery.of(context).size.height < 400)
-        ? 150.0
-        : 300.0;
+    var scanArea = MediaQuery.of(context).size.width * 0.7;
     return Scaffold(
       body: Column(
         children: <Widget>[
