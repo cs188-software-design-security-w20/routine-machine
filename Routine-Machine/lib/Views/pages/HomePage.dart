@@ -12,49 +12,6 @@ import 'MainDashboardPage.dart';
 import 'AccountPage.dart';
 import '../../constants/Palette.dart' as Palette;
 
-List<WidgetData> samples = [
-  new WidgetData(
-    title: "Drink Water",
-    widgetType: "daily",
-    color: 0xFF7CD0FF,
-    createdTime: new DateTime.now(),
-    modifiedTime: new DateTime.now(),
-    currentPeriodCounts: 1,
-    periodicalGoal: 6,
-    checkins: [new DateTime.now()],
-  ),
-  WidgetData(
-    title: "Exercise",
-    widgetType: "weekly",
-    color: 0xFFFFDF6B,
-    createdTime: new DateTime.now(),
-    modifiedTime: new DateTime.now(),
-    currentPeriodCounts: 2,
-    periodicalGoal: 4,
-    checkins: [new DateTime.now(), new DateTime.now()],
-  ),
-  WidgetData(
-    title: "Read the News",
-    widgetType: "monthly",
-    color: 0xFFFF93BA,
-    createdTime: new DateTime.now(),
-    modifiedTime: new DateTime.now(),
-    currentPeriodCounts: 1,
-    periodicalGoal: 20,
-    checkins: [new DateTime.now()],
-  ),
-  WidgetData(
-    title: "Exercise",
-    widgetType: "weekly",
-    color: 0xFFFFDF6B,
-    createdTime: new DateTime.now(),
-    modifiedTime: new DateTime.now(),
-    currentPeriodCounts: 2,
-    periodicalGoal: 4,
-    checkins: [new DateTime.now(), new DateTime.now()],
-  ),
-];
-
 class HomePage extends StatefulWidget {
   final User user;
   final FlutterSecureStorage storage = FlutterSecureStorage();
@@ -64,9 +21,9 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   Future<List<WidgetData>> _mainDashboardWidgetData;
-  // Future<UserProfile> _mainUserProfileData;
+  Future<UserProfile> _mainUserProfileData;
   bool triedLogIn = false;
   String key = "";
   int _page = 0;
@@ -75,6 +32,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
 
     widget.storage.read(key: "key").then((value) => {
           this.key = value,
@@ -88,6 +46,7 @@ class _HomePageState extends State<HomePage> {
     apiWrapper.setUser(widget.user);
     setState(() {
       _mainDashboardWidgetData = apiWrapper.getHabitData();
+      _mainUserProfileData = apiWrapper.queryUserProfile();
     });
   }
 
@@ -140,6 +99,10 @@ class _HomePageState extends State<HomePage> {
   @override
   void dispose() {
     _controller.dispose();
+    WidgetsBinding.instance.removeObserver(this);
+    _mainDashboardWidgetData.then((widgetList) {
+      widget.api.setHabitData(habitData: widgetList);
+    });
     super.dispose();
   }
 
@@ -152,12 +115,15 @@ class _HomePageState extends State<HomePage> {
       children: [
         MainDashboardPage(
           widgetList: _mainDashboardWidgetData,
+          userProfile: _mainUserProfileData,
           fetchWidgetData: _fetchWidgetData,
           removeWidget: _removeWidget,
           updateWidget: _updateWidget,
         ),
         FollowPage(),
-        AccountPage(),
+        AccountPage(
+          user: widget.user,
+        ),
       ],
     );
   }
@@ -204,6 +170,11 @@ class _HomePageState extends State<HomePage> {
   }
 
   void onPageChanged(int page) {
+    _mainDashboardWidgetData.then((widgetList) {
+      widget.api.setHabitData(habitData: widgetList);
+      print('updated habit data!');
+    });
+
     setState(() {
       this._page = page;
     });
@@ -211,5 +182,23 @@ class _HomePageState extends State<HomePage> {
 
   void buttonTapped(int page) {
     this._controller.jumpToPage(page);
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+
+    switch (state) {
+      case AppLifecycleState.inactive: // app not focused
+      case AppLifecycleState.detached: // app closed
+      case AppLifecycleState.paused: // app in background
+        _mainDashboardWidgetData.then((widgetList) {
+          widget.api.setHabitData(habitData: widgetList);
+        });
+        break;
+      default:
+        // do nothing
+        break;
+    }
   }
 }
