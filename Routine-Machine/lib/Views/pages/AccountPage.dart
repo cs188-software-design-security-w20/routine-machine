@@ -76,7 +76,7 @@ class _AccountPageState extends State<AccountPage> {
           backgroundColor: Colors.white,
           appBar: TopBackBar(),
           body: Container(
-            padding: EdgeInsets.symmetric(horizontal: 16),
+            padding: EdgeInsets.symmetric(horizontal: 26),
             child: Column(
               children: [
                 Text(
@@ -86,27 +86,27 @@ class _AccountPageState extends State<AccountPage> {
                 SizedBox(
                   height: 36,
                 ),
-                FutureBuilder<UserProfile>(
-                  future: _fetchUserData(),
-                  builder: (BuildContext context,
-                      AsyncSnapshot<UserProfile> snapshot) {
-                    switch (snapshot.connectionState) {
-                      case ConnectionState.waiting:
-                        return Text("Loading...");
-                      default:
-                        if (snapshot.hasError) {
-                          return Text('Error: ${snapshot.error}');
-                        } else {
-                          return Text(
-                            "@${snapshot.data.username}",
-                          );
-                        }
-                    }
-                  },
-                ),
+                // FutureBuilder<UserProfile>(
+                //   future: _fetchUserData(),
+                //   builder: (BuildContext context,
+                //       AsyncSnapshot<UserProfile> snapshot) {
+                //     switch (snapshot.connectionState) {
+                //       case ConnectionState.waiting:
+                //         return Text("Loading...");
+                //       default:
+                //         if (snapshot.hasError) {
+                //           return Text('Error: ${snapshot.error}');
+                //         } else {
+                //           return Text(
+                //             "@${snapshot.data.username}",
+                //           );
+                //         }
+                //     }
+                //   },
+                // ),
                 TextFormField(
                   decoration: InputDecoration(
-                    hintText: "new user name",
+                    hintText: "enter new username",
                     fillColor: Colors.white,
                     border: new OutlineInputBorder(
                       borderRadius: new BorderRadius.circular(25.0),
@@ -185,7 +185,7 @@ class _AccountPageState extends State<AccountPage> {
           backgroundColor: Colors.white,
           appBar: TopBackBar(),
           body: Container(
-            padding: EdgeInsets.symmetric(horizontal: 16),
+            padding: EdgeInsets.symmetric(horizontal: 26),
             child: Column(
               children: [
                 Text(
@@ -195,23 +195,23 @@ class _AccountPageState extends State<AccountPage> {
                 SizedBox(
                   height: 36,
                 ),
-                FutureBuilder<UserProfile>(
-                  future: _fetchUserData(),
-                  builder: (BuildContext context,
-                      AsyncSnapshot<UserProfile> snapshot) {
-                    switch (snapshot.connectionState) {
-                      case ConnectionState.waiting:
-                        return Text("Loading...");
-                      default:
-                        if (snapshot.hasError) {
-                          return Text('Error: ${snapshot.error}');
-                        } else {
-                          return Text(
-                              "${snapshot.data.firstName} ${snapshot.data.lastName}");
-                        }
-                    }
-                  },
-                ),
+                // FutureBuilder<UserProfile>(
+                //   future: _fetchUserData(),
+                //   builder: (BuildContext context,
+                //       AsyncSnapshot<UserProfile> snapshot) {
+                //     switch (snapshot.connectionState) {
+                //       case ConnectionState.waiting:
+                //         return Text("Loading...");
+                //       default:
+                //         if (snapshot.hasError) {
+                //           return Text('Error: ${snapshot.error}');
+                //         } else {
+                //           return Text(
+                //               "${snapshot.data.firstName} ${snapshot.data.lastName}");
+                //         }
+                //     }
+                //   },
+                // ),
                 TextFormField(
                   decoration: InputDecoration(
                     hintText: "first name",
@@ -353,7 +353,7 @@ class _AccountPageState extends State<AccountPage> {
                             String displayThis = snapshot.data.toString();
                             return QrImage(
                               data: displayThis,
-                              size: 1 * MediaQuery.of(context).size.width,
+                              size: 0.7 * MediaQuery.of(context).size.width,
                             );
                           } else if (snapshot.hasError) {
                             return Text("You have an error: ${snapshot.error}");
@@ -362,10 +362,6 @@ class _AccountPageState extends State<AccountPage> {
                           }
                         },
                       ),
-                      // child: QrImage(
-                      //   data: this.qrKey,
-                      //   size: 0.5 * MediaQuery.of(context).size.width,
-                      // ),
                     ),
                   ),
                   SizedBox(
