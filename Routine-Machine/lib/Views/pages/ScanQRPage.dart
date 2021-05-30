@@ -52,6 +52,7 @@ class _ScanQRPageState extends State<ScanQRPage> {
   Widget build(BuildContext context) {
     var scanArea = MediaQuery.of(context).size.width * 0.7;
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Column(
         children: <Widget>[
           Expanded(

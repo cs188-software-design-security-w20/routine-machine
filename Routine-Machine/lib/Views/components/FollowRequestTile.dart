@@ -25,11 +25,14 @@ class FollowRequestTile extends StatefulWidget {
 
 class _FollowRequestTileState extends State<FollowRequestTile> {
   Future<FollowStatus> _followStatus;
-
+  String username;
   @override
   void initState() {
     super.initState();
     _followStatus = _getFollowStatus();
+    widget.api.queryUserProfile().then((value) => {
+          this.username = value.username,
+        });
   }
 
   Future<FollowStatus> _getFollowStatus() async {
@@ -75,8 +78,7 @@ class _FollowRequestTileState extends State<FollowRequestTile> {
                   (BuildContext context, AsyncSnapshot<FollowStatus> snapshot) {
                 Widget statusWidget;
                 if (snapshot.hasData) {
-                  statusWidget = widget.searchUserName ==
-                          widget.userProfile.username
+                  statusWidget = this.username == widget.userProfile.username
                       ? Text(
                           "me",
                           style: TextStyle(

@@ -37,6 +37,7 @@ class _SearchResultPageState extends State<SearchResultPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: TopBackBar(),
+      backgroundColor: Colors.white,
       body: Container(
         padding: EdgeInsets.symmetric(horizontal: 16),
         child: Column(

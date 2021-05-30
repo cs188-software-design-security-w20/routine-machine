@@ -81,7 +81,8 @@ class _FollowPageState extends State<FollowPage> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => SearchResultPage(searchText: userName),
+        builder: (context) =>
+            SearchResultPage(searchText: userName.trim().toLowerCase()),
       ),
     );
   }
