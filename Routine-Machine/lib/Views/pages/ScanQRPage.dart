@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
+import 'package:routine_machine/Models/UserProfile.dart';
 import 'package:routine_machine/Views/components/custom_route.dart';
 import 'package:routine_machine/api/APIWrapper.dart';
 import './HomePage.dart';
@@ -146,15 +147,24 @@ class _ScanQRPageState extends State<ScanQRPage> {
             if (validCode) {
               print('valid code!!!');
               _verificationStatus = VerificationStatus.success;
-              apiWrapper.cse.setPrivateKey(key: scanData.code).then((result) {
-                Navigator.pushReplacement(
-                  context,
-                  FadePageRoute(
-                      builder: (context) => HomePage(user: widget.user)),
-                ).catchError((error) {
-                  print('Error setting private key: $error');
-                  _verificationStatus = VerificationStatus.failed;
-                });
+
+              UserProfile user;
+              apiWrapper
+                  .queryUserProfile()
+                  .then((data) => {
+                        apiWrapper.overrideKeyPair(
+                            privateKey: scanData.code.split(' ')[0],
+                            publicKey: data.publicKey),
+                        Navigator.pushReplacement(
+                          context,
+                          FadePageRoute(
+                              builder: (context) =>
+                                  HomePage(user: widget.user)),
+                        )
+                      })
+                  .catchError((error) {
+                print('Error setting key pair: $error');
+                _verificationStatus = VerificationStatus.failed;
               });
             } else {
               _verificationStatus = VerificationStatus.failed;
