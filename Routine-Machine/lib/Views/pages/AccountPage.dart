@@ -440,7 +440,22 @@ class _AccountPageState extends State<AccountPage> {
                                 ),
                               ),
                             ),
-                            SizedBox(height: 35),
+                            SizedBox(height: 25),
+                            Column(
+                              children: [
+                                Text(
+                                  '${snapshot.data.firstName} ${snapshot.data.lastName}',
+                                  style: kTitle1Style,
+                                ),
+                                Text(
+                                  "@${snapshot.data.username}",
+                                  style: kBigCaptionLabelStyle,
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 25,
+                            ),
                             Column(
                               children: [
                                 // children: [
@@ -473,17 +488,6 @@ class _AccountPageState extends State<AccountPage> {
                                   title: "View credentials",
                                   action: () => activeQRCodePage(context),
                                 ),
-                                //   SizedBox(height: 16),
-                                //   MenuRow(
-                                //     icon: new Icon(
-                                //       SFSymbols.alarm,
-                                //       size: 32,
-                                //       color: Colors.blue,
-                                //     ),
-                                //     title: "Notifications",
-                                //     action: () => activeNotificationPage(context),
-                                //   ),
-                                //   SizedBox(height: 16),
                               ],
                             ),
                           ],
@@ -496,16 +500,23 @@ class _AccountPageState extends State<AccountPage> {
                       }
                       return accountContent;
                     }),
+                SizedBox(
+                  height: 26,
+                ),
                 GestureDetector(
                   onTap: () => logOut(context),
                   child: Row(
                     children: [
                       Spacer(),
-                      Text("Logout"),
+                      Text(
+                        "Logout",
+                        style: kBodyLabelStyle,
+                      ),
                       SizedBox(width: 6),
                       new Icon(
                         Icons.exit_to_app,
                         color: Colors.red,
+                        size: 24,
                       ),
                     ],
                   ),

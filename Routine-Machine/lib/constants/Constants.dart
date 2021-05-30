@@ -113,6 +113,13 @@ var kCaptionLabelStyle = TextStyle(
   decoration: TextDecoration.none,
 );
 
+var kBigCaptionLabelStyle = TextStyle(
+  fontSize: 16.0,
+  color: kSecondaryLabelColor,
+  fontFamily: 'SF Pro Text',
+  decoration: TextDecoration.none,
+);
+
 // Container decoration styles
 var kCardDecorationStyle = BoxDecoration(
   color: Colors.white,
