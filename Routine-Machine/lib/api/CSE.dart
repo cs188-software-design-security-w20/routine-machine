@@ -112,6 +112,14 @@ class CSE {
     return AESKey(key: dek, iv: iv);
   }
 
+  Future<void> setDEK({String encryptedDek}) async {
+    final privateKey = await this.getPrivateKey();
+    final dek = EncryptedDEK.fromString(encryptedDek)
+        .decrypt(usingPrivateKey: privateKey.toString());
+    await _storage.write(key: dekStorageKey, value: dek.key);
+    await _storage.write(key: ivStorageKey, value: dek.iv);
+  }
+
   /// Get the Private Key corresponding to the client
   Future<Crypton.RSAPrivateKey> getPrivateKey() async {
     final privateKeyStr = await _storage.read(key: privateKeyStorageKey);
