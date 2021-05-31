@@ -4,8 +4,6 @@ An encrypted habit tracker :)
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
-
 ### Install Flutter
 If you don't already have flutter installed, follow [these steps](https://flutter.dev/docs/get-started/install) to get it installed on your computer. 
 
