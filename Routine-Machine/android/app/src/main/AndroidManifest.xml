@@ -3,7 +3,7 @@
   <!-- TODO: UNSAFE!!! REMOVE userCleartextTraffic -->
    <application
         android:usesCleartextTraffic="true" 
-        android:label="routine_machine"
+        android:label="Routine Machine"
         android:icon="@mipmap/launcher_icon">
         <activity
             android:name=".MainActivity"
@@ -40,4 +40,5 @@
             android:name="flutterEmbedding"
             android:value="2" />
     </application>
+    <uses-permission android:name="android.permission.INTERNET" />
 </manifest>
