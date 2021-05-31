@@ -1,7 +1,7 @@
 # Team biubiubiu
 ## Routine Machine - A Habit Tracker
 
-### Installation (Important)
+## Installation
 
 **iOS Users**
 
@@ -11,8 +11,8 @@
 
 - Instructions [here](https://github.com/cs188-software-design-security-w20/routine-machine/blob/master/Routine-Machine/README.md)
 
-### Usage
-#### Main page
+## Usage
+### Main page
 - You are able to create, update, and delete habits in the main page. Just press on the habit cards long enough until the page to edite the habit pops up. 
 
 ### Follow page 
